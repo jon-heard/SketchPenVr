@@ -1,0 +1,440 @@
+{
+    "name": "App_Input",
+    "maps": [
+        {
+            "name": "VrHeadTracking",
+            "id": "614a55e5-9b58-4732-9f7e-723e74fcce5a",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "cf5c394d-95b6-464b-af14-8f54f40841b5",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rotation",
+                    "type": "Value",
+                    "id": "78f5be0f-7612-470d-a2fc-a52c1941622d",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4f585168-5696-4f68-b1a4-661409d507d4",
+                    "path": "<XRHMD>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5bcd636-016e-4192-a720-f9f4f6fb4338",
+                    "path": "<XRHMD>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "VrLeftHandTracking",
+            "id": "1d66efb8-ee73-4240-b556-025c37ad3244",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "4d1cd3d5-6c86-41f3-a728-a861ca62b82b",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rotation",
+                    "type": "Value",
+                    "id": "ad4642f9-9c42-4170-8b3f-0fdbb5ee2964",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1e58e216-42a5-45ac-9cec-c0e263e25630",
+                    "path": "<XRController>{LeftHand}/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8bbf0575-f406-47b1-8cf8-18b724f2a7d5",
+                    "path": "<XRController>{LeftHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "VrRightHandTracking",
+            "id": "d5521fba-ad4d-42cb-8554-15ab66c82efa",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "6c483277-deb3-45f3-8d1f-805557de749e",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rotation",
+                    "type": "Value",
+                    "id": "ab1816b7-63cd-4da1-90c3-f813d405b320",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "23956980-ada0-4f97-8922-c0cc21692c15",
+                    "path": "<XRController>{RightHand}/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f21ee03e-890b-40c9-9060-eb7a5896c4ef",
+                    "path": "<XRController>{RightHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "VrLeftHandActions",
+            "id": "ffef4156-1892-49b8-a378-8d748d29b2e5",
+            "actions": [
+                {
+                    "name": "Grip",
+                    "type": "Button",
+                    "id": "512fb5c8-ede3-493c-92f5-7bf64a76d64f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TriggerPressure",
+                    "type": "Value",
+                    "id": "d16fcb64-4719-4d06-8d2a-07e8292edf17",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThumbPressure",
+                    "type": "Value",
+                    "id": "67bcb26a-ea46-42a5-883d-7b4794c05b97",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThumbDown",
+                    "type": "Button",
+                    "id": "59339095-f694-4254-b04a-ba1d58bd3f44",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ButtonBottom",
+                    "type": "Button",
+                    "id": "0f02e156-0b88-4d07-8973-7d6ad01c176b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ButtonTop",
+                    "type": "Button",
+                    "id": "6e130a93-c473-4797-9ab9-7f36d799590c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e1389d67-0979-43e0-b69e-2b846f43687c",
+                    "path": "<XRController>{LeftHand}/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TriggerPressure",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33977702-33b6-4cbf-808a-de9bde1fd2ba",
+                    "path": "<XRController>{LeftHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThumbPressure",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c8ea2ccb-bfe9-4e16-820b-6d69fa9a0adb",
+                    "path": "<XRController>{LeftHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThumbDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0709dcd0-0259-4d80-95b4-83b3c7c68137",
+                    "path": "<XRController>{LeftHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8443548d-34a1-4baf-84fb-5868646b45f9",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonBottom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d82c8ab4-c022-4f72-85dc-17bab3126455",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonTop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "VrRightHandActions",
+            "id": "3b5abc8c-bf88-481f-8bd4-1f11114cf33b",
+            "actions": [
+                {
+                    "name": "Grip",
+                    "type": "Button",
+                    "id": "52b786da-0d04-4a0d-9a53-f2b0a6bf2dde",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TriggerPressure",
+                    "type": "Value",
+                    "id": "1c916b8f-bc62-47fd-80e2-ff9d31a7cda0",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThumbPressure",
+                    "type": "Value",
+                    "id": "310f2ffa-6179-44f2-a222-2a38f462759a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThumbDown",
+                    "type": "Button",
+                    "id": "25c4066a-eaa5-4fd4-a52b-82f3952aed97",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ButtonBottom",
+                    "type": "Button",
+                    "id": "39116559-6497-4679-b12a-fe5faf4184b5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ButtonTop",
+                    "type": "Button",
+                    "id": "388351b9-1944-43a5-8aea-5273dc949634",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "df4acb43-ce48-4e19-8cd3-eba1cc617fa1",
+                    "path": "<XRController>{RightHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bdd44828-eb10-428c-a673-30ca78d0a06d",
+                    "path": "<XRController>{RightHand}/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TriggerPressure",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10bfdd91-d16f-4281-8b88-757111b84213",
+                    "path": "<XRController>{RightHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThumbPressure",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4efb81c2-698c-4ae5-9267-adfdcf15c6a5",
+                    "path": "<XRController>{LeftHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThumbDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d06a6b0e-44cf-4a54-b0c0-df9933c705e7",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonBottom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93ef5d7e-723b-4b5d-bcd6-c028a5a6378b",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonTop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Mouse",
+            "id": "f5c86e1f-a900-4039-83b1-b0c3b35e3953",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "41941f57-2c05-4439-a834-5d5ab206b0f1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LeftButton",
+                    "type": "Button",
+                    "id": "b09d5f0c-4bea-43f8-882a-7ae07207c3f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f1ce7481-7068-4783-ac47-7e74a45af5ba",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "685ce3cd-1fa0-4a65-8b58-7540399b31fa",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "LeftHandActions",
+            "bindingGroup": "LeftHandActions",
+            "devices": []
+        }
+    ]
+}

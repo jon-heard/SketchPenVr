@@ -1,0 +1,35 @@
+- got all mouse input working (including hooking into krita hotkeys), next step: test in VR
+- get pen'ish-ness working in Krita again!
+- make a new repo
+- 
+
+- for now: hardcode useful hotkeys
+	/ L thumb button - drag area
+	/ L thumb left - tool size
+	- L thumb right - tool opacity
+	/ L thumb up - rotate
+	/ L thumb down - hold and drag to zoom
+	/ L button top - undo
+	/ L button bottom - color pick
+	/ R trigger - eraser
+	- R thumb right - next fav brush
+	/ R button top - redo
+	
+	- R thumb left -
+	- R button bottom - 
+	- R thumb button - 
+	- R thumb up - 
+	- R thumb down - 
+
+- resize screen
+
+- keep vr part minimized!
+- VR - fix shaders not showing in right eye
+
+// https://www.youtube.com/watch?v=hQl6ZQFDiJ4
+//  https://www.artrage.com/manuals/getting-started-artrage/artrage-manuals/artrage-4/stylus-controls/
+// pressure
+-- tilt
+-- tilt angle
+-- wheel
+// twist

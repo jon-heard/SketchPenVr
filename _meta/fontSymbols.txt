@@ -1,0 +1,32 @@
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º !"#$%&'()*+,-./:;<=>?@[\]^?@[\]^_`{|}~
+
+https://www.glyphrstudio.com/online/
+https://convertio.co/otf-ttf/
+https://terpconnect.umd.edu/~zben/Web/CharSet/htmlchars.html
+https://msdf-bmfont.donmccurdy.com/
+
+¡	\xa1	down arrow
+¢	\xa2	up arrow
+£	\xa3	left arrow
+¤	\xa4	right arrow
+¥	\xa5	remove
+¦	\xa6	unlocked
+§	\xa7	size
+¨	\xa8	duplicate
+©	\xa9	face
+ª	\xaa	image url
+«	\xab	resolution
+¬	\xac	clear sketch
+®	\xae	transparency
+¯	\xaf	upload
+°	\xb0	download
+±	\xb1	locked
+²	\xb2	checkmark
+³	\xb3	menu
+´	\xb4	opened
+µ	\xb5	closed
+¶	\xb6	backspace
+·	\xb7	enter
+¸	\xb8	layers
+¹	\xb9	paste
+º	\xba	square
