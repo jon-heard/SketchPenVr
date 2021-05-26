@@ -6,7 +6,7 @@ public class PointerEmulation : MonoBehaviour
 {
   public Vector2 Resolution = new Vector2(1920, 1080);
 
-  public Vector2 Position;
+  [NonSerialized] public Vector2 Position;
 
   public bool IsEmulating
   {

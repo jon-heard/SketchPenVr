@@ -5,7 +5,7 @@ public static class OsHook_Pen
 {
   public static void Init()
   {
-UnityEngine.Debug.Log("Initializing");
+UnityEngine.Debug.Log("Initializing"); // JDEV
 #if UNITY_STANDALONE_WIN
     _penHandle = CreateSyntheticPointerDevice(PT_PEN, 1, POINTER_FEEDBACK_DEFAULT);
     _info.type = PT_PEN;
@@ -25,7 +25,7 @@ UnityEngine.Debug.Log("Initializing");
 
   public static void Shutdown()
   {
-UnityEngine.Debug.Log("shutting down");
+UnityEngine.Debug.Log("shutting down"); // JDEV
 #if UNITY_STANDALONE_WIN
     DestroySyntheticPointerDevice(_penHandle);
 #endif
@@ -65,7 +65,7 @@ UnityEngine.Debug.Log("shutting down");
       (!inContact && _prevInContact) ? POINTER_BUTTON_CHANGE_TYPE.FIRSTBUTTON_UP :
       POINTER_BUTTON_CHANGE_TYPE.NONE;
 
-UnityEngine.Debug.Log("Pen state: " + _info.i.penInfo.pressure + " :: " + _info.i.penInfo.penFlags + " :: " +  _info.i.penInfo.penMask);
+UnityEngine.Debug.Log("Pen state: " + _info.i.penInfo.pressure + " :: " + _info.i.penInfo.penFlags + " :: " +  _info.i.penInfo.penMask); // JDEV
     InjectSyntheticPointerInput(_penHandle, ref _info, 1);
 
     _prevInContact = inContact;
@@ -76,7 +76,7 @@ UnityEngine.Debug.Log("Pen state: " + _info.i.penInfo.pressure + " :: " + _info.
 
   public static void ClearState()
   {
-UnityEngine.Debug.Log("Clear state");
+UnityEngine.Debug.Log("Clear state"); // JDEV
 #if UNITY_STANDALONE_WIN
     _info.i.penInfo.pressure = _info.i.penInfo.rotation = 0;
     _info.i.penInfo.tiltX = _info.i.penInfo.tiltY = 0;

@@ -18,7 +18,6 @@ public static class OsHook_Keyboard
     input.Data.Keyboard.Vk = (ushort)key;
     input.Data.Keyboard.Flags = isDown ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
     SendInput(1, ref input, Marshal.SizeOf(typeof(INPUT)));
-    //UnityEngine.Debug.Log("Key: " + key + "=" + isDown + " :: " + i + " :: " + Marshal.GetLastWin32Error());
 #endif
   }
 

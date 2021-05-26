@@ -157,6 +157,7 @@ public class Controller : MonoBehaviour
   ////////////
   private App_Input _input;
   private float _zPosition;
+  private float _rayVisualZOffset;
 
   // User input
   private bool _isTriggerDown;
@@ -209,6 +210,7 @@ public class Controller : MonoBehaviour
   {
     // Fields init
     _zPosition = _geometry.transform.localPosition.z;
+    _rayVisualZOffset = _rayVisual.transform.localPosition.z;
 
     // User input init
     _input = new App_Input();
@@ -272,8 +274,11 @@ public class Controller : MonoBehaviour
       {
         if (FocusPointerEmulation) { FocusPointerEmulation.OnLostFocus(); }
         FocusPointerEmulation = newFocusPointerEmulation;
-        // Send focus position (if screen is in focus)
-        if (FocusPointerEmulation) { FocusPointerEmulation.Position = hitInfo.textureCoord; }
+      }
+      // Send focus position (if screen is in focus)
+      if (_controllerIndex == 0 && FocusPointerEmulation)
+      {
+        FocusPointerEmulation.Position = hitInfo.textureCoord;
       }
 
       // Button focus
@@ -304,7 +309,7 @@ public class Controller : MonoBehaviour
       _focusButton = null;
     }
 
-    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * _focusDistance);
+    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
   }
 
   private void HandleNearControl()
@@ -417,7 +422,10 @@ public class Controller : MonoBehaviour
         else if (FocusPointerEmulation)
         {
           FocusPointerEmulation.IsEmulating = true;
-          if (!_isNearFocus) { FocusPointerEmulation.MouseLeftButton = true; }
+          if (_controllerIndex == 0 && !_isNearFocus)
+          {
+            FocusPointerEmulation.MouseLeftButton = true;
+          }
         }
       }
       // Is up
@@ -428,9 +436,9 @@ public class Controller : MonoBehaviour
         _downButton = null;
         if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Hovered; }
         // Screen
-        else if (FocusPointerEmulation)
+        else if (FocusPointerEmulation && _controllerIndex == 0 && !_isNearFocus)
         {
-          if (!_isNearFocus) { FocusPointerEmulation.MouseLeftButton = false; }
+          FocusPointerEmulation.MouseLeftButton = false;
         }
       }
       // Trigger action for non-main controller

@@ -20,43 +20,45 @@ public class ControllerMapping
     GripButtonAction.Type = ControllerAction.ActionType.Hold;
     if (index == 0)
     {
-      // Top button - undo
+      // Left - Top button - undo
       TopButtonAction.Type = ControllerAction.ActionType.Undo;
-      // Bottom button - color pic - control
+      // Left - Left - Bottom button - color pic - control
       BottomButtonAction.Type = ControllerAction.ActionType.KeyPress;
       BottomButtonAction.Parameter = (int)OsHook_Keyboard.Key.Control;
       BottomButtonAction.Next = new ControllerAction();
       BottomButtonAction.Next.Type = ControllerAction.ActionType.LeftMouseButton;
-      // Thumb down - pan - space, left mouse
+      // Left - Thumb down - rotate - shift, space, left mouse
       ThumbButtonAction.Type = ControllerAction.ActionType.KeyPress;
-      ThumbButtonAction.Parameter = (int)OsHook_Keyboard.Key.Space;
+      ThumbButtonAction.Parameter = (int)OsHook_Keyboard.Key.Shift;
       ThumbButtonAction.Next = new ControllerAction();
-      ThumbButtonAction.Next.Type = ControllerAction.ActionType.LeftMouseButton;
-      // Thumb left - pan - shift, left mouse
+      ThumbButtonAction.Next.Type = ControllerAction.ActionType.KeyPress;
+      ThumbButtonAction.Next.Parameter = (int)OsHook_Keyboard.Key.Space;
+      ThumbButtonAction.Next.Next = new ControllerAction();
+      ThumbButtonAction.Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      // Left - Thumb left - brush size - shift, left mouse
       ThumbDirectionActions[(int)Controller.ThumbState.Left].Type = ControllerAction.ActionType.KeyPress;
       ThumbDirectionActions[(int)Controller.ThumbState.Left].Parameter = (int)OsHook_Keyboard.Key.Shift;
       ThumbDirectionActions[(int)Controller.ThumbState.Left].Next = new ControllerAction();
       ThumbDirectionActions[(int)Controller.ThumbState.Left].Next.Type = ControllerAction.ActionType.LeftMouseButton;
-      // Thumb up - rotate - shift, space, left mouse
+      // Left - Thumb up - pan - space, left mouse
       ThumbDirectionActions[(int)Controller.ThumbState.Up].Type = ControllerAction.ActionType.KeyPress;
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Parameter = (int)OsHook_Keyboard.Key.Shift;
+      ThumbDirectionActions[(int)Controller.ThumbState.Up].Parameter = (int)OsHook_Keyboard.Key.Space;
       ThumbDirectionActions[(int)Controller.ThumbState.Up].Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Next.Type = ControllerAction.ActionType.KeyPress;
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Next.Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
-      // Thumb down - zoom - control, space, left mouse
+      ThumbDirectionActions[(int)Controller.ThumbState.Up].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      // Left - Thumb down - zoom - control, space, left mouse
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Type = ControllerAction.ActionType.KeyPress;
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Parameter = (int)OsHook_Keyboard.Key.Control;
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Next = new ControllerAction();
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Type = ControllerAction.ActionType.KeyPress;
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Next.Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Next = new ControllerAction();
+      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
     }
     else
     {
+      // Right - Top button - redo
       TopButtonAction.Type = ControllerAction.ActionType.Redo;
+      // Right - Trigger button - pencil flip
       TriggerButtonAction.Type = ControllerAction.ActionType.PencilFlip;
     }
   }

@@ -364,7 +364,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4efb81c2-698c-4ae5-9267-adfdcf15c6a5"",
-                    ""path"": ""<XRController>{LeftHand}/thumbstickClicked"",
+                    ""path"": ""<XRController>{RightHand}/thumbstickClicked"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -375,7 +375,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d06a6b0e-44cf-4a54-b0c0-df9933c705e7"",
-                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -386,7 +386,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""93ef5d7e-723b-4b5d-bcd6-c028a5a6378b"",
-                    ""path"": ""<XRController>{LeftHand}/secondaryButton"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
