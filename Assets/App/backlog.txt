@@ -1,9 +1,9 @@
-- get pen'ish-ness working in Krita again
-	- double-check var sizes in win32api for pen
-
 - resize screen
 
 - keep vr part minimized!
+
+- VR - fix shaders not showing in right eye
+- add shadow
 
 - add controller model when not near
 - add hotkey names to controller model with lines
@@ -11,5 +11,3 @@
 
 - add ui for setting up mappings
 	- one page for selecting preset, another for modifying preset
-
-- VR - fix shaders not showing in right eye

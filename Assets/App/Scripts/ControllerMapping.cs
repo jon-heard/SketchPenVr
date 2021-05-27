@@ -53,6 +53,9 @@ public class ControllerMapping
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Next = new ControllerAction();
       ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      // Left - Thumb right - mirror - M toggles
+      ThumbDirectionActions[(int)Controller.ThumbState.Right].Type = ControllerAction.ActionType.KeyTapOnOff;
+      ThumbDirectionActions[(int)Controller.ThumbState.Right].Parameter = (int)OsHook_Keyboard.Key.Key_M;
     }
     else
     {
@@ -60,6 +63,8 @@ public class ControllerMapping
       TopButtonAction.Type = ControllerAction.ActionType.Redo;
       // Right - Trigger button - pencil flip
       TriggerButtonAction.Type = ControllerAction.ActionType.PencilFlip;
+      // Right - Bottom button - brush wheel - right mouse
+      BottomButtonAction.Type = ControllerAction.ActionType.RightMouseButton;
     }
   }
 }

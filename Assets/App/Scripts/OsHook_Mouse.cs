@@ -19,8 +19,8 @@ public static class OsHook_Mouse
     switch (button)
     {
       case Button.Left: structInput.Data.Mouse.Flags = down ? MouseEventFlags.LEFTDOWN : MouseEventFlags.LEFTUP; break;
-      case Button.Middle: structInput.Data.Mouse.Flags = down ? MouseEventFlags.RIGHTDOWN : MouseEventFlags.RIGHTUP; break;
-      case Button.Right: structInput.Data.Mouse.Flags = down ? MouseEventFlags.MIDDLEDOWN : MouseEventFlags.MIDDLEUP; break;
+      case Button.Right: structInput.Data.Mouse.Flags = down ? MouseEventFlags.RIGHTDOWN : MouseEventFlags.RIGHTUP; break;
+      case Button.Middle: structInput.Data.Mouse.Flags = down ? MouseEventFlags.MIDDLEDOWN : MouseEventFlags.MIDDLEUP; break;
     }
     SendInput(1, ref structInput, Marshal.SizeOf(structInput));
   }

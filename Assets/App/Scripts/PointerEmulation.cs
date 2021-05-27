@@ -32,9 +32,7 @@ public class PointerEmulation : MonoBehaviour
       if (!IsEmulating) { return; }
       if (value == _mouseLeftButton) { return; }
       _mouseLeftButton = value;
-      IsEmulatingMouse = value || MouseRightButton;
-      UpdateMousePosition();
-      OsHook_Mouse.SetButton(OsHook_Mouse.Button.Left, value);
+      StartCoroutine(SetMouseButton(OsHook_Mouse.Button.Left, value));
     }
   }
   private bool _mouseLeftButton;
@@ -48,12 +46,29 @@ public class PointerEmulation : MonoBehaviour
       if (!IsEmulating) { return; }
       if (value == _mouseRightButton) { return; }
       _mouseRightButton = value;
-      IsEmulatingMouse = value || MouseLeftButton;
-      UpdateMousePosition();
-      OsHook_Mouse.SetButton(OsHook_Mouse.Button.Right, value);
+      StartCoroutine(SetMouseButton(OsHook_Mouse.Button.Right, value));
     }
   }
   private bool _mouseRightButton;
+
+  private System.Collections.IEnumerator SetMouseButton(OsHook_Mouse.Button button, bool down)
+  {
+    if (_mouseLeftButton || _mouseRightButton)
+    {
+      IsEmulatingMouse = true;
+      ClearPenState();
+      yield return new WaitForEndOfFrame();
+      UpdateMousePosition();
+      OsHook_Mouse.SetButton(button, down);
+    }
+    else
+    {
+      UpdateMousePosition();
+      OsHook_Mouse.SetButton(button, down);
+      yield return new WaitForEndOfFrame();
+      IsEmulatingMouse = false;
+    }
+  }
 
   public void OnLostFocus()
   {

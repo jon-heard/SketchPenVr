@@ -74,6 +74,8 @@ public static class OsHook_Pen
   public static void ClearState()
   {
 #if UNITY_STANDALONE_WIN
+    if (_isNewInteraction) { return; }
+
     _info.i.penInfo.pressure = _info.i.penInfo.rotation = 0;
     _info.i.penInfo.tiltX = _info.i.penInfo.tiltY = 0;
     _info.i.penInfo.penFlags = PEN_FLAGS.NONE;
