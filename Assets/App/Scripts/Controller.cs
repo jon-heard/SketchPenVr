@@ -30,6 +30,7 @@ public class Controller : MonoBehaviour
   [Header("Wiring")]
   [SerializeField] private Renderer _geometry;
   [SerializeField] private LineRenderer _rayVisual;
+  [SerializeField] private PinchHandler _pinchHandler;
 
   /////////
   // Map //
@@ -91,11 +92,32 @@ public class Controller : MonoBehaviour
       if (value == _isHolding) { return; }
       if (_isTriggerDown && value) { return; }
       _isHolding = value;
+      if (_isHolding) { _held = _focus; } // Have separate var for held in case lost focus
       if (!IsInGripAdjust)
       {
-        _focus?.DragInteractable?.SetTemporaryParent(
+        _held?.DragInteractable?.SetTemporaryParent(
           value ? transform.parent : null,
           value ? null : transform.parent);
+        var otherInstance = _instances[_controllerIndex == 0 ? 1 : 0];
+        if (_isHolding && otherInstance.IsHolding)
+        {
+          _instances[0]._pinchHandler.transform.position = _instances[0]._focusPosition;
+          _instances[1]._pinchHandler.transform.position = _instances[1]._focusPosition;
+          _instances[0]._pinchHandler.Focus = _held.DragInteractable;
+          _instances[0]._pinchHandler.IsPinching = true;
+        }
+        else
+        {
+          _instances[0]._pinchHandler.IsPinching = false;
+          if (IsHolding)
+          {
+            _held?.DragInteractable?.SetTemporaryParent(transform.parent);
+          }
+          else if (otherInstance.IsHolding)
+          {
+            _held?.DragInteractable?.SetTemporaryParent(otherInstance.transform.parent);
+          }
+        }
       }
       else
       {
@@ -104,6 +126,7 @@ public class Controller : MonoBehaviour
     }
   }
   private bool _isHolding;
+  private Interactable _held;
 
   /////////////////
   // Grip adjust //
@@ -169,6 +192,7 @@ public class Controller : MonoBehaviour
   // Focus info
   private Interactable _focus;
   private float _focusDistance;
+  private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
   private Ui_Control_Button _focusButton;
   private Ui_Control_Button _downButton;
@@ -242,6 +266,9 @@ public class Controller : MonoBehaviour
     // Grip adjust init
     GetComponent<TransformSerializer>().SerializedTransform =
       PlayerPrefs.GetString(controllerTransformPrefsKey);
+
+    // Pinching init
+    _pinchHandler.Other = _instances[_controllerIndex == 0 ? 1 : 0]._pinchHandler;
   }
 
   //////////////////////////
@@ -265,6 +292,7 @@ public class Controller : MonoBehaviour
         hitInfo.distance < _maxInteractDistance)
     {
       _focusDistance = hitInfo.distance;
+      _focusPosition = hitInfo.point;
       _focus = hitInfo.transform.GetComponent<Interactable>();
       var focusParent = _focus?.transform?.parent;
 
