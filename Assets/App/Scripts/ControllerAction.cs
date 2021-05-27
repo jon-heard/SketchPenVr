@@ -14,6 +14,7 @@ public class ControllerAction
     Redo,
     KeyHit,
     KeyPress,
+    KeyTapOnOff,
   }
 
   public ActionType Type;
@@ -67,6 +68,10 @@ public class ControllerAction
         break;
       case ActionType.KeyPress:
         OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, isDown);
+        break;
+      case ActionType.KeyTapOnOff:
+        OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, true);
+        OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, false);
         break;
       default:
         UnityEngine.Debug.LogError("Unhandled action type: " + Type);

@@ -322,7 +322,6 @@ public class Controller : MonoBehaviour
     {
       if (_isPenActive)
       {
-//JDEV Debug.Log("Clearing pen state");
         _isPenActive = false;
         FocusPointerEmulation?.ClearPenState();
         _geometryMaterial.color = Color.white;
@@ -366,7 +365,6 @@ public class Controller : MonoBehaviour
     if (!App_Details.Instance.UseEmulatedControls)
 #endif
     {
-//JDEV Debug.Log("Setting pen state: " + (penPressure * triggerAdjust) + " :: " + tilt.x + "," + tilt.y + " isFlipped=" + Controller.IsFlipped);
       FocusPointerEmulation.SetPenState(
         penPressure * triggerAdjust, rotation, tilt, Controller.IsFlipped);
       _isPenActive = true;
