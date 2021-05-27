@@ -279,7 +279,9 @@ public class Controller : MonoBehaviour
     // Input
     HandleTrigger();
     HandleThumbPressure();
+#if UNITY_EDITOR
     HandleEmulatedButtons();
+#endif
 
     // Logic
     HandleFocus();

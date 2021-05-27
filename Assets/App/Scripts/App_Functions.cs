@@ -31,7 +31,16 @@ public class App_Functions : Singleton<App_Functions>
     _input.Enable();
 
     // Logic for repositioning screen to match height of user's head
-    if (!App_Details.Instance.UseEmulatedControls) { StartCoroutine(SetupScreenHeight(_input)); }
+#if UNITY_EDITOR
+    if (!App_Details.Instance.UseEmulatedControls)
+#endif
+    {
+      StartCoroutine(SetupScreenHeight(_input));
+    }
+
+#if !UNITY_EDITOR
+    OsHook_Window.Minimize();
+#endif
   }
 
   private IEnumerator SetupScreenHeight(App_Input input)
@@ -66,6 +75,16 @@ public class App_Functions : Singleton<App_Functions>
   private void OnLeftMouseUp(UnityEngine.InputSystem.InputAction.CallbackContext obj)
   {
     _isMouseDown = false;
+  }
+#endif
+
+#if !UNITY_EDITOR
+  void OnApplicationFocus(bool hasFocus)
+  {
+    if (hasFocus)
+    {
+      OsHook_Window.Minimize();
+    }
   }
 #endif
 }
