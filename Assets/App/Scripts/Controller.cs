@@ -433,7 +433,7 @@ public class Controller : MonoBehaviour
       Mathf.Atan2(forward.y, forward.z) * Mathf.Rad2Deg);
 
     // Visualize trigger adjust on geometry
-    _geometryMaterial.color = new Color(1.0f, 1.0f, 1.0f, geometryOpacity);
+    _geometryMaterial.SetFloat("_Opacity", geometryOpacity);
 
     // Update pen
 #if UNITY_EDITOR

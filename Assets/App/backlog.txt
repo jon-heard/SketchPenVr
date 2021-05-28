@@ -1,5 +1,11 @@
-- VR - fix shaders not showing in right eye
 - add shadow
+
+- set camera back to skyplane and add a few default options, settable in settings
+- add option to store other option from url
+
+- fix issue with dropdowns
+
+- fix console spam
 
 - add ui for setting up mappings
 	- one page for selecting preset, another for modifying preset

@@ -18,15 +18,18 @@
 struct AppToVertex
 {
   float4 vertex : POSITION;
+  UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 struct VertexToFragment
 {
   float4 vertex : SV_POSITION;
+  UNITY_VERTEX_OUTPUT_STEREO
 };
 VertexToFragment genericVertexShader(AppToVertex v)
 {
   VertexToFragment o;
   UNITY_SETUP_INSTANCE_ID(v);
+  UNITY_INITIALIZE_OUTPUT(VertexToFragment, o);
   UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
   o.vertex = UnityObjectToClipPos(v.vertex);
   return o;
@@ -48,6 +51,7 @@ VertexToFragment_lit genericVertexShader_lit(AppToVertex_lit v)
 {
   VertexToFragment_lit o;
   UNITY_SETUP_INSTANCE_ID(v);
+  UNITY_INITIALIZE_OUTPUT(VertexToFragment_lit, o);
   UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
   o.vertex = UnityObjectToClipPos(v.vertex);
   o.normal = UnityObjectToWorldNormal(v.normal);
@@ -70,6 +74,7 @@ VertexToFragment_textured genericVertexShader_textured(AppToVertex_textured v)
 {
   VertexToFragment_textured o;
   UNITY_SETUP_INSTANCE_ID(v);
+  UNITY_INITIALIZE_OUTPUT(VertexToFragment_textured, o);
   UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
   o.vertex = UnityObjectToClipPos(v.vertex);
   o.texcoord = v.texcoord;
@@ -80,6 +85,7 @@ VertexToFragment_textured genericVertexShader_textured_tileoffset(AppToVertex_te
 {
   VertexToFragment_textured o;
   UNITY_SETUP_INSTANCE_ID(v);
+  UNITY_INITIALIZE_OUTPUT(VertexToFragment_textured, o);
   UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
   o.vertex = UnityObjectToClipPos(v.vertex);
   o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
@@ -104,6 +110,7 @@ VertexToFragment_texturedLit genericVertexShader_texturedLit(AppToVertex_texture
 {
   VertexToFragment_texturedLit o;
   UNITY_SETUP_INSTANCE_ID(v);
+  UNITY_INITIALIZE_OUTPUT(VertexToFragment_texturedLit, o);
   UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
   o.vertex = UnityObjectToClipPos(v.vertex);
   o.texcoord = v.texcoord;

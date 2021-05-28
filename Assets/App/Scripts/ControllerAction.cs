@@ -34,10 +34,16 @@ public class ControllerAction
         Controller.IsFlipped = isDown;
         break;
       case ActionType.LeftMouseButton:
-        controller.FocusPointerEmulation.MouseLeftButton = isDown;
+        if (controller.FocusPointerEmulation)
+        {
+          controller.FocusPointerEmulation.MouseLeftButton = isDown;
+        }
         break;
       case ActionType.RightMouseButton:
-        controller.FocusPointerEmulation.MouseRightButton = isDown;
+        if (controller.FocusPointerEmulation)
+        {
+          controller.FocusPointerEmulation.MouseRightButton = isDown;
+        }
         break;
       case ActionType.Undo:
         if (isDown)
