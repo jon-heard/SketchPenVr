@@ -32,7 +32,11 @@ public class App_Functions : Singleton<App_Functions>
 
     // Logic for repositioning screen to match height of user's head
 #if UNITY_EDITOR
-    if (!App_Details.Instance.UseEmulatedControls)
+    if (App_Details.Instance.UseEmulatedControls)
+    {
+      StartCoroutine(Controller.SeparateControllers());
+    }
+    else
 #endif
     {
       StartCoroutine(SetupScreenHeight(_input));

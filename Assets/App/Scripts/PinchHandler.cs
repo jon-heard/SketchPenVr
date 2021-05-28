@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PinchHandler : MonoBehaviour
 {
-  [System.NonSerialized] public PinchHandler Other;
-  [System.NonSerialized] public Interactable Focus;
+  [NonSerialized] public PinchHandler Other;
+  [NonSerialized] public Interactable Focus;
 
   public bool IsPinching
   {

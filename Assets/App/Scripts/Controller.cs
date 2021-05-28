@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -28,9 +29,10 @@ public class Controller : MonoBehaviour
   [Header("Parameters")]
   [SerializeField] private float _flippedZPosition;
   [Header("Wiring")]
-  [SerializeField] private Renderer _geometry;
+  [SerializeField] private Renderer _pencil;
   [SerializeField] private LineRenderer _rayVisual;
   [SerializeField] private PinchHandler _pinchHandler;
+  [SerializeField] private ControllerVis _controllerVis;
 
   /////////
   // Map //
@@ -51,8 +53,8 @@ public class Controller : MonoBehaviour
       _instances[0] = _instances[1];
       _instances[1] = buf;
       // Update controller infos to match purposes
-      _instances[0]._geometry.gameObject.SetActive(true);
-      _instances[1]._geometry.gameObject.SetActive(false);
+      _instances[0]._pencil.gameObject.SetActive(true);
+      _instances[1]._pencil.gameObject.SetActive(false);
       _instances[0]._controllerIndex = 0;
       _instances[1]._controllerIndex = 1;
     }
@@ -71,12 +73,12 @@ public class Controller : MonoBehaviour
     {
       if (value == _isFlipped) { return; }
       _isFlipped = value;
-      var t = _instances[0]._geometry.transform.localEulerAngles;
+      var t = _instances[0]._pencil.transform.localEulerAngles;
       t.y = value ? 180.0f : 0.0f;
-      _instances[0]._geometry.transform.localEulerAngles = t;
-      t = _instances[0]._geometry.transform.localPosition;
+      _instances[0]._pencil.transform.localEulerAngles = t;
+      t = _instances[0]._pencil.transform.localPosition;
       t.z = value ? _instances[0]._flippedZPosition : _instances[0]._zPosition;
-      _instances[0]._geometry.transform.localPosition = t;
+      _instances[0]._pencil.transform.localPosition = t;
     }
   }
   private static bool _isFlipped;
@@ -175,6 +177,21 @@ public class Controller : MonoBehaviour
     }
   }
 
+  ///////////////////////////////
+  // Emulated - separate hands //
+  ///////////////////////////////
+  public static IEnumerator SeparateControllers()
+  {
+    yield return new WaitForSeconds(App_Details.Instance.TIMESPAN_BEFORE_SETTING_SCREEN_HEIGHT);
+    foreach (var instance in _instances)
+    {
+      var t = instance.transform.parent.localPosition;
+      t.x =
+        App_Details.Instance.CONTROLLER_EMULATED_SEPARATION * (instance._isLeft ? -1.0f : +1.0f);
+      instance.transform.parent.localPosition = t;
+    }
+  }
+
   ////////////
   // Fields //
   ////////////
@@ -196,6 +213,7 @@ public class Controller : MonoBehaviour
   public PointerEmulation FocusPointerEmulation { get; private set; }
   private Ui_Control_Button _focusButton;
   private Ui_Control_Button _downButton;
+  private ControllerVis _focusControllerVis;
 
   // Copies of values (for efficiency)
   private bool _isLeft;
@@ -215,7 +233,7 @@ public class Controller : MonoBehaviour
   {
     // Copies of values init (for efficiency)
     _isLeft = transform.parent.GetComponent<Vr_Hand>().IsLeft;
-    _geometryMaterial = _geometry.material;
+    _geometryMaterial = _pencil.material;
     _maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
     _TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
     _ThumbDownPressure = App_Details.Instance.THUMB_DOWN_PRESSURE;
@@ -233,7 +251,7 @@ public class Controller : MonoBehaviour
   private void Start()
   {
     // Fields init
-    _zPosition = _geometry.transform.localPosition.z;
+    _zPosition = _pencil.transform.localPosition.z;
     _rayVisualZOffset = _rayVisual.transform.localPosition.z;
 
     // User input init
@@ -269,6 +287,9 @@ public class Controller : MonoBehaviour
 
     // Pinching init
     _pinchHandler.Other = _instances[_controllerIndex == 0 ? 1 : 0]._pinchHandler;
+
+    // ControllerVis init
+    _controllerVis.Mapping = Controller.Mappings[_controllerIndex];
   }
 
   //////////////////////////
@@ -289,6 +310,7 @@ public class Controller : MonoBehaviour
   }
   private void HandleFocus()
   {
+    _controllerVis.MyCollider.enabled = false;
     var hitInfo = new RaycastHit();
     if (Physics.Raycast(transform.position, transform.forward, out hitInfo) &&
         hitInfo.distance < _maxInteractDistance)
@@ -329,6 +351,21 @@ public class Controller : MonoBehaviour
           }
         }
       }
+
+      // ControllerVis focus
+      var newControllerVis = _focus?.GetComponent<ControllerVis>();
+      if (newControllerVis != _focusControllerVis)
+      {
+        if (_focusControllerVis)
+        {
+          _focusControllerVis.MyState = ControllerVis.State.Shadowed;
+        }
+        _focusControllerVis = newControllerVis;
+        if (_focusControllerVis)
+        {
+          _focusControllerVis.MyState = ControllerVis.State.Full;
+        }
+      }
     }
     else
     {
@@ -337,9 +374,15 @@ public class Controller : MonoBehaviour
       FocusPointerEmulation = null;
       if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Idle; }
       _focusButton = null;
+      if (_focusControllerVis)
+      {
+        _focusControllerVis.MyState = ControllerVis.State.Shadowed;
+      }
+      _focusControllerVis = null;
     }
 
     _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
+    _controllerVis.MyCollider.enabled = true;
   }
 
   private void HandleNearControl()
@@ -356,11 +399,13 @@ public class Controller : MonoBehaviour
         FocusPointerEmulation?.ClearPenState();
         _geometryMaterial.color = Color.white;
         _rayVisual.gameObject.SetActive(true);
+        _controllerVis.MyState = ControllerVis.State.Shadowed;
       }
       return;
     }
 
     _rayVisual.gameObject.SetActive(false);
+    _controllerVis.MyState = ControllerVis.State.Hidden;
 
     // Calc pen pressure
     var penPressure =
@@ -397,8 +442,8 @@ public class Controller : MonoBehaviour
     {
       FocusPointerEmulation.SetPenState(
         penPressure * triggerAdjust, rotation, tilt, Controller.IsFlipped);
-      _isPenActive = true;
     }
+    _isPenActive = true;
   }
 
   /////////////////

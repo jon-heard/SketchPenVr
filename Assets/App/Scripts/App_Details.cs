@@ -18,6 +18,7 @@ public class App_Details : Singleton<App_Details>
   public float DISTANCE_BETWEEN_PANELS = 0.0085f; // How much space to put between panels
   public float TIMESPAN_BEFORE_SETTING_SCREEN_HEIGHT = 1.0f; // How long to wait before setting screen to user's eye level
   public float MIN_SCALE_SIZE = 0.25f; // How small to allow the screen to be sized
+  public float CONTROLLER_EMULATED_SEPARATION = 0.2f; // How opaque the controller visuals are when not highlighted
 
   // Key constants
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";

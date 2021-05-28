@@ -1,10 +1,6 @@
 - VR - fix shaders not showing in right eye
 - add shadow
 
-- add controller model when not near
-- add hotkey names to controller model with lines
-- pointing ray to controller toggles hotkey names on (off usually)
-
 - add ui for setting up mappings
 	- one page for selecting preset, another for modifying preset
 
