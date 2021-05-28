@@ -1,9 +1,4 @@
-- add shadow
-
-- set camera back to skyplane and add a few default options, settable in settings
-- add option to store other option from url
-
-- fix issue with dropdowns
+- fix issue with dropdowns freezing app
 
 - fix console spam
 
@@ -11,3 +6,5 @@
 	- one page for selecting preset, another for modifying preset
 
 - regrip shows transparent hand model (positioned around controllers)
+
+- add option to download backgrounds from url

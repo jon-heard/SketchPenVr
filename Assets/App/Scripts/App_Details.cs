@@ -24,6 +24,7 @@ public class App_Details : Singleton<App_Details>
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
   public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
   public const string CFG__MAPPINGS = "setting:mappings";
+  public const string CFG__BACKDROP = "setting:backdrop";
   public const string LOCK__DIRECT = "lock:direct";
   public const string LOCK__SKETCH_CONTROLLER = "lock:controller";
   public const string LOCK__SKETCH_IS_LOCKED = "lock:sketchLocked";
@@ -41,10 +42,27 @@ public class App_Details : Singleton<App_Details>
     }
   }
 
+  public string Backdrop
+  {
+    get { return _backdrop; }
+    set
+    {
+      if (value == _backdrop) { return; }
+      _backdrop = value;
+      App_Functions.Instance.Backdrop.SetTexture(
+        "_Tex", Resources.Load<Cubemap>("Backdrops/" + _backdrop));
+      PlayerPrefs.SetString(App_Details.CFG__BACKDROP, _backdrop);
+    }
+  }
+  private string _backdrop;
+
   private void Start()
   {
     // Handedness
     IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
+
+    // Backdrop
+    Backdrop = PlayerPrefs.GetString(App_Details.CFG__BACKDROP, "artStudio");
 
     // Mappings
     //try

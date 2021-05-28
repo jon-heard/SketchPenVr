@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Ui_Menu_Settings : Ui_Menu
 {
+  [SerializeField] private Ui_Menu _menu_backdrops;
   [SerializeField] private Ui_Menu _menu_gripAdjust;
   [SerializeField] private GameObject _button_handedness_left;
   [SerializeField] private GameObject _button_handedness_right;
@@ -21,6 +22,11 @@ public class Ui_Menu_Settings : Ui_Menu
       _button_handedness_right.SetActive(true);
     }
     return base.Show(source);
+  }
+
+  public void OnBackdropsButton(Ui_Control_Button source)
+  {
+    _menu_backdrops.Show(source);
   }
 
   public void OnGripAdjustButton(Ui_Control_Button source)

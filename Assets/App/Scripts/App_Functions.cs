@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class App_Functions : Singleton<App_Functions>
 {
+  [SerializeField] private Camera _camera;
   public PointerEmulation Screen;
-  [SerializeField] private Camera _cam;
   [SerializeField] private Controller _leftController;
   [SerializeField] private Controller _rightController;
+  public Material Backdrop;
 
   // Lock/unlock entire ui
   public void SetFullUiLock(bool isLocked)
@@ -18,6 +19,11 @@ public class App_Functions : Singleton<App_Functions>
     }
   }
 
+  private void Awake()
+  {
+    Backdrop = new Material(Backdrop);
+    RenderSettings.skybox = Backdrop;
+  }
   private void Start()
   {
     // Logic for the literal mouse clicking virtual buttons
@@ -68,7 +74,7 @@ public class App_Functions : Singleton<App_Functions>
     if (!_isMouseDown)
     {
       _isMouseDown = true;
-      var ray = _cam.ScreenPointToRay(_input.Mouse.Position.ReadValue<Vector2>());
+      var ray = _camera.ScreenPointToRay(_input.Mouse.Position.ReadValue<Vector2>());
       RaycastHit hit;
       if (Physics.Raycast(ray, out hit))
       {
