@@ -5,8 +5,10 @@ using System;
 public class PointerEmulation : MonoBehaviour
 {
   public Vector2 Resolution = new Vector2(1920, 1080);
+  public Renderer ScreenRenderer;
 
   [NonSerialized] public Vector2 Position;
+  [NonSerialized] public float Distance;
 
   public bool IsEmulating
   {
@@ -21,7 +23,7 @@ public class PointerEmulation : MonoBehaviour
       }
     }
   }
-  private bool _isEmulating;
+  private bool _isEmulating = true;
 
   // Moues - left button
   public bool MouseLeftButton
@@ -55,7 +57,7 @@ public class PointerEmulation : MonoBehaviour
   {
     if (_mouseLeftButton || _mouseRightButton)
     {
-      IsEmulatingMouse = true;
+      _isEmulatingMouse = true;
       ClearPenState();
       yield return new WaitForEndOfFrame();
       UpdateMousePosition();
@@ -66,7 +68,7 @@ public class PointerEmulation : MonoBehaviour
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
       yield return new WaitForEndOfFrame();
-      IsEmulatingMouse = false;
+      _isEmulatingMouse = false;
     }
   }
 
@@ -77,12 +79,18 @@ public class PointerEmulation : MonoBehaviour
 
   public void SetPenState(float pressure, uint rotation, Vector2 tilt, bool usingEraser)
   {
-    if (!IsEmulating || IsEmulatingMouse) { return; }
+    if (!IsEmulating || _isEmulatingMouse) { return; }
 
     var p = (Position * Resolution).ToIntVector();
     var t = tilt.ToIntVector();
 
     OsHook_Pen.SetState((uint)p.x, (uint)p.y, pressure, rotation, t.x, t.y, usingEraser);
+
+    // Setup the pen shadow
+    var size = (Distance - _maxNearDistance * 0.5f) * 2.0f;
+    var opacity = (size < .001f) ? 0.0f : (1.25f - size * 7.0f);
+    ScreenRenderer.material.SetVector(
+      "_ShadowState", new Vector4(Position.x, Position.y, size, opacity));
   }
 
   public void ClearPenState()
@@ -90,11 +98,13 @@ public class PointerEmulation : MonoBehaviour
     OsHook_Pen.ClearState();
   }
 
-  private bool IsEmulatingMouse = false;
+  private bool _isEmulatingMouse = false;
+  private float _maxNearDistance;
 
   private void Start()
   {
     OsHook_Pen.Init();
+    _maxNearDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
   }
   private void OnDestroy()
   {
@@ -102,7 +112,7 @@ public class PointerEmulation : MonoBehaviour
   }
   private void Update()
   {
-    if (IsEmulatingMouse) { UpdateMousePosition(); }
+    if (_isEmulatingMouse) { UpdateMousePosition(); }
     if (OsHook_Keyboard.IsKeyDown(OsHook_Keyboard.Key.Escape)) { IsEmulating = false; }
   }
 

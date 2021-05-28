@@ -144,7 +144,7 @@ inline float4 alphaOver(float4 baseColor, float4 overColor)
 inline float4 calcShadowColor(float4 baseColor, float2 texcoord, sampler2D shadowTex, float4 shadowState)
 {
   float reverseBaseColor = ((baseColor.r + baseColor.g + baseColor.b) / 3.0 < 0.5) ? 1.0 : 0.0;
-  float2 shadowUv = (texcoord - shadowState.xy) / shadowState.z + float2(0.5, 0.5);
+  float2 shadowUv = (texcoord - shadowState.xy) / shadowState.z * float2(1.0, 0.5625) + float2(0.5, 0.5);
   return float4(
     reverseBaseColor, reverseBaseColor, reverseBaseColor,
     max(0.0, tex2D(shadowTex, shadowUv).r * shadowState.w));

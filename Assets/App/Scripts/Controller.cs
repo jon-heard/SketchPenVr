@@ -331,6 +331,7 @@ public class Controller : MonoBehaviour
       if (_controllerIndex == 0 && FocusPointerEmulation)
       {
         FocusPointerEmulation.Position = hitInfo.textureCoord;
+        FocusPointerEmulation.Distance = _focusDistance;
       }
 
       // Button focus

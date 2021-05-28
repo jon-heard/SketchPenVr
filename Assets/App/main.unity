@@ -1090,6 +1090,8 @@ MonoBehaviour:
   ControllerVisHidden: {fileID: 2100000, guid: 0532788eca8ff7e4491f82888ce91b3f, type: 2}
   ControllerVisShadowed: {fileID: 2100000, guid: ed7180620dc1565458a4284a3908e9d2, type: 2}
   ControllerVisFull: {fileID: 2100000, guid: bb358aab5b7910d488f940b04eaa3072, type: 2}
+  ScreenWithShadow: {fileID: 0}
+  ScreenWithoutShadow: {fileID: 0}
 --- !u!114 &563741690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1573,7 +1575,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 53f150d97733ed94986263c4ca7345d5, type: 2}
+  - {fileID: 2100000, guid: 08139bf5d532aba4198e5a4ad8dabe24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2865,6 +2867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Resolution: {x: 1920, y: 1080}
+  ScreenRenderer: {fileID: 773894699}
 --- !u!114 &1691673222
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,4 +10,6 @@ public class App_Resources : Singleton<App_Resources>
   public Material ControllerVisHidden;
   public Material ControllerVisShadowed;
   public Material ControllerVisFull;
+  public Material ScreenWithShadow;
+  public Material ScreenWithoutShadow;
 }

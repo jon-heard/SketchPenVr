@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Screen
+  m_Name: ScreenWithoutShadow
   m_Shader: {fileID: 4800000, guid: 42c46f769a7e1894085a0fccda54ba6c, type: 3}
   m_ShaderKeywords: INVERT_Y _FORWARD_Y
   m_LightmapFlags: 4
