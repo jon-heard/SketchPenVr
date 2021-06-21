@@ -1838,7 +1838,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &773894697
 Transform:
   m_ObjectHideFlags: 0
@@ -1936,7 +1936,7 @@ MonoBehaviour:
   childWindowZDistance: 0.02
   partialWindowTitle_: 
   desktopIndex_: 0
-  captureMode: 3
+  captureMode: 2
   capturePriority: -1
   captureRequestTiming: 1
   captureFrameRate: 30
@@ -2891,7 +2891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1082575908
 Transform:
   m_ObjectHideFlags: 0
@@ -4020,7 +4020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Resolution: {x: 1920, y: 1080}
-  ScreenRenderer: {fileID: 773894699}
+  ScreenRenderer: {fileID: 1082575911}
 --- !u!114 &1691673222
 MonoBehaviour:
   m_ObjectHideFlags: 0
