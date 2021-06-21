@@ -1,0 +1,18 @@
+[uWC::Log][2021-06-21 07:22:10] Start
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:11] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:22:46] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:24:47] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:24:47] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:24:50] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Err][2021-06-21 07:24:50] WindowsGraphicsCapture::CreateItem() threw an exception: 0x80070057
+[uWC::Log][2021-06-21 07:27:11] Stop

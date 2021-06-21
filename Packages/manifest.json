@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.unity.ide.visualstudio": "2.0.8",
+    "com.unity.ugui": "1.0.0",
     "com.unity.xr.management": "4.0.5",
     "com.unity.xr.openxr": "1.0.3",
-    "io.github.ruccho.graphicscapture": "https://github.com/ruccho/UnityGraphicsCapture.git?path=/UnityGraphicsCapture/Packages/io.github.ruccho.graphicscapture",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.jsonserialize": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
