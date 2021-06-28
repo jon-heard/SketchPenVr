@@ -1,9 +1,9 @@
-
-using System.Collections;
 using UnityEngine;
 
-public class App_Details : Singleton<App_Details>
+public class App_Details : SingletonComponent<App_Details>
 {
+  public Common.Vr.Ui.App_Details VrUiDetails;
+
 #if UNITY_EDITOR
   public bool UseEmulatedControls = false;
 #endif

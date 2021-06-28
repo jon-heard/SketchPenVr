@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class App_Functions : Singleton<App_Functions>
+public class App_Functions : SingletonComponent<App_Functions>
 {
   [SerializeField] private Camera _camera;
   public PointerEmulation Screen;

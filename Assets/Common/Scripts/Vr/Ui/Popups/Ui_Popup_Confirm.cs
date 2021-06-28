@@ -1,7 +1,8 @@
 using System;
+using Common;
 using UnityEngine;
 
-public class Ui_Popup_Confirm : Singleton<Ui_Popup_Confirm>
+public class Ui_Popup_Confirm : SingletonComponent<Ui_Popup_Confirm>
 {
   [SerializeField] private Transform _geometry;
   [SerializeField] private TextMesh _label;
@@ -80,7 +81,7 @@ public class Ui_Popup_Confirm : Singleton<Ui_Popup_Confirm>
 
   private void Awake()
   {
-    Ui_Popup_Confirm.InitializeSingleton();
+    Ui_Popup_Confirm.InitializeSingletonComponent();
   }
   private void Start()
   {

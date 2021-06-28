@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour
+public class SingletonComponent<T> : MonoBehaviour
 	where T : Component
 {
 	public static T Instance
@@ -9,13 +9,13 @@ public class Singleton<T> : MonoBehaviour
 		{
 			if (_instance == null)
 			{
-				InitializeSingleton();
+				InitializeSingletonComponent();
 			}
 			return _instance;
 		}
 	}
 
-	protected static void InitializeSingleton()
+	protected static void InitializeSingletonComponent()
 	{
 		if (_instance) { return; }
 		var objs = FindObjectsOfType(typeof(T)) as T[];

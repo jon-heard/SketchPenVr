@@ -6,6 +6,14 @@ public class Ui_Menu_GripAdjust : Ui_Menu
 {
   [SerializeField] private Ui_Control_Button[] _buttons;
 
+  protected override void Start()
+  {
+    base.Start();
+    var t = transform.localPosition;
+    t.y = 0;
+    transform.localPosition = t;
+  }
+
   public override bool Show(Ui_Control_Button source = null)
   {
     var result = base.Show(source);

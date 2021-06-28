@@ -1,16 +1,19 @@
-Shader "Custom/UnlitColor"
+Shader "Custom/UnlitColorTransparent"
 {
   Properties
   {
     _Color("Color", Color) = (1,1,1,1)
   }
-    SubShader
+  SubShader
   {
-    Tags { "RenderType" = "Opaque" }
+    Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+    ZWrite Off
+    Blend SrcAlpha OneMinusSrcAlpha
     Pass
     {
       CGPROGRAM
-        #include "App.cginc"
+        #include "_shaderCommon.txt"
+
         #pragma vertex genericVertexShader
         #pragma fragment fragmentShader
         #pragma target 2.0

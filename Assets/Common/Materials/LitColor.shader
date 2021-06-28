@@ -10,7 +10,7 @@ Shader "Custom/LitColor"
     Pass
     {
       CGPROGRAM
-        #include "App.cginc"
+        #include "_shaderCommon.txt"
         #pragma vertex genericVertexShader_lit
         #pragma fragment fragmentShader
         #pragma target 2.0
