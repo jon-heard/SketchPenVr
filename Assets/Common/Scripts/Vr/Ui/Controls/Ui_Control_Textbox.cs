@@ -2,8 +2,12 @@ using Common;
 using System.Collections;
 using UnityEngine;
 
-public class Ui_Control_Textbox : Ui_Control_Button
+public class Ui_Control_Textbox : Ui_Control
 {
+  [Header("Wiring")]
+  public Renderer Geometry;
+  public TextMesh Label;
+
   public string Text
   {
     get { return _text; }
@@ -41,8 +45,7 @@ public class Ui_Control_Textbox : Ui_Control_Button
     p.x = -Geometry.transform.localScale.x * 0.5f + App_Details.Instance.VrUiDetails.TEXTBOX_TEXT_X_OFFSET;
     Label.transform.localPosition = p;
     _blinkSpeed = App_Details.Instance.VrUiDetails.TEXTBOX_CARET_BLINKSPEED;
-    _blinkMaterial = Resources.Load<Material>("3dTextBlink");
-    OnClick.AddListener(OnClicked);
+    _blinkMaterial = Label.GetComponent<Renderer>().materials[1];
     Text = "";
   }
 
@@ -58,11 +61,11 @@ public class Ui_Control_Textbox : Ui_Control_Button
     }
   }
 
-  private void OnClicked()
+  protected override void DoClickInternal()
   {
-    StartCoroutine(OnClickedCoroutine());
+    StartCoroutine(DoClickInternalCoroutine());
   }
-  private IEnumerator OnClickedCoroutine()
+  private IEnumerator DoClickInternalCoroutine()
   {
     TouchScreenKeyboard.hideInput = false;
     var vrKeyboard = TouchScreenKeyboard.Open(Text, TouchScreenKeyboardType.Default, false);

@@ -78,7 +78,7 @@ public class App_Functions : SingletonComponent<App_Functions>
       RaycastHit hit;
       if (Physics.Raycast(ray, out hit))
       {
-        hit.collider.GetComponent<Ui_Control_ButtonGeometry>()?.OnMouseDown();
+        hit.collider.GetComponent<Ui_Control_Geometry>()?.OnMouseDown();
       }
     }
   }

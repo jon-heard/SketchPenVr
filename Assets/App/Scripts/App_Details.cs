@@ -31,6 +31,12 @@ public class App_Details : SingletonComponent<App_Details>
   public const string LOCK__ALL_UI = "lock:allUi";
   public const string LOCK__OTHER_IS_LOCKED_DOWN = "lock:otherIsLockedDown";
 
+  public MappingCollection MyControllerMappings;
+  public void SaveControllerMappings()
+  {
+    PlayerPrefs.SetString(App_Details.CFG__MAPPINGS, JsonUtility.ToJson(MyControllerMappings));
+  }
+
   public bool IsLeftHanded
   {
     get { return Controller.IsLeftHanded; }
@@ -56,7 +62,7 @@ public class App_Details : SingletonComponent<App_Details>
   }
   private string _backdrop;
 
-  private void Start()
+  private void Awake()
   {
     // Handedness
     IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
@@ -65,26 +71,23 @@ public class App_Details : SingletonComponent<App_Details>
     Backdrop = PlayerPrefs.GetString(App_Details.CFG__BACKDROP, "artStudio");
 
     // Mappings
-    //try
-    //{
-    //  var mappingsString = PlayerPrefs.GetString(App_Details.CFG__MAPPINGS, null);
-    //  var mappings = JsonUtility.FromJson<MappingCollection>(mappingsString);
-    //  Controller.Mappings = mappings.Mappings ?? Controller.Mappings;
-    //}
-    //catch
-    //{
-    //  Debug.LogError("Unable to load controller mappings.  Using defaults.");
-    //}
-  }
-  private void OnDestroy()
-  {
-    var mappings = new MappingCollection();
-    mappings.Mappings = Controller.Mappings;
-    PlayerPrefs.SetString(App_Details.CFG__MAPPINGS, JsonUtility.ToJson(mappings));
-  }
-
-  private struct MappingCollection
-  {
-    public ControllerMapping[] Mappings;
+    var mappingsString = PlayerPrefs.GetString(App_Details.CFG__MAPPINGS, null);
+    if (mappingsString != null)
+    {
+      try
+      {
+        MyControllerMappings = JsonUtility.FromJson<MappingCollection>(mappingsString);
+        if (MyControllerMappings == null) { mappingsString = null; }
+      }
+      catch
+      {
+        mappingsString = null;
+      }
+    }
+    if (mappingsString == null)
+    {
+      MyControllerMappings = new MappingCollection();
+      MyControllerMappings.SetupDefault();
+    }
   }
 }

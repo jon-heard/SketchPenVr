@@ -7,7 +7,14 @@ public class Controller : MonoBehaviour
   ///////////
   // Types //
   ///////////
-  public enum ThumbState { Up, Right, Down, Left, Center }
+  public enum ThumbState
+  {
+    Up = ControllerMapping.Controls.ThumbUp,
+    Right = ControllerMapping.Controls.ThumbRight,
+    Down = ControllerMapping.Controls.ThumbDown,
+    Left = ControllerMapping.Controls.ThumbLeft,
+    Center
+  }
 
   ///////////////
   // Inspector //
@@ -34,11 +41,6 @@ public class Controller : MonoBehaviour
   [SerializeField] private PinchHandler _pinchHandler;
   [SerializeField] private ControllerVis _controllerVis;
 
-  /////////
-  // Map //
-  /////////
-  public static ControllerMapping[] Mappings = new ControllerMapping[2];
-
   ////////////////
   // Handedness //
   ////////////////
@@ -57,6 +59,10 @@ public class Controller : MonoBehaviour
       _instances[1]._pencil.gameObject.SetActive(false);
       _instances[0]._controllerIndex = 0;
       _instances[1]._controllerIndex = 1;
+      _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
+        App_Details.Instance.MyControllerMappings.Mappings[0];
+      _instances[1]._controllerVis.Mapping = _instances[1]._myControllerMapping =
+        App_Details.Instance.MyControllerMappings.Mappings[1];
     }
   }
   private static Controller _mainController;
@@ -211,20 +217,21 @@ public class Controller : MonoBehaviour
   private float _focusDistance;
   private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
+  private Ui_Control _focusControl;
+  private Ui_Control _downControl;
   private Ui_Control_Button _focusButton;
-  private Ui_Control_Button _downButton;
   private ControllerVis _focusControllerVis;
 
   // Copies of values (for efficiency)
   private bool _isLeft;
   private Material _geometryMaterial;
+  private ControllerMapping _myControllerMapping;
   private static float _maxInteractDistance;
   private static float _TriggerDownPressure;
   private static float _ThumbDownPressure;
   private static float _maxHoverDistance;
   private static float _distanceTouch;
   private static float _distanceFullPressure;
-
 
   ////////////////////
   // Initialization //
@@ -243,11 +250,8 @@ public class Controller : MonoBehaviour
 
     _controllerIndex = (uint)(_isLeft ? 0 : 1);
     _instances[_controllerIndex] = this;
-
-    // Initial mappings
-    Mappings[0] = new ControllerMapping(0);
-    Mappings[1] = new ControllerMapping(1);
   }
+
   private void Start()
   {
     // Fields init
@@ -289,7 +293,8 @@ public class Controller : MonoBehaviour
     _pinchHandler.Other = _instances[_controllerIndex == 0 ? 1 : 0]._pinchHandler;
 
     // ControllerVis init
-    _controllerVis.Mapping = Controller.Mappings[_controllerIndex];
+    _controllerVis.Mapping = _myControllerMapping =
+      App_Details.Instance.MyControllerMappings.Mappings[_controllerIndex];
   }
 
   //////////////////////////
@@ -336,17 +341,18 @@ public class Controller : MonoBehaviour
 
       // Button focus
       var newFocusButton = focusParent?.GetComponent<Ui_Control_Button>();
-      if (newFocusButton != _focusButton)
+      if (newFocusButton != _focusControl)
       {
         if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Idle; }
-        _focusButton = newFocusButton;
+        _focusControl = newFocusButton;
+        _focusButton = (_focusControl as Ui_Control_Button);
         if (_focusButton)
         {
-          if (!_downButton)
+          if (!_downControl)
           {
             _focusButton.State = Ui_Control_Button.ButtonState.Hovered;
           }
-          else if (_focusButton == _downButton)
+          else if (_focusButton == _downControl)
           {
             _focusButton.State = Ui_Control_Button.ButtonState.Down;
           }
@@ -374,6 +380,7 @@ public class Controller : MonoBehaviour
       _focus = null;
       FocusPointerEmulation = null;
       if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Idle; }
+      _focusControl = null;
       _focusButton = null;
       if (_focusControllerVis)
       {
@@ -487,10 +494,13 @@ public class Controller : MonoBehaviour
       if (_isTriggerDown)
       {
         // Button
-        if (_focusButton)
+        if (_focusControl)
         {
-          _downButton = _focusButton;
-          _downButton.State = Ui_Control_Button.ButtonState.Down;
+          _downControl = _focusControl;
+          if (_focusButton)
+          {
+            _focusButton.State = Ui_Control_Button.ButtonState.Down;
+          }
         }
         // Screen
         else if (FocusPointerEmulation)
@@ -506,8 +516,8 @@ public class Controller : MonoBehaviour
       else
       {
         // Button
-        if (_downButton && _downButton == _focusButton) { _downButton.DoClick(); }
-        _downButton = null;
+        if (_downControl && _downControl == _focusControl) { _downControl.DoClick(); }
+        _downControl = null;
         if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Hovered; }
         // Screen
         else if (FocusPointerEmulation && _controllerIndex == 0 && !_isNearFocus)
@@ -518,7 +528,8 @@ public class Controller : MonoBehaviour
       // Trigger action for non-main controller
       if (_controllerIndex > 0)
       {
-        Mappings[_controllerIndex].TriggerButtonAction.Run(this, _isTriggerDown);
+        _myControllerMapping.Actions[(int)ControllerMapping.Controls.Trigger].
+          Run(this, _isTriggerDown);
       }
     }
   }
@@ -554,12 +565,12 @@ public class Controller : MonoBehaviour
     {
       if (_thumbState != ThumbState.Center)
       {
-        Mappings[_controllerIndex].ThumbDirectionActions[(uint)_thumbState].Run(this, false);
+        _myControllerMapping.Actions[(int)_thumbState].Run(this, false);
       }
       _thumbState = newThumbState;
       if (_thumbState != ThumbState.Center)
       {
-        Mappings[_controllerIndex].ThumbDirectionActions[(uint)_thumbState].Run(this, true);
+        _myControllerMapping.Actions[(int)_thumbState].Run(this, true);
       }
     }
   }
@@ -586,34 +597,34 @@ public class Controller : MonoBehaviour
 #endif
   private void OnGripButtonStart(CallbackContext obj)
   {
-    Mappings[_controllerIndex].GripButtonAction.Run(this, true);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, true);
   }
   private void OnGripButtonEnd(CallbackContext obj)
   {
-    Mappings[_controllerIndex].GripButtonAction.Run(this, false);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, false);
   }
   private void OnTopButtonStart(CallbackContext obj)
   {
-    Mappings[_controllerIndex].TopButtonAction.Run(this, true);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, true);
   }
   private void OnTopButtonEnd(CallbackContext obj)
   {
-    Mappings[_controllerIndex].TopButtonAction.Run(this, false);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, false);
   }
   private void OnBottomButtonStart(CallbackContext obj)
   {
-    Mappings[_controllerIndex].BottomButtonAction.Run(this, true);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, true);
   }
   private void OnBottomButtonEnd(CallbackContext obj)
   {
-    Mappings[_controllerIndex].BottomButtonAction.Run(this, false);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, false);
   }
   private void OnThumbButtonStart(CallbackContext obj)
   {
-    Mappings[_controllerIndex].ThumbButtonAction.Run(this, true);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.ThumbButton].Run(this, true);
   }
   private void OnThumbButtonEnd(CallbackContext obj)
   {
-    Mappings[_controllerIndex].ThumbButtonAction.Run(this, false);
+    _myControllerMapping.Actions[(int)ControllerMapping.Controls.ThumbButton].Run(this, false);
   }
 }

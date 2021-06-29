@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Ui_Control_Button : MonoBehaviour
+public class Ui_Control_Button : Ui_Control
 {
   // NOTE: "NotLockedDown" needed as "Idle" is set on unhover, so is blocked during "LockedDown"
   public enum ButtonState { Idle, Hovered, Down, Disabled, LockedDown, NotLockedDown };
@@ -11,8 +10,6 @@ public class Ui_Control_Button : MonoBehaviour
   [Header("Wiring")]
   public Renderer Geometry;
   public TextMesh Label;
-
-  public static List<Ui_Control_Button> Instances = new List<Ui_Control_Button>();
 
   public ButtonState State
   {
@@ -43,14 +40,9 @@ public class Ui_Control_Button : MonoBehaviour
   }
   private ButtonState _state = ButtonState.Idle;
 
-  public ObjectLocker Locker { get; private set; }
-
-  public void DoClick()
+  protected override void DoClickInternal()
   {
-    if (!Locker.IsLocked && this.State != ButtonState.LockedDown)
-    {
-      OnClick.Invoke();
-    }
+    OnClick.Invoke();
   }
 
   protected void RefreshVisual()
@@ -83,11 +75,10 @@ public class Ui_Control_Button : MonoBehaviour
     }
   }
 
-  protected virtual void Awake()
+  protected override void Awake()
   {
-    Locker = new ObjectLocker();
+    base.Awake();
     Locker.LockStateChanged += OnLockStateChanged;
-    Instances.Add(this);
     _idleMaterial = Geometry.material;
     _idleLabelMaterial = Label.GetComponent<Renderer>().material;
   }

@@ -11,6 +11,12 @@ public class Ui_Menu_SetControls : Ui_Menu
   public override bool Hide()
   {
     Ui_Control_ControlSetter.ClearFocus();
+    App_Details.Instance.SaveControllerMappings();
     return base.Hide();
+  }
+
+  public void OnMenuClick()
+  {
+    Ui_Control_ControlSetter.ClearFocus();
   }
 }

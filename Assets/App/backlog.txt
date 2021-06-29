@@ -1,3 +1,7 @@
+- dropdown combobox
+
+- top/bottom to high/low
+
 - fix issue with dropdowns freezing app
 
 - fix console spam

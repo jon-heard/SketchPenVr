@@ -1,92 +1,135 @@
 ﻿using System;
 
 [Serializable]
+public class MappingCollection
+{
+  public ControllerMapping[] Mappings;
+
+  public MappingCollection()
+  {
+    Mappings = new ControllerMapping[2];
+    for (var i = 0; i < Mappings.Length; i++)
+    {
+      Mappings[i] = new ControllerMapping();
+    }
+  }
+
+  public void SetupDefault()
+  {
+    for (var i = 0; i < Mappings.Length; i++)
+    {
+      Mappings[i].SetupDefault(i);
+    }
+  }
+}
+
+[Serializable]
 public class ControllerMapping
 {
+  public enum Controls
+  {
+    Trigger, Grip, HighButton, LowButton, ThumbButton,
+    ThumbUp, ThumbDown, ThumbLeft, ThumbRight
+  }
+
   public Action<ControllerMapping> OnMappingChanged;
 
-  public ControllerAction TopButtonAction = new ControllerAction();
-  public ControllerAction BottomButtonAction = new ControllerAction();
-  public ControllerAction TriggerButtonAction = new ControllerAction();
-  public ControllerAction GripButtonAction = new ControllerAction();
-  public ControllerAction ThumbButtonAction = new ControllerAction();
-  public ControllerAction[] ThumbDirectionActions = new ControllerAction[4];
+  public string[] ActionTitles = new string[Enum.GetNames(typeof(Controls)).Length];
+  public ControllerAction[] Actions = new ControllerAction[Enum.GetNames(typeof(Controls)).Length];
 
-  public string TopButtonTitle;
-  public string BottomButtonTitle;
-  public string TriggerButtonTitle;
-  public string GripButtonTitle;
-  public string ThumbButtonTitle;
-  public string[] ThumbDirectionTitles = new string[4];
-
-  public ControllerMapping(int index)
+  public ControllerMapping()
   {
-    for (var i = 0; i < ThumbDirectionActions.Length; i++)
+    for (var i = 0; i < Actions.Length; i++)
     {
-      ThumbDirectionActions[i] = new ControllerAction();
+      Actions[i] = new ControllerAction();
     }
+  }
 
-    GripButtonTitle = "Hold";
-    GripButtonAction.Type = ControllerAction.ActionType.Hold;
+  public void SetupDefault(int index)
+  {
+    var control = (int)Controls.Grip;
+    ActionTitles[control] = "Hold";
+    Actions[control].Type = ControllerAction.ActionType.Hold;
+
     if (index == 0)
     {
       // Left - Trigger - draw
-      TriggerButtonTitle = "Draw / Left mouse";
+      control = (int)Controls.Trigger;
+      ActionTitles[control] = "Draw / Left mouse";
+
       // Left - Top button - undo
-      TopButtonTitle = "Undo";
-      TopButtonAction.Type = ControllerAction.ActionType.Undo;
+      control = (int)Controls.HighButton;
+      ActionTitles[control] = "Undo";
+      Actions[control].Type = ControllerAction.ActionType.Undo;
+
       // Left - Bottom button - color pic - control
-      BottomButtonTitle = "Color pick";
-      BottomButtonAction.Type = ControllerAction.ActionType.KeyPress;
-      BottomButtonAction.Parameter = (int)OsHook_Keyboard.Key.Control;
-      BottomButtonAction.Next = new ControllerAction();
-      BottomButtonAction.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      control = (int)Controls.LowButton;
+      ActionTitles[control] = "Color pick";
+      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Control;
+      Actions[control].Next = new ControllerAction();
+      Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+
       // Left - Thumb down - rotate - shift, space, left mouse
-      ThumbButtonTitle = "Rotate";
-      ThumbButtonAction.Type = ControllerAction.ActionType.KeyPress;
-      ThumbButtonAction.Parameter = (int)OsHook_Keyboard.Key.Shift;
-      ThumbButtonAction.Next = new ControllerAction();
-      ThumbButtonAction.Next.Type = ControllerAction.ActionType.KeyPress;
-      ThumbButtonAction.Next.Parameter = (int)OsHook_Keyboard.Key.Space;
-      ThumbButtonAction.Next.Next = new ControllerAction();
-      ThumbButtonAction.Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      control = (int)Controls.ThumbButton;
+      ActionTitles[control] = "Rotate";
+      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Shift;
+      Actions[control].Next = new ControllerAction();
+      Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Shift;
+      Actions[control].Next.Next = new ControllerAction();
+      Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+
       // Left - Thumb left - brush size - shift, left mouse
-      ThumbDirectionTitles[3] = "Brush size";
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Type = ControllerAction.ActionType.KeyPress;
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Parameter = (int)OsHook_Keyboard.Key.Shift;
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Left].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      control = (int)Controls.ThumbLeft;
+      ActionTitles[control] = "Brush size";
+      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Shift;
+      Actions[control].Next = new ControllerAction();
+      Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+
       // Left - Thumb up - pan - space, left mouse
-      ThumbDirectionTitles[0] = "Pan";
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Type = ControllerAction.ActionType.KeyPress;
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Parameter = (int)OsHook_Keyboard.Key.Space;
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Up].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      control = (int)Controls.ThumbUp;
+      ActionTitles[control] = "Pan";
+      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Space;
+      Actions[control].Next = new ControllerAction();
+      Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+
       // Left - Thumb down - zoom - control, space, left mouse
-      ThumbDirectionTitles[2] = "Zoom";
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Type = ControllerAction.ActionType.KeyPress;
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Parameter = (int)OsHook_Keyboard.Key.Control;
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Type = ControllerAction.ActionType.KeyPress;
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Next = new ControllerAction();
-      ThumbDirectionActions[(int)Controller.ThumbState.Down].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      control = (int)Controls.ThumbDown;
+      ActionTitles[control] = "Zoom";
+      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Control;
+      Actions[control].Next = new ControllerAction();
+      Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
+      Actions[control].Next.Next = new ControllerAction();
+      Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+
       // Left - Thumb right - mirror - M toggles
-      ThumbDirectionTitles[1] = "Mirror";
-      ThumbDirectionActions[(int)Controller.ThumbState.Right].Type = ControllerAction.ActionType.KeyTapOnOff;
-      ThumbDirectionActions[(int)Controller.ThumbState.Right].Parameter = (int)OsHook_Keyboard.Key.Key_M;
+      control = (int)Controls.ThumbRight;
+      ActionTitles[control] = "Mirror";
+      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Key_M;
     }
     else
     {
-      // Right - Top button - redo
-      TopButtonTitle = "Redo";
-      TopButtonAction.Type = ControllerAction.ActionType.Redo;
       // Right - Trigger button - pencil flip
-      TriggerButtonTitle = "Eraser";
-      TriggerButtonAction.Type = ControllerAction.ActionType.PencilFlip;
+      control = (int)Controls.Trigger;
+      ActionTitles[control] = "Eraser";
+      Actions[control].Type = ControllerAction.ActionType.PencilFlip;
+
+      // Right - Top button - redo
+      control = (int)Controls.HighButton;
+      ActionTitles[control] = "Redo";
+      Actions[control].Type = ControllerAction.ActionType.Redo;
+
       // Right - Bottom button - brush wheel - right mouse
-      BottomButtonTitle = "Brush Select";
-      BottomButtonAction.Type = ControllerAction.ActionType.RightMouseButton;
+      control = (int)Controls.LowButton;
+      ActionTitles[control] = "Brush Select";
+      Actions[control].Type = ControllerAction.ActionType.RightMouseButton;
     }
   }
 }
