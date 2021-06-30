@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class App_Details : SingletonComponent<App_Details>
+public class App_Details : Common.SingletonComponent<App_Details>
 {
-  public Common.Vr.Ui.App_Details VrUiDetails;
+  public Common.Vr.Ui.VrUiDetails VrUiDetails;
 
 #if UNITY_EDITOR
   public bool UseEmulatedControls = false;
@@ -72,6 +72,10 @@ public class App_Details : SingletonComponent<App_Details>
 
     // Mappings
     var mappingsString = PlayerPrefs.GetString(App_Details.CFG__MAPPINGS, null);
+
+    // Uncomment to use defaults
+    mappingsString = null; 
+
     if (mappingsString != null)
     {
       try

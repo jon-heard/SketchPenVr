@@ -1,3 +1,5 @@
+using Common.Vr.Ui;
+using Common.Vr.Ui.Controls;
 using System.Collections;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
@@ -217,9 +219,9 @@ public class Controller : MonoBehaviour
   private float _focusDistance;
   private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
-  private Ui_Control _focusControl;
-  private Ui_Control _downControl;
-  private Ui_Control_Button _focusButton;
+  private Control _focusControl;
+  private Control _downControl;
+  private Button _focusButton;
   private ControllerVis _focusControllerVis;
 
   // Copies of values (for efficiency)
@@ -340,21 +342,21 @@ public class Controller : MonoBehaviour
       }
 
       // Button focus
-      var newFocusButton = focusParent?.GetComponent<Ui_Control_Button>();
+      var newFocusButton = focusParent?.GetComponent<Button>();
       if (newFocusButton != _focusControl)
       {
-        if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Idle; }
+        if (_focusButton) { _focusButton.State = Button.ButtonState.Idle; }
         _focusControl = newFocusButton;
-        _focusButton = (_focusControl as Ui_Control_Button);
+        _focusButton = (_focusControl as Button);
         if (_focusButton)
         {
           if (!_downControl)
           {
-            _focusButton.State = Ui_Control_Button.ButtonState.Hovered;
+            _focusButton.State = Button.ButtonState.Hovered;
           }
           else if (_focusButton == _downControl)
           {
-            _focusButton.State = Ui_Control_Button.ButtonState.Down;
+            _focusButton.State = Button.ButtonState.Down;
           }
         }
       }
@@ -379,7 +381,7 @@ public class Controller : MonoBehaviour
       _focusDistance = _maxInteractDistance;
       _focus = null;
       FocusPointerEmulation = null;
-      if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Idle; }
+      if (_focusButton) { _focusButton.State = Button.ButtonState.Idle; }
       _focusControl = null;
       _focusButton = null;
       if (_focusControllerVis)
@@ -499,7 +501,7 @@ public class Controller : MonoBehaviour
           _downControl = _focusControl;
           if (_focusButton)
           {
-            _focusButton.State = Ui_Control_Button.ButtonState.Down;
+            _focusButton.State = Button.ButtonState.Down;
           }
         }
         // Screen
@@ -518,7 +520,7 @@ public class Controller : MonoBehaviour
         // Button
         if (_downControl && _downControl == _focusControl) { _downControl.DoClick(); }
         _downControl = null;
-        if (_focusButton) { _focusButton.State = Ui_Control_Button.ButtonState.Hovered; }
+        if (_focusButton) { _focusButton.State = Button.ButtonState.Hovered; }
         // Screen
         else if (FocusPointerEmulation && _controllerIndex == 0 && !_isNearFocus)
         {

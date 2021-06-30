@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using Common.Vr.Ui.Controls;
 using UnityEngine;
 
-public class Ui_Menu_GripAdjust : Ui_Menu
+public class Ui_Menu_GripAdjust : Common.Vr.Ui.Ui_Menu
 {
-  [SerializeField] private Ui_Control_Button[] _buttons;
+  [SerializeField] private Button[] _buttons;
 
   protected override void Start()
   {
@@ -14,7 +13,7 @@ public class Ui_Menu_GripAdjust : Ui_Menu
     transform.localPosition = t;
   }
 
-  public override bool Show(Ui_Control_Button source = null)
+  public override bool Show(Button source = null)
   {
     var result = base.Show(source);
     App_Functions.Instance.SetFullUiLock(true);

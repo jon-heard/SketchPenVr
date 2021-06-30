@@ -1,22 +1,23 @@
+using Common.Vr.Ui.Controls;
+using Common.Vr.Ui.Popups;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Ui_Menu_Main : Ui_Menu
+public class Ui_Menu_Main : Common.Vr.Ui.Ui_Menu
 {
-  [SerializeField] private Ui_Menu Menu_Settings;
+  [SerializeField] private Common.Vr.Ui.Ui_Menu Menu_Settings;
 
   public void OnMenuButton()
   {
     this.Toggle();
   }
 
-  public void OnSettingsButton(Ui_Control_Button source)
+  public void OnSettingsButton(Button source)
   {
     Menu_Settings.Show(source);
   }
 
-  public void OnQuitButton(Ui_Control_Button source)
+  public void OnQuitButton(Button source)
   {
     Ui_Popup_Confirm.ShowOnButtonParent(source, "Confirm quitting\nSketchpadVr", (confirmed) =>
     {

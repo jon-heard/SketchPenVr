@@ -77,7 +77,7 @@ public class ControllerMapping
       Actions[control].Parameter = (int)OsHook_Keyboard.Key.Shift;
       Actions[control].Next = new ControllerAction();
       Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Shift;
+      Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
       Actions[control].Next.Next = new ControllerAction();
       Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
@@ -108,10 +108,12 @@ public class ControllerMapping
       Actions[control].Next.Next = new ControllerAction();
       Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
+      UnityEngine.Debug.Log(UnityEngine.JsonUtility.ToJson(Actions[control]));
+
       // Left - Thumb right - mirror - M toggles
       control = (int)Controls.ThumbRight;
       ActionTitles[control] = "Mirror";
-      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Type = ControllerAction.ActionType.KeyHit;
       Actions[control].Parameter = (int)OsHook_Keyboard.Key.Key_M;
     }
     else

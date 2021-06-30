@@ -1,5 +1,15 @@
 ﻿using System;
 
+public static class ActionTypeExtension
+{
+  public static bool HasParameter(this ControllerAction.ActionType type)
+  {
+    return
+      type == ControllerAction.ActionType.KeyHit ||
+      type == ControllerAction.ActionType.KeyPress;
+  }
+}
+
 [Serializable]
 public class ControllerAction
 {
@@ -13,8 +23,7 @@ public class ControllerAction
     Undo,
     Redo,
     KeyHit,
-    KeyPress,
-    KeyTapOnOff,
+    KeyPress
   }
 
   public ActionType Type;
@@ -74,10 +83,6 @@ public class ControllerAction
         break;
       case ActionType.KeyPress:
         OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, isDown);
-        break;
-      case ActionType.KeyTapOnOff:
-        OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, true);
-        OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, false);
         break;
       default:
         UnityEngine.Debug.LogError("Unhandled action type: " + Type);

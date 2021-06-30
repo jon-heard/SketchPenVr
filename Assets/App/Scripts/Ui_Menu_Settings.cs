@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using Common.Vr.Ui;
+using Common.Vr.Ui.Controls;
 using UnityEngine;
 
 public class Ui_Menu_Settings : Ui_Menu
@@ -10,7 +10,7 @@ public class Ui_Menu_Settings : Ui_Menu
   [SerializeField] private GameObject _button_handedness_left;
   [SerializeField] private GameObject _button_handedness_right;
 
-  public override bool Show(Ui_Control_Button source = null)
+  public override bool Show(Button source = null)
   {
     if (App_Details.Instance.IsLeftHanded)
     {
@@ -25,22 +25,22 @@ public class Ui_Menu_Settings : Ui_Menu
     return base.Show(source);
   }
 
-  public void OnSetControlsButton(Ui_Control_Button source)
+  public void OnSetControlsButton(Button source)
   {
     _menu_setControls.Show(source);
   }
 
-  public void OnBackdropsButton(Ui_Control_Button source)
+  public void OnBackdropsButton(Button source)
   {
     _menu_backdrops.Show(source);
   }
 
-  public void OnGripAdjustButton(Ui_Control_Button source)
+  public void OnGripAdjustButton(Button source)
   {
     _menu_gripAdjust.Show(source);
   }
 
-  public void OnhHandednessButton()
+  public void OnHandednessButton()
   {
     App_Details.Instance.IsLeftHanded = !App_Details.Instance.IsLeftHanded;
     Hide();

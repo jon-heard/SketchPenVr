@@ -1,35 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+namespace Common.Vr.Ui
 {
-  public Interactable DragInteractable
+  public class Interactable : MonoBehaviour
   {
-    get
+    public Interactable DragInteractable
     {
-      var parentInteractable = transform.parent?.GetComponent<Interactable>();
-      return parentInteractable ? parentInteractable.DragInteractable : this;
-    }
-  }
-
-  public void SetTemporaryParent(Transform parent, Transform oldParentConfirm = null)
-  {
-    if (parent)
-    {
-      if (!_primaryParentIsSet)
+      get
       {
-        _primaryParent = transform.parent;
-        _primaryParentIsSet = true;
+        var parentInteractable = transform.parent?.GetComponent<Interactable>();
+        return parentInteractable ? parentInteractable.DragInteractable : this;
       }
-      transform.parent = parent;
     }
-    else if (oldParentConfirm == transform.parent)
+
+    public void SetTemporaryParent(Transform parent, Transform oldParentConfirm = null)
     {
-      transform.parent = _primaryParent;
-      _primaryParentIsSet = false;
+      if (parent)
+      {
+        if (!_primaryParentIsSet)
+        {
+          _primaryParent = transform.parent;
+          _primaryParentIsSet = true;
+        }
+        transform.parent = parent;
+      }
+      else if (oldParentConfirm == transform.parent)
+      {
+        transform.parent = _primaryParent;
+        _primaryParentIsSet = false;
+      }
     }
+    private bool _primaryParentIsSet = false;
+    private Transform _primaryParent = null;
   }
-  private bool _primaryParentIsSet = false;
-  private Transform _primaryParent = null;
 }

@@ -1,5 +1,12 @@
 - dropdown combobox
 
+- add "Use default" button to top-right of controller setup
+
+- have textbox only show dash when it's in focus
+	- requires an event for when anything is clicked (to lose focus)
+	- requires "FocusedTextBox" static instance to define which textbox has focus
+	- only modify text when tetbox has focus
+
 - top/bottom to high/low
 
 - fix issue with dropdowns freezing app

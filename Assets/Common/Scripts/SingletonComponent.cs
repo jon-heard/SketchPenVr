@@ -1,41 +1,44 @@
 using UnityEngine;
 
-public class SingletonComponent<T> : MonoBehaviour
-	where T : Component
+namespace Common
 {
-	public static T Instance
+	public class SingletonComponent<T> : MonoBehaviour
+		where T : Component
 	{
-		get
+		public static T Instance
 		{
-			if (_instance == null)
+			get
 			{
-				InitializeSingletonComponent();
+				if (_instance == null)
+				{
+					InitializeSingletonComponent();
+				}
+				return _instance;
 			}
-			return _instance;
 		}
-	}
 
-	protected static void InitializeSingletonComponent()
-	{
-		if (_instance) { return; }
-		var objs = FindObjectsOfType(typeof(T)) as T[];
-		if (objs.Length == 0)
+		protected static void InitializeSingletonComponent()
 		{
-			GameObject obj = new GameObject();
-			obj.hideFlags = HideFlags.HideAndDontSave;
-			_instance = obj.AddComponent<T>();
-			Debug.LogError("No instances of singleton " + typeof(T).Name + ".  New instance created.");
+			if (_instance) { return; }
+			var objs = FindObjectsOfType(typeof(T)) as T[];
+			if (objs.Length == 0)
+			{
+				GameObject obj = new GameObject();
+				obj.hideFlags = HideFlags.HideAndDontSave;
+				_instance = obj.AddComponent<T>();
+				Debug.LogError("No instances of singleton " + typeof(T).Name + ".  New instance created.");
+			}
+			else if (objs.Length == 1)
+			{
+				_instance = objs[0];
+			}
+			else
+			{
+				_instance = objs[0];
+				Debug.LogError("Multiple instances of singleton " + typeof(T).Name + ".  Choosing First.");
+			}
 		}
-		else if (objs.Length == 1)
-		{
-			_instance = objs[0];
-		}
-		else
-		{
-			_instance = objs[0];
-			Debug.LogError("Multiple instances of singleton " + typeof(T).Name + ".  Choosing First.");
-		}
-	}
 
-	private static T _instance;
+		private static T _instance;
+	}
 }

@@ -582,7 +582,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 171359371}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.9}
+  m_LocalPosition: {x: 0.93, y: -0.42, z: -1.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 128828337}
@@ -637,10 +637,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Pan
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -699,10 +695,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -965,7 +957,7 @@ PrefabInstance:
       objectReference: {fileID: 284314826}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -1065,10 +1057,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Size brush
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -1323,10 +1311,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Brush select
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &469408920 stripped
@@ -1476,10 +1460,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Color pick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -1696,10 +1676,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &565776896 stripped
@@ -1803,10 +1779,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &595597699 stripped
@@ -1895,7 +1867,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnhHandednessButton
+      value: OnHandednessButton
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2079,7 +2051,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689005319}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.35, y: 0, z: 0}
+  m_LocalPosition: {x: 3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1172114083}
@@ -2291,10 +2263,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Hold
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -2820,7 +2788,7 @@ PrefabInstance:
       objectReference: {fileID: 891928607}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -3056,10 +3024,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &927400087 stripped
@@ -3160,7 +3124,7 @@ PrefabInstance:
       objectReference: {fileID: 1774996364}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -3254,7 +3218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnhHandednessButton
+      value: OnHandednessButton
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3368,7 +3332,7 @@ PrefabInstance:
       objectReference: {fileID: 1001560037}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -3489,10 +3453,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Zoom
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &1007028548 stripped
@@ -3593,7 +3553,7 @@ PrefabInstance:
       objectReference: {fileID: 1011855400}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -3710,7 +3670,7 @@ PrefabInstance:
       objectReference: {fileID: 1064874735}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -4274,7 +4234,7 @@ PrefabInstance:
       objectReference: {fileID: 1317998224}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -4348,10 +4308,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -4538,7 +4494,7 @@ PrefabInstance:
       objectReference: {fileID: 1402039947}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -4608,10 +4564,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Undo
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -4831,10 +4783,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Mirror
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &1459959181 stripped
@@ -4935,7 +4883,7 @@ PrefabInstance:
       objectReference: {fileID: 1482979120}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -5052,7 +5000,7 @@ PrefabInstance:
       objectReference: {fileID: 1604945279}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -5284,10 +5232,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Pan
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &1584523541 stripped
@@ -5465,7 +5409,7 @@ PrefabInstance:
       objectReference: {fileID: 1699372352}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -6016,7 +5960,7 @@ PrefabInstance:
       objectReference: {fileID: 1760856981}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -6069,8 +6013,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771131643}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.517, y: -0.78097504, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.7459501, z: 0.005}
+  m_LocalPosition: {x: 0.3325, y: -0.78097504, z: 0}
+  m_LocalScale: {x: 1.04, y: 1.7459501, z: 0.005}
   m_Children: []
   m_Father: {fileID: 1747933364}
   m_RootOrder: 0
@@ -6281,7 +6225,7 @@ PrefabInstance:
       objectReference: {fileID: 1831306110}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Ui_Control_Button, Assembly-CSharp
+      value: Common.Vr.Ui.Controls.Button, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6787963642569260318, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_Text
@@ -6543,10 +6487,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Eraser
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
 --- !u!4 &1912405014 stripped
@@ -6659,10 +6599,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Redo
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
@@ -7511,10 +7447,6 @@ PrefabInstance:
     - target: {fileID: 6718697330721635915, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8201992448449529657, guid: 09664cfbc800ba045a894836088b91e1, type: 3}
-      propertyPath: m_Text
-      value: Hold
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09664cfbc800ba045a894836088b91e1, type: 3}

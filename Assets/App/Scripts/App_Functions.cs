@@ -1,8 +1,8 @@
+using Common.Vr.Ui.Controls;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class App_Functions : SingletonComponent<App_Functions>
+public class App_Functions : Common.SingletonComponent<App_Functions>
 {
   [SerializeField] private Camera _camera;
   public PointerEmulation Screen;
@@ -13,7 +13,7 @@ public class App_Functions : SingletonComponent<App_Functions>
   // Lock/unlock entire ui
   public void SetFullUiLock(bool isLocked)
   {
-    foreach (var button in Ui_Control_Button.Instances)
+    foreach (var button in Button.Instances)
     {
       button.Locker.SetLock(App_Details.LOCK__ALL_UI, isLocked);
     }
@@ -78,7 +78,7 @@ public class App_Functions : SingletonComponent<App_Functions>
       RaycastHit hit;
       if (Physics.Raycast(ray, out hit))
       {
-        hit.collider.GetComponent<Ui_Control_Geometry>()?.OnMouseDown();
+        hit.collider.GetComponent<ControlGeometry>()?.OnMouseDown();
       }
     }
   }

@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using Common.Vr.Ui.Controls;
 using UnityEngine;
 
-public class Ui_Menu_Backdrops : Ui_Menu
+public class Ui_Menu_Backdrops : Common.Vr.Ui.Ui_Menu
 {
   [SerializeField] private string[] _filenames;
-  [SerializeField] private Ui_Control_Button[] _backdropButtons;
+  [SerializeField] private Button[] _backdropButtons;
 
   protected override void Start()
   {
@@ -15,7 +14,7 @@ public class Ui_Menu_Backdrops : Ui_Menu
     transform.localPosition = t;
   }
 
-  public void OnBackdropSelected(Ui_Control_Button source)
+  public void OnBackdropSelected(Button source)
   {
     for (var i = 0; i < _backdropButtons.Length; i++)
     {

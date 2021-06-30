@@ -4,7 +4,7 @@ using UnityEngine;
 public class PinchHandler : MonoBehaviour
 {
   [NonSerialized] public PinchHandler Other;
-  [NonSerialized] public Interactable Focus;
+  [NonSerialized] public Common.Vr.Ui.Interactable Focus;
 
   public bool IsPinching
   {
