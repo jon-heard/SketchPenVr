@@ -7,9 +7,17 @@ namespace Common.Vr.Ui.Controls
   {
     [SerializeField] private UnityEvent OnClick;
 
-    protected override void DoClickInternal()
+    protected void OnClickedEventListener(Control focus)
     {
-      OnClick.Invoke();
+      if (focus == this)
+      {
+        OnClick.Invoke();
+      }
+    }
+
+    private void Start()
+    {
+      Control.OnControlClicked += OnClickedEventListener;
     }
   }
 }

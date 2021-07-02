@@ -17,6 +17,8 @@ namespace Common
 			}
 		}
 
+		private static T _instance;
+
 		protected static void InitializeSingletonComponent()
 		{
 			if (_instance) { return; }
@@ -38,7 +40,5 @@ namespace Common
 				Debug.LogError("Multiple instances of singleton " + typeof(T).Name + ".  Choosing First.");
 			}
 		}
-
-		private static T _instance;
 	}
 }

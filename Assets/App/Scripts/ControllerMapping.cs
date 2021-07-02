@@ -57,12 +57,12 @@ public class ControllerMapping
       control = (int)Controls.Trigger;
       ActionTitles[control] = "Draw / Left mouse";
 
-      // Left - Top button - undo
+      // Left - High button - undo
       control = (int)Controls.HighButton;
       ActionTitles[control] = "Undo";
       Actions[control].Type = ControllerAction.ActionType.Undo;
 
-      // Left - Bottom button - color pic - control
+      // Left - Low button - color pic - control
       control = (int)Controls.LowButton;
       ActionTitles[control] = "Color pick";
       Actions[control].Type = ControllerAction.ActionType.KeyPress;
@@ -107,8 +107,6 @@ public class ControllerMapping
       Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
       Actions[control].Next.Next = new ControllerAction();
       Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
-
-      UnityEngine.Debug.Log(UnityEngine.JsonUtility.ToJson(Actions[control]));
 
       // Left - Thumb right - mirror - M toggles
       control = (int)Controls.ThumbRight;

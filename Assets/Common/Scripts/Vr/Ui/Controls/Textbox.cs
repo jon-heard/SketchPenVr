@@ -37,7 +37,8 @@ namespace Common.Vr.Ui.Controls
     private float _lastBlink;
     private float _blinkSpeed;
     private Material _blinkMaterial;
-    private static Textbox _instance;
+
+    private static Textbox _focusTextbox;
 
     protected override void Awake()
     {
@@ -51,23 +52,30 @@ namespace Common.Vr.Ui.Controls
       Text = "";
     }
 
-    private void Update()
+    private void Start()
     {
-      // Caret blinking
-      if (Time.time - _lastBlink > _blinkSpeed)
+      Control.OnControlClicked += OnClickedEventListener;
+    }
+
+    protected void OnClickedEventListener(Control focus)
+    {
+      if (focus == this)
       {
-        _lastBlink = Time.time;
+        _focusTextbox = this;
+        StartCoroutine(VrKeyboardCoroutine());
+        StartCoroutine(CaretBlinkCoroutine());
+      }
+      else if (_focusTextbox == this)
+      {
+        _focusTextbox = null;
+        StopAllCoroutines();
         var blinkColor = _blinkMaterial.color;
-        blinkColor.a = blinkColor.a == 1.0f ? 0.0f : 1.0f;
+        blinkColor.a = 0.0f;
         _blinkMaterial.color = blinkColor;
       }
     }
 
-    protected override void DoClickInternal()
-    {
-      StartCoroutine(DoClickInternalCoroutine());
-    }
-    private IEnumerator DoClickInternalCoroutine()
+    private IEnumerator VrKeyboardCoroutine()
     {
       TouchScreenKeyboard.hideInput = false;
       var vrKeyboard = TouchScreenKeyboard.Open(Text, TouchScreenKeyboardType.Default, false);
@@ -82,6 +90,21 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
+    private IEnumerator CaretBlinkCoroutine()
+    {
+      while (true)
+      {
+        yield return null;
+        if (Time.time - _lastBlink > _blinkSpeed)
+        {
+          _lastBlink = Time.time;
+          var blinkColor = _blinkMaterial.color;
+          blinkColor.a = blinkColor.a == 1.0f ? 0.0f : 1.0f;
+          _blinkMaterial.color = blinkColor;
+        }
+      }
+    }
+
     private bool _isLeftShiftDown = false;
     private bool _isRightShiftDown = false;
     private bool _isLeftControlDown = false;
@@ -90,6 +113,7 @@ namespace Common.Vr.Ui.Controls
     private bool _isControlDown { get { return _isLeftControlDown || _isRightControlDown; } }
     private void OnGUI()
     {
+      if (this != _focusTextbox) { return; }
       var e = Event.current;
       if (e.isKey)
       {

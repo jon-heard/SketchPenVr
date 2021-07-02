@@ -48,16 +48,32 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
-    public void ToggleList()
+    public void ToggleListVisibility()
     {
       List.SetActive(!List.activeSelf);
+    }
+    public void SetListVisibility(bool isShown)
+    {
+      List.SetActive(isShown);
     }
 
     private List<DropdownItem> _listItems = new List<DropdownItem>();
 
-    protected override void DoClickInternal()
+    protected void OnClickedEventListener(Control focus)
     {
-      ToggleList();
+      if (focus == this)
+      {
+        ToggleListVisibility();
+      }
+      else
+      {
+        SetListVisibility(false);
+      }
+    }
+
+    private void Start()
+    {
+      Control.OnControlClicked += OnClickedEventListener;
     }
 
     private void OnDisable()

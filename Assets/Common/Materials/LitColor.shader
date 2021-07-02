@@ -4,7 +4,7 @@ Shader "Custom/LitColor"
   {
     _Color("Color", Color) = (1,1,1,1)
   }
-    SubShader
+  SubShader
   {
     Tags { "RenderType" = "Opaque" }
     Pass

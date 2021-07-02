@@ -34,7 +34,7 @@ public class Ui_Menu_GripAdjust : Common.Vr.Ui.Ui_Menu
 
   public void OnAcceptButton()
   {
-    Controller.IsInGripAdjust = false;
+    Controller.AcceptGripAdjust();
     Hide();
   }
   public void OnCancelButton()

@@ -2,6 +2,9 @@ using UnityEngine;
 using System;
 using Common;
 
+//////////////////////////////////////////////////////////////////////
+// Emulate desktop pointer (mouse and stylus) within screen texture //
+//////////////////////////////////////////////////////////////////////
 public class PointerEmulation : MonoBehaviour
 {
   public Vector2 Resolution = new Vector2(1920, 1080);

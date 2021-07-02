@@ -26,12 +26,12 @@ public class Controller : MonoBehaviour
   [SerializeField] [Range(0.0f, 1.0f)] private float _trigger;
   [SerializeField] [Range(-1.0f, 1.0f)] private float _thumbLR;
   [SerializeField] [Range(-1.0f, 1.0f)] private float _thumbTB;
-  [SerializeField] private bool _topButton;
-  [SerializeField] private bool _bottomButton;
+  [SerializeField] private bool _highButton;
+  [SerializeField] private bool _lowButton;
   [SerializeField] private bool _gripButton;
   [SerializeField] private bool _thumbButton;
-  private bool _prevTopButton;
-  private bool _prevBottomButton;
+  private bool _prevHighButton;
+  private bool _prevLowButton;
   private bool _prevGripButton;
   private bool _prevThumbButton;
 #endif
@@ -158,24 +158,31 @@ public class Controller : MonoBehaviour
       else
       {
         _instances[0].transform.parent = _parent;
-        var gripAdjustPrefsValue =
-          _instances[0].GetComponent<TransformSerializer>().SerializedTransform;
-        PlayerPrefs.SetString(_instances[0].controllerTransformPrefsKey, gripAdjustPrefsValue);
       }
     }
   }
   private static bool _isInGripAdjust;
   private static Transform _parent;
+  public static void AcceptGripAdjust()
+  {
+    IsInGripAdjust = false;
+    var gripAdjustPrefsValue =
+      _instances[0].GetComponent<TransformSerializer>().SerializedTransform;
+    PlayerPrefs.SetString(_instances[0].controllerTransformPrefsKey, gripAdjustPrefsValue);
+  }
   public static void CancelGripAdjust()
   {
+    IsInGripAdjust = false;
     _instances[0].GetComponent<TransformSerializer>().SerializedTransform =
       PlayerPrefs.GetString(_instances[0].controllerTransformPrefsKey);
-    IsInGripAdjust = false;
   }
   public static void ResetGripAdjust()
   {
-    _instances[0].GetComponent<TransformSerializer>().SerializedTransform = "";
     IsInGripAdjust = false;
+    _instances[0].GetComponent<TransformSerializer>().SerializedTransform = "";
+    var gripAdjustPrefsValue =
+      _instances[0].GetComponent<TransformSerializer>().SerializedTransform;
+    PlayerPrefs.SetString(_instances[0].controllerTransformPrefsKey, gripAdjustPrefsValue);
   }
   private string controllerTransformPrefsKey
   {
@@ -219,10 +226,8 @@ public class Controller : MonoBehaviour
   private float _focusDistance;
   private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
-  private Control _focusControl;
-  private Control _downControl;
-  private Button _focusButton;
   private ControllerVis _focusControllerVis;
+  private InputHandler _inputHandler = new InputHandler();
 
   // Copies of values (for efficiency)
   private bool _isLeft;
@@ -268,10 +273,10 @@ public class Controller : MonoBehaviour
       _mainController = this;
       _input.VrLeftHandActions.Grip.performed += OnGripButtonStart;
       _input.VrLeftHandActions.Grip.canceled += OnGripButtonEnd;
-      _input.VrLeftHandActions.ButtonTop.performed += OnTopButtonStart;
-      _input.VrLeftHandActions.ButtonTop.canceled += OnTopButtonEnd;
-      _input.VrLeftHandActions.ButtonBottom.performed += OnBottomButtonStart;
-      _input.VrLeftHandActions.ButtonBottom.canceled += OnBottomButtonEnd;
+      _input.VrLeftHandActions.HighButton.performed += OnHighButtonStart;
+      _input.VrLeftHandActions.HighButton.canceled += OnHighButtonEnd;
+      _input.VrLeftHandActions.LowButton.performed += OnLowButtonStart;
+      _input.VrLeftHandActions.LowButton.canceled += OnLowButtonEnd;
       _input.VrLeftHandActions.ThumbDown.performed += OnThumbButtonStart;
       _input.VrLeftHandActions.ThumbDown.canceled += OnThumbButtonEnd;
     }
@@ -279,10 +284,10 @@ public class Controller : MonoBehaviour
     {
       _input.VrRightHandActions.Grip.performed += OnGripButtonStart;
       _input.VrRightHandActions.Grip.canceled += OnGripButtonEnd;
-      _input.VrRightHandActions.ButtonTop.performed += OnTopButtonStart;
-      _input.VrRightHandActions.ButtonTop.canceled += OnTopButtonEnd;
-      _input.VrRightHandActions.ButtonBottom.performed += OnBottomButtonStart;
-      _input.VrRightHandActions.ButtonBottom.canceled += OnBottomButtonEnd;
+      _input.VrRightHandActions.HighButton.performed += OnHighButtonStart;
+      _input.VrRightHandActions.HighButton.canceled += OnHighButtonEnd;
+      _input.VrRightHandActions.LowButton.performed += OnLowButtonStart;
+      _input.VrRightHandActions.LowButton.canceled += OnLowButtonEnd;
       _input.VrRightHandActions.ThumbDown.performed += OnThumbButtonStart;
       _input.VrRightHandActions.ThumbDown.canceled += OnThumbButtonEnd;
     }
@@ -341,25 +346,9 @@ public class Controller : MonoBehaviour
         FocusPointerEmulation.Distance = _focusDistance;
       }
 
-      // Button focus
-      var newFocusButton = focusParent?.GetComponent<Button>();
-      if (newFocusButton != _focusControl)
-      {
-        if (_focusButton) { _focusButton.State = Button.ButtonState.Idle; }
-        _focusControl = newFocusButton;
-        _focusButton = (_focusControl as Button);
-        if (_focusButton)
-        {
-          if (!_downControl)
-          {
-            _focusButton.State = Button.ButtonState.Hovered;
-          }
-          else if (_focusButton == _downControl)
-          {
-            _focusButton.State = Button.ButtonState.Down;
-          }
-        }
-      }
+      // Control focus
+      _inputHandler.PointerHovered(focusParent?.GetComponent<Control>());
+      _inputHandler.PointerDown(_isTriggerDown);
 
       // ControllerVis focus
       var newControllerVis = _focus?.GetComponent<ControllerVis>();
@@ -381,9 +370,8 @@ public class Controller : MonoBehaviour
       _focusDistance = _maxInteractDistance;
       _focus = null;
       FocusPointerEmulation = null;
-      if (_focusButton) { _focusButton.State = Button.ButtonState.Idle; }
-      _focusControl = null;
-      _focusButton = null;
+      _inputHandler.PointerHovered(null);
+      _inputHandler.PointerDown(_isTriggerDown);
       if (_focusControllerVis)
       {
         _focusControllerVis.MyState = ControllerVis.State.Shadowed;
@@ -495,17 +483,8 @@ public class Controller : MonoBehaviour
       // Is down
       if (_isTriggerDown)
       {
-        // Button
-        if (_focusControl)
-        {
-          _downControl = _focusControl;
-          if (_focusButton)
-          {
-            _focusButton.State = Button.ButtonState.Down;
-          }
-        }
         // Screen
-        else if (FocusPointerEmulation)
+        if (FocusPointerEmulation)
         {
           FocusPointerEmulation.IsEmulating = true;
           if (_controllerIndex == 0 && !_isNearFocus)
@@ -517,12 +496,8 @@ public class Controller : MonoBehaviour
       // Is up
       else
       {
-        // Button
-        if (_downControl && _downControl == _focusControl) { _downControl.DoClick(); }
-        _downControl = null;
-        if (_focusButton) { _focusButton.State = Button.ButtonState.Hovered; }
         // Screen
-        else if (FocusPointerEmulation && _controllerIndex == 0 && !_isNearFocus)
+        if (FocusPointerEmulation && _controllerIndex == 0 && !_isNearFocus)
         {
           FocusPointerEmulation.MouseLeftButton = false;
         }
@@ -582,16 +557,16 @@ public class Controller : MonoBehaviour
     if (App_Details.Instance.UseEmulatedControls)
     {
       var dummy = new CallbackContext();
-      if (_topButton && !_prevTopButton) { OnTopButtonStart(dummy); }
-      if (!_topButton && _prevTopButton) { OnTopButtonEnd(dummy); }
-      if (_bottomButton && !_prevBottomButton) { OnBottomButtonStart(dummy); }
-      if (!_bottomButton && _prevBottomButton) { OnBottomButtonEnd(dummy); }
+      if (_highButton && !_prevHighButton) { OnHighButtonStart(dummy); }
+      if (!_highButton && _prevHighButton) { OnHighButtonEnd(dummy); }
+      if (_lowButton && !_prevLowButton) { OnLowButtonStart(dummy); }
+      if (!_lowButton && _prevLowButton) { OnLowButtonEnd(dummy); }
       if (_gripButton && !_prevGripButton) { OnGripButtonStart(dummy); }
       if (!_gripButton && _prevGripButton) { OnGripButtonEnd(dummy); }
       if (_thumbButton && !_prevThumbButton) { OnThumbButtonStart(dummy); }
       if (!_thumbButton && _prevThumbButton) { OnThumbButtonEnd(dummy); }
-      _prevTopButton = _topButton;
-      _prevBottomButton = _bottomButton;
+      _prevHighButton = _highButton;
+      _prevLowButton = _lowButton;
       _prevGripButton = _gripButton;
       _prevThumbButton = _thumbButton;
     }
@@ -605,19 +580,19 @@ public class Controller : MonoBehaviour
   {
     _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, false);
   }
-  private void OnTopButtonStart(CallbackContext obj)
+  private void OnHighButtonStart(CallbackContext obj)
   {
     _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, true);
   }
-  private void OnTopButtonEnd(CallbackContext obj)
+  private void OnHighButtonEnd(CallbackContext obj)
   {
     _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, false);
   }
-  private void OnBottomButtonStart(CallbackContext obj)
+  private void OnLowButtonStart(CallbackContext obj)
   {
     _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, true);
   }
-  private void OnBottomButtonEnd(CallbackContext obj)
+  private void OnLowButtonEnd(CallbackContext obj)
   {
     _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, false);
   }

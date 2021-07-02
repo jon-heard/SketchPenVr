@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public static class ActionTypeExtension
 {
@@ -28,6 +29,7 @@ public class ControllerAction
 
   public ActionType Type;
   public int Parameter;
+  [SerializeReference]
   public ControllerAction Next;
 
   public void Run(Controller controller, bool isDown)

@@ -35,6 +35,10 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public void SaveControllerMappings()
   {
     PlayerPrefs.SetString(App_Details.CFG__MAPPINGS, JsonUtility.ToJson(MyControllerMappings));
+    foreach (var mapping in MyControllerMappings.Mappings)
+    {
+      mapping.OnMappingChanged.Invoke(mapping);
+    }
   }
 
   public bool IsLeftHanded
@@ -72,10 +76,6 @@ public class App_Details : Common.SingletonComponent<App_Details>
 
     // Mappings
     var mappingsString = PlayerPrefs.GetString(App_Details.CFG__MAPPINGS, null);
-
-    // Uncomment to use defaults
-    mappingsString = null; 
-
     if (mappingsString != null)
     {
       try

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658850984875196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.0972, y: 0.0538, z: -0.0598}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6403658852415936651}
@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bcf8412df6898458d6c23d69332980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reversed: 1
 --- !u!1 &6403658851249900356
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +66,7 @@ GameObject:
   - component: {fileID: 6403658851249900363}
   - component: {fileID: 6403658851249900362}
   m_Layer: 0
-  m_Name: Label Thumb Left
+  m_Name: Label thumb left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,8 +80,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658851249900356}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1211, y: 0.0553, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.02720001, y: 0.0014999807, z: -0.0040000984}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 4
@@ -160,7 +161,7 @@ GameObject:
   - component: {fileID: 6403658851334317503}
   - component: {fileID: 6403658851334317502}
   m_Layer: 0
-  m_Name: Label Thumb Arrow Down
+  m_Name: Ray thumb down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,8 +175,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658851334317496}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.094600014, y: 0.0366, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.00070001313, y: -0.017200012, z: -0.004000091}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 8
@@ -255,7 +256,7 @@ GameObject:
   - component: {fileID: 6403658851379643691}
   - component: {fileID: 6403658851379643690}
   m_Layer: 0
-  m_Name: Label Thumb Arrow Left
+  m_Name: Ray thumb left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,8 +270,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658851379643684}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1117, y: 0.0546, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.01779996, y: 0.00079998747, z: -0.004000076}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 9
@@ -350,7 +351,7 @@ GameObject:
   - component: {fileID: 6403658851460613906}
   - component: {fileID: 6403658851460613357}
   m_Layer: 0
-  m_Name: Label Thumb Arrow Right
+  m_Name: Ray thumb right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,8 +365,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658851460613359}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.076, y: 0.0542, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: 0.017899979, y: 0.00040000305, z: -0.004000076}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 7
@@ -444,7 +445,7 @@ GameObject:
   - component: {fileID: 6403658851628919994}
   - component: {fileID: 6403658851628919995}
   m_Layer: 0
-  m_Name: Ray Trigger
+  m_Name: Ray trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,7 +576,7 @@ GameObject:
   - component: {fileID: 6403658851876199928}
   - component: {fileID: 6403658851876199934}
   m_Layer: 0
-  m_Name: Label Bottom
+  m_Name: Label low button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,7 +590,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658851876199930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0373, y: 0.0182, z: -0.046}
+  m_LocalPosition: {x: 0.0389, y: 0.0182, z: -0.0499}
   m_LocalScale: {x: 0.025, y: 0.025, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658852501566913}
@@ -644,7 +645,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658851876199930}
-  m_Text: Bottom
+  m_Text: Low button
   m_OffsetZ: 0
   m_CharacterSize: 0.125
   m_LineSpacing: 1
@@ -670,6 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bcf8412df6898458d6c23d69332980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reversed: 1
 --- !u!1 &6403658852018816263
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +683,7 @@ GameObject:
   - component: {fileID: 6403658852018816260}
   - component: {fileID: 6403658852018816261}
   m_Layer: 0
-  m_Name: Ray Grip
+  m_Name: Ray grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -811,7 +813,7 @@ GameObject:
   - component: {fileID: 6403658852107944418}
   - component: {fileID: 6403658852107944445}
   m_Layer: 0
-  m_Name: Label Thumb Right
+  m_Name: Label thumb right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -825,8 +827,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852107944447}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0679, y: 0.0553, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: 0.02600002, y: 0.0014999807, z: -0.0040000826}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 2
@@ -905,7 +907,7 @@ GameObject:
   - component: {fileID: 6403658852151304778}
   - component: {fileID: 6403658852151304779}
   m_Layer: 0
-  m_Name: Ray Top
+  m_Name: Ray high button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1036,7 +1038,7 @@ GameObject:
   - component: {fileID: 6403658852345649181}
   - component: {fileID: 6403658852345649155}
   m_Layer: 0
-  m_Name: Label Trigger
+  m_Name: Label trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1131,6 +1133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bcf8412df6898458d6c23d69332980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reversed: 1
 --- !u!1 &6403658852346149692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,7 +1146,7 @@ GameObject:
   - component: {fileID: 6403658852346149667}
   - component: {fileID: 6403658852346149666}
   m_Layer: 0
-  m_Name: Label Thumb Up
+  m_Name: Label thumb up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1157,8 +1160,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852346149692}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.094600014, y: 0.0922, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.00070001313, y: 0.03840001, z: -0.004000091}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 1
@@ -1238,7 +1241,7 @@ GameObject:
   - component: {fileID: 6403658852415936649}
   - component: {fileID: 6403658852415936648}
   m_Layer: 0
-  m_Name: Label Thumb Press
+  m_Name: Label thumb button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1252,8 +1255,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852415936650}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1262, y: 0.0737, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.0323, y: 0.019899994, z: -0.004}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 0
@@ -1374,10 +1377,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7405f235faaba3443b16643e08de933e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Top:
+  HighButton:
     Label: {fileID: 6403658852827526015}
     Line: {fileID: 6403658852151304773}
-  Bottom:
+  LowButton:
     Label: {fileID: 6403658851876199928}
     Line: {fileID: 6403658852693468951}
   Trigger:
@@ -1386,7 +1389,7 @@ MonoBehaviour:
   Grip:
     Label: {fileID: 6403658852613848696}
     Line: {fileID: 6403658852018816263}
-  ThumbPush:
+  ThumbButton:
     Label: {fileID: 6403658852415936648}
     Line: {fileID: 7896909287700097909}
   ThumbUp:
@@ -1414,7 +1417,7 @@ GameObject:
   - component: {fileID: 6403658852532825603}
   - component: {fileID: 6403658852532825602}
   m_Layer: 0
-  m_Name: Label Thumb Arrow Up
+  m_Name: Ray thumb up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1428,8 +1431,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852532825628}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.094600014, y: 0.0724, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.00070001313, y: 0.01860001, z: -0.004000091}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 6
@@ -1510,7 +1513,7 @@ GameObject:
   - component: {fileID: 6403658852613848696}
   - component: {fileID: 6403658852613848702}
   m_Layer: 0
-  m_Name: Label Grip
+  m_Name: Label grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1524,7 +1527,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852613848698}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0428, y: -0.0293, z: -0.0654}
+  m_LocalPosition: {x: 0.0448, y: -0.0219, z: -0.0664}
   m_LocalScale: {x: 0.025, y: 0.025, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658852501566913}
@@ -1605,6 +1608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bcf8412df6898458d6c23d69332980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reversed: 1
 --- !u!1 &6403658852616241403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1617,7 +1621,7 @@ GameObject:
   - component: {fileID: 6403658852616241406}
   - component: {fileID: 6403658852616241401}
   m_Layer: 0
-  m_Name: Label Thumb Down
+  m_Name: Label thumb down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1631,8 +1635,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852616241403}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.094600014, y: 0.0207, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.00070001313, y: -0.0331, z: -0.004000091}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 3
@@ -1711,7 +1715,7 @@ GameObject:
   - component: {fileID: 6403658852693468948}
   - component: {fileID: 6403658852693468949}
   m_Layer: 0
-  m_Name: Ray Bottom
+  m_Name: Ray low button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1840,7 +1844,7 @@ GameObject:
   - component: {fileID: 6403658852782353979}
   - component: {fileID: 6403658852782353976}
   m_Layer: 0
-  m_Name: Ray Thumb
+  m_Name: Ray thumb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1971,7 +1975,7 @@ GameObject:
   - component: {fileID: 6403658852827526015}
   - component: {fileID: 6403658852827526013}
   m_Layer: 0
-  m_Name: Label Top
+  m_Name: Label high button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1985,7 +1989,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852827526009}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.042, y: 0.0278, z: 0.0329}
+  m_LocalPosition: {x: 0.0451, y: 0.0292, z: 0.0331}
   m_LocalScale: {x: 0.025, y: 0.025, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658852501566913}
@@ -2040,7 +2044,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6403658852827526009}
-  m_Text: Top
+  m_Text: High button
   m_OffsetZ: 0
   m_CharacterSize: 0.125
   m_LineSpacing: 1
@@ -2066,6 +2070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bcf8412df6898458d6c23d69332980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reversed: 1
 --- !u!1 &7896909287700097909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2078,7 +2083,7 @@ GameObject:
   - component: {fileID: 9009045581424119983}
   - component: {fileID: 8504245352277083463}
   m_Layer: 0
-  m_Name: Label Thumb Arrow Press
+  m_Name: Ray thumb button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2092,8 +2097,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7896909287700097909}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1163, y: 0.0748, z: -0.0673}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
+  m_LocalPosition: {x: -0.022399966, y: 0.020999998, z: -0.004000091}
+  m_LocalScale: {x: 0.025000002, y: 0.024999997, z: 1}
   m_Children: []
   m_Father: {fileID: 6403658850984875197}
   m_RootOrder: 5

@@ -25,5 +25,11 @@ public class Ui_Menu_SetControls : Common.Vr.Ui.Ui_Menu
     Ui_Control_ControlSetter.ClearFocus();
   }
 
+  public void OnResetButton()
+  {
+    App_Details.Instance.MyControllerMappings.SetupDefault();
+    Hide();
+  }
+
   private string _oldControlSettings;
 }

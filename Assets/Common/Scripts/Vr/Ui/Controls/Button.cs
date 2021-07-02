@@ -42,12 +42,56 @@ namespace Common.Vr.Ui.Controls
     }
     private ButtonState _state = ButtonState.Idle;
 
-    protected override void DoClickInternal()
+    private Material _idleMaterial;
+    private Material _idleLabelMaterial;
+    private bool _isHovering;
+    private bool _isDown;
+
+    private void OnClickedEventListener(Control focus)
     {
-      OnClick.Invoke();
+      if (focus == this)
+      {
+        OnClick.Invoke();
+      }
     }
 
-    protected void RefreshVisual()
+    private void OnDownEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        State = ButtonState.Down;
+        _isDown = true;
+      }
+    }
+
+    private void OnUpEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        State = _isHovering ? ButtonState.Hovered : ButtonState.Idle;
+        _isDown = false;
+      }
+    }
+
+    private void OnHoveredEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        State = _isDown ? ButtonState.Down : ButtonState.Hovered;
+        _isHovering = true;
+      }
+    }
+
+    private void OnUnhoveredEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        State = ButtonState.Idle;
+        _isHovering = false;
+      }
+    }
+
+    private void RefreshVisual()
     {
       if (State == ButtonState.LockedDown)
       {
@@ -85,8 +129,14 @@ namespace Common.Vr.Ui.Controls
       _idleLabelMaterial = Label.GetComponent<Renderer>().material;
     }
 
-    private Material _idleMaterial;
-    private Material _idleLabelMaterial;
+    protected virtual void Start()
+    {
+      Control.OnControlClicked += OnClickedEventListener;
+      Control.OnControlDown += OnDownEventListener;
+      Control.OnControlUp += OnUpEventListener;
+      Control.OnControlHovered += OnHoveredEventListener;
+      Control.OnControlUnhovered += OnUnhoveredEventListener;
+    }
 
     private void OnLockStateChanged(bool isLocked)
     {

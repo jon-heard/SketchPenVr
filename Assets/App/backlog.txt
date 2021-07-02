@@ -1,21 +1,11 @@
-- dropdown combobox
+- scrolling combobox (as keys are too long)
 
-- add "Use default" button to top-right of controller setup
+- polish adding and removing items
 
-- have textbox only show dash when it's in focus
-	- requires an event for when anything is clicked (to lose focus)
-	- requires "FocusedTextBox" static instance to define which textbox has focus
-	- only modify text when tetbox has focus
+- text entry doesn't work unless app is in focus (which is never for build)
 
-- top/bottom to high/low
-
-- fix issue with dropdowns freezing app
-
-- fix console spam
-
-- add ui for setting up mappings
-	- one page for selecting preset, another for modifying preset
-
-- regrip shows transparent hand model (positioned around controllers)
-
+ Post prototype
+----------------
+- control set update: one page for selecting preset, another for modifying preset
 - add option to download backgrounds from url
+- fix console spam

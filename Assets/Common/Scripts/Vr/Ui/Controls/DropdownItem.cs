@@ -25,10 +25,17 @@ namespace Common.Vr.Ui.Controls
     private Dropdown _owner;
     private uint _index;
 
-    protected override void DoClickInternal()
+    protected void OnClickedEventListener(Control focus)
     {
-      _owner.Index = _index;
-      _owner.ToggleList();
+      if (focus == this)
+      {
+        _owner.Index = _index;
+      }
+    }
+
+    private void Start()
+    {
+      Control.OnControlClicked += OnClickedEventListener;
     }
   }
 }

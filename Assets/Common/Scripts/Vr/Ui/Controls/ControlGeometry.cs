@@ -4,10 +4,12 @@ namespace Common.Vr.Ui.Controls
 {
   public class ControlGeometry : MonoBehaviour
   {
-#if UNITY_EDITOR
-    public void OnMouseDown()
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+    public Control MyControl { get; private set; }
+
+    private void Start()
     {
-      transform.parent.GetComponent<Control>().DoClick();
+      MyControl = transform.parent.GetComponent<Control>();
     }
 #endif
   }

@@ -176,7 +176,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ButtonBottom",
+                    "name": "LowButton",
                     "type": "Button",
                     "id": "0f02e156-0b88-4d07-8973-7d6ad01c176b",
                     "expectedControlType": "Button",
@@ -184,7 +184,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ButtonTop",
+                    "name": "HighButton",
                     "type": "Button",
                     "id": "6e130a93-c473-4797-9ab9-7f36d799590c",
                     "expectedControlType": "Button",
@@ -244,7 +244,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ButtonBottom",
+                    "action": "LowButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -255,7 +255,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ButtonTop",
+                    "action": "HighButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -298,7 +298,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ButtonBottom",
+                    "name": "LowButton",
                     "type": "Button",
                     "id": "39116559-6497-4679-b12a-fe5faf4184b5",
                     "expectedControlType": "Button",
@@ -306,7 +306,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ButtonTop",
+                    "name": "HighButton",
                     "type": "Button",
                     "id": "388351b9-1944-43a5-8aea-5273dc949634",
                     "expectedControlType": "Button",
@@ -366,7 +366,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ButtonBottom",
+                    "action": "LowButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -377,7 +377,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ButtonTop",
+                    "action": "HighButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -397,7 +397,7 @@
                 },
                 {
                     "name": "LeftButton",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b09d5f0c-4bea-43f8-882a-7ae07207c3f1",
                     "expectedControlType": "Button",
                     "processors": "",

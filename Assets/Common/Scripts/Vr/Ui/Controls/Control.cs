@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,20 +10,16 @@ namespace Common.Vr.Ui.Controls
 
     public ObjectLocker Locker { get; private set; }
 
-    public void DoClick()
-    {
-      if (!Locker.IsLocked)
-      {
-        DoClickInternal();
-      }
-    }
+    public static Action<Control> OnControlClicked;
+    public static Action<Control> OnControlDown;
+    public static Action<Control> OnControlUp;
+    public static Action<Control> OnControlHovered;
+    public static Action<Control> OnControlUnhovered;
 
     protected virtual void Awake()
     {
       Locker = new ObjectLocker();
       Instances.Add(this);
     }
-
-    protected virtual void DoClickInternal() { }
   }
 }

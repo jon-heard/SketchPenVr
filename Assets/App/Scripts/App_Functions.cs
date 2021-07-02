@@ -19,24 +19,26 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
     }
   }
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+  private InputHandler_Mouse _mouseHandler = new InputHandler_Mouse();
+#endif
+
   private void Awake()
   {
     Backdrop = new Material(Backdrop);
     RenderSettings.skybox = Backdrop;
   }
+
   private void Start()
   {
     // Logic for the literal mouse clicking virtual buttons
-#if UNITY_EDITOR
-    _input = new App_Input();
-    _input.Mouse.LeftButton.performed += OnLeftMouseDown;
-    _input.Mouse.LeftButton.canceled += OnLeftMouseUp;
-#else
-    var _input = new App_Input();
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+    var input = new App_Input();
+    input.Enable();
+    StartCoroutine(_mouseHandler.Update(
+      _camera, input.Mouse.Position, input.Mouse.LeftButton));
 #endif
-    _input.Enable();
 
-    // Logic for repositioning screen to match height of user's head
 #if UNITY_EDITOR
     if (App_Details.Instance.UseEmulatedControls)
     {
@@ -45,10 +47,12 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
     else
 #endif
     {
-      StartCoroutine(SetupScreenHeight(_input));
+      // Logic for repositioning screen to match height of user's head
+      StartCoroutine(SetupScreenHeight(input));
     }
 
 #if !UNITY_EDITOR
+    // Logic to minimize this window
     OsHook_Window.Minimize();
 #endif
   }
@@ -65,30 +69,8 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
     }
   }
 
-// Logic for the literal mouse clicking virtual buttons
-#if UNITY_EDITOR
-  private App_Input _input;
-  private bool _isMouseDown = false;
-  private void OnLeftMouseDown(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-  {
-    if (!_isMouseDown)
-    {
-      _isMouseDown = true;
-      var ray = _camera.ScreenPointToRay(_input.Mouse.Position.ReadValue<Vector2>());
-      RaycastHit hit;
-      if (Physics.Raycast(ray, out hit))
-      {
-        hit.collider.GetComponent<ControlGeometry>()?.OnMouseDown();
-      }
-    }
-  }
-  private void OnLeftMouseUp(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-  {
-    _isMouseDown = false;
-  }
-#endif
-
 #if !UNITY_EDITOR
+  // Logic to keep window minimized
   void OnApplicationFocus(bool hasFocus)
   {
     if (hasFocus)
