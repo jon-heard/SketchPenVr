@@ -1,8 +1,7 @@
 - scrolling combobox (as keys are too long)
+	- finally make dropdown prefab (I know it's extra work, but it's necessary and worthy of effort)
 
 - polish adding and removing items
-
-- text entry doesn't work unless app is in focus (which is never for build)
 
  Post prototype
 ----------------

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Common;
+using System;
 using UnityEngine;
 
 public static class ActionTypeExtension
 {
-  public static bool HasParameter(this ControllerAction.ActionType type)
+  public static bool HasKey(this ControllerAction.ActionType type)
   {
     return
       type == ControllerAction.ActionType.KeyHit ||
@@ -28,7 +29,7 @@ public class ControllerAction
   }
 
   public ActionType Type;
-  public int Parameter;
+  public KbdKey Key;
   [SerializeReference]
   public ControllerAction Next;
 
@@ -59,32 +60,32 @@ public class ControllerAction
       case ActionType.Undo:
         if (isDown)
         {
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Control, true);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Key_Z, true);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Key_Z, false);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Control, false);
+          OsHook_Keyboard.SetKeyState(KbdKey.Control, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Key_Z, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Key_Z, false);
+          OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
       case ActionType.Redo:
         if (isDown)
         {
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Control, true);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Shift, true);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Key_Z, true);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Key_Z, false);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Shift, false);
-          OsHook_Keyboard.SetKeyState(OsHook_Keyboard.Key.Control, false);
+          OsHook_Keyboard.SetKeyState(KbdKey.Control, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Shift, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Key_Z, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Key_Z, false);
+          OsHook_Keyboard.SetKeyState(KbdKey.Shift, false);
+          OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
       case ActionType.KeyHit:
         if (isDown)
         {
-          OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, true);
-          OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, false);
+          OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
+          OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
         }
         break;
       case ActionType.KeyPress:
-        OsHook_Keyboard.SetKeyState((OsHook_Keyboard.Key)Parameter, isDown);
+        OsHook_Keyboard.SetKeyState((KbdKey)Key, isDown);
         break;
       default:
         UnityEngine.Debug.LogError("Unhandled action type: " + Type);

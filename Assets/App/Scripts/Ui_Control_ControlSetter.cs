@@ -22,7 +22,7 @@ public class Ui_Control_ControlSetter : Button
     for (var i = 0; i < _actionEditorUis.Length; i++)
     {
       var actionHasParameter =
-        ((ControllerAction.ActionType)_actionEditorUis[i].Index).HasParameter();
+        ((ControllerAction.ActionType)_actionEditorUis[i].Index).HasKey();
       _actionParameterEditorUis[i].gameObject.SetActive(actionHasParameter);
     }
   }
@@ -82,9 +82,6 @@ public class Ui_Control_ControlSetter : Button
   }
   private static Ui_Control_ControlSetter __focus;
 
-  private static Dictionary<int, uint> _key_ValueToEnumIndex;
-  private static Dictionary<uint, int> _key_EnumIndexToValue;
-
   private bool _editing = false;
 
   protected override void Start()
@@ -93,7 +90,7 @@ public class Ui_Control_ControlSetter : Button
     Control.OnControlClicked += OnClickedEventListener;
 
     var actionTypeList = new List<string>(Enum.GetNames(typeof(ControllerAction.ActionType)));
-    var actionParameterList = new List<string>(Enum.GetNames(typeof(OsHook_Keyboard.Key)));
+    var actionParameterList = KbdKeyHelp.GetTitleList();
     for(var i = 0; i < _actionEditorUis.Length; i++)
     {
       _actionEditorUis[i].SetList(actionTypeList);
@@ -103,10 +100,6 @@ public class Ui_Control_ControlSetter : Button
 
   private void OnEnable()
   {
-    if (_key_ValueToEnumIndex == null || _key_EnumIndexToValue == null)
-    {
-      SetupKeyIntConversions();
-    }
     _actionDescription.text = Mapping.ActionTitles[(int)_focusControl];
   }
 
@@ -125,18 +118,6 @@ public class Ui_Control_ControlSetter : Button
     }
   }
 
-  private static void SetupKeyIntConversions()
-  {
-    _key_ValueToEnumIndex = new Dictionary<int, uint>();
-    _key_EnumIndexToValue = new Dictionary<uint, int>();
-    var keys = Enum.GetValues(typeof(OsHook_Keyboard.Key));
-    for (uint i = 0; i < keys.Length; i++)
-    {
-      _key_ValueToEnumIndex[(int)keys.GetValue(i)] = i;
-      _key_EnumIndexToValue[i] = (int)keys.GetValue(i);
-    }
-  }
-
   private void UpdateActionEditorUiFromActions()
   {
     var editing = _editing;
@@ -152,9 +133,9 @@ public class Ui_Control_ControlSetter : Button
       if (action != null)
       {
         _actionEditorUis[i].gameObject.SetActive(true);
-        _actionParameterEditorUis[i].gameObject.SetActive(action.Type.HasParameter());
+        _actionParameterEditorUis[i].gameObject.SetActive(action.Type.HasKey());
         _actionEditorUis[i].Index = (uint)action.Type;
-        _actionParameterEditorUis[i].Index = _key_ValueToEnumIndex[(int)action.Parameter];
+        _actionParameterEditorUis[i].Index = (uint)action.Key;
         action = action.Next;
       }
       else
@@ -196,7 +177,7 @@ public class Ui_Control_ControlSetter : Button
       action.Type = (ControllerAction.ActionType)_actionEditorUis[i].Index;
       if (_actionParameterEditorUis[i].Index != Global.NullUint)
       {
-        action.Parameter = _key_EnumIndexToValue[_actionParameterEditorUis[i].Index];
+        action.Key = (KbdKey)_actionParameterEditorUis[i].Index;
       }
       if (!keepNothingActions)
       {

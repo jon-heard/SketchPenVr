@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 
 [Serializable]
 public class MappingCollection
@@ -66,7 +67,7 @@ public class ControllerMapping
       control = (int)Controls.LowButton;
       ActionTitles[control] = "Color pick";
       Actions[control].Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Control;
+      Actions[control].Key = KbdKey.Control;
       Actions[control].Next = new ControllerAction();
       Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
@@ -74,10 +75,10 @@ public class ControllerMapping
       control = (int)Controls.ThumbButton;
       ActionTitles[control] = "Rotate";
       Actions[control].Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Shift;
+      Actions[control].Key = KbdKey.Shift;
       Actions[control].Next = new ControllerAction();
       Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
+      Actions[control].Next.Key = KbdKey.Space;
       Actions[control].Next.Next = new ControllerAction();
       Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
@@ -85,7 +86,7 @@ public class ControllerMapping
       control = (int)Controls.ThumbLeft;
       ActionTitles[control] = "Brush size";
       Actions[control].Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Shift;
+      Actions[control].Key = KbdKey.Shift;
       Actions[control].Next = new ControllerAction();
       Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
@@ -93,7 +94,7 @@ public class ControllerMapping
       control = (int)Controls.ThumbUp;
       ActionTitles[control] = "Pan";
       Actions[control].Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Space;
+      Actions[control].Key = KbdKey.Space;
       Actions[control].Next = new ControllerAction();
       Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
@@ -101,10 +102,10 @@ public class ControllerMapping
       control = (int)Controls.ThumbDown;
       ActionTitles[control] = "Zoom";
       Actions[control].Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Control;
+      Actions[control].Key = KbdKey.Control;
       Actions[control].Next = new ControllerAction();
       Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
-      Actions[control].Next.Parameter = (int)OsHook_Keyboard.Key.Space;
+      Actions[control].Next.Key = KbdKey.Space;
       Actions[control].Next.Next = new ControllerAction();
       Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
 
@@ -112,7 +113,7 @@ public class ControllerMapping
       control = (int)Controls.ThumbRight;
       ActionTitles[control] = "Mirror";
       Actions[control].Type = ControllerAction.ActionType.KeyHit;
-      Actions[control].Parameter = (int)OsHook_Keyboard.Key.Key_M;
+      Actions[control].Key = KbdKey.Key_M;
     }
     else
     {

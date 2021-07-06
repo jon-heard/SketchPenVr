@@ -116,7 +116,7 @@ public class PointerEmulation : MonoBehaviour
   private void Update()
   {
     if (_isEmulatingMouse) { UpdateMousePosition(); }
-    if (OsHook_Keyboard.IsKeyDown(OsHook_Keyboard.Key.Escape)) { IsEmulating = false; }
+    if (OsHook_Keyboard.IsKeyDown(KbdKey.Escape)) { IsEmulating = false; }
   }
 
   private void UpdateMousePosition()
