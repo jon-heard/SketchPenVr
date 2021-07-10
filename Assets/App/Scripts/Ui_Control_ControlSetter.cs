@@ -41,7 +41,7 @@ public class Ui_Control_ControlSetter : Button
       }
       action = action.Next;
     }
-    UpdateActionEditorUiFromActions();
+    UpdateActionEditorUiFromActions(true);
   }
 
   public ControllerMapping Mapping
@@ -117,19 +117,32 @@ public class Ui_Control_ControlSetter : Button
     }
   }
 
-  private void UpdateActionEditorUiFromActions()
+  private void UpdateActionEditorUiFromActions(bool showNothingActions = false)
   {
+    // Falsify "editing" flag
     var editing = _editing;
     _editing = false;
 
+    // Title update
     __focus._actionDescriptionEditor.Text = Mapping.ActionTitles[(int)__focus._focusControl];
 
-    var action = Action;
-    var buttonAdded = false;
+    // All "Add action" buttons default to hidden
     foreach (var button in _addActionButtons) { button.SetActive(false); }
-    for (var i = 0; i < _actionEditorUis.Length; i++)
+
+    // ALWAYS Setup first action ui
+    var action = Action;
+    var addActionButtonEnabled = false;
+    _actionEditorUis[0].gameObject.SetActive(true);
+    _actionParameterEditorUis[0].gameObject.SetActive(action.Type.HasKey());
+    _actionEditorUis[0].Index = (uint)action.Type;
+    _actionParameterEditorUis[0].Index = (uint)action.Key;
+    action = action.Next;
+
+    // Setup subsequent action uis conditionally on existance of their actions
+    for (var i = 1; i < _actionEditorUis.Length; i++)
     {
-      if (action != null)
+      if (action != null &&
+          (action.Type != ControllerAction.ActionType.Nothing || showNothingActions))
       {
         _actionEditorUis[i].gameObject.SetActive(true);
         _actionParameterEditorUis[i].gameObject.SetActive(action.Type.HasKey());
@@ -139,13 +152,13 @@ public class Ui_Control_ControlSetter : Button
       }
       else
       {
-        _actionEditorUis[i].Index = 0;
         _actionEditorUis[i].gameObject.SetActive(false);
         _actionParameterEditorUis[i].gameObject.SetActive(false);
-        if (!buttonAdded && (i - 1) < _actionEditorUis.Length)
+        _actionEditorUis[i].Index = 0;
+        if (!addActionButtonEnabled && (i - 1) < _actionEditorUis.Length)
         {
           _addActionButtons[i - 1].SetActive(true);
-          buttonAdded = true;
+          addActionButtonEnabled = true;
         }
       }
     }
@@ -153,13 +166,14 @@ public class Ui_Control_ControlSetter : Button
     _editing = editing;
   }
 
-  private void UpdateActionsFromActionEditorUi(bool keepNothingActions = false)
+  private void UpdateActionsFromActionEditorUi(bool showNothingActions = false)
   {
-    Mapping.ActionTitles[(int)__focus._focusControl] = __focus._actionDescriptionEditor.Text;
-    __focus._actionDescription.text = __focus._actionDescriptionEditor.Text;
+    // Title update
+    Mapping.ActionTitles[(int)__focus._focusControl] = __focus._actionDescription.text =
+      __focus._actionDescriptionEditor.Text;
 
     var i = 0;
-    if (!keepNothingActions)
+    if (!showNothingActions)
     {
       while ((i < _actionEditorUis.Length) &&
              ((_actionEditorUis[i].Index == 0) ||
@@ -170,26 +184,24 @@ public class Ui_Control_ControlSetter : Button
     }
     var action = Action;
     action.Type = ControllerAction.ActionType.Nothing;
+    action.Key = KbdKey.None;
     for (; i < _actionEditorUis.Length; i++)
     {
       if (action == null) { break; }
       action.Type = (ControllerAction.ActionType)_actionEditorUis[i].Index;
-      if (_actionParameterEditorUis[i].Index != Global.NullUint)
+      action.Key = action.Type.HasKey() ? (KbdKey)_actionParameterEditorUis[i].Index : KbdKey.None;
+      while ((i < _actionEditorUis.Length - 1) &&
+              ((_actionEditorUis[i + 1].Index == 0) ||
+              (_actionEditorUis[i + 1].Index == Global.NullUint)) &&
+              (!showNothingActions || action.Next == null ||
+               action.Next.Type != ControllerAction.ActionType.Nothing))
       {
-        action.Key = (KbdKey)_actionParameterEditorUis[i].Index;
-      }
-      if (!keepNothingActions)
-      {
-        while ((i < _actionEditorUis.Length - 1) &&
-               ((_actionEditorUis[i + 1].Index == 0) ||
-                (_actionEditorUis[i + 1].Index == Global.NullUint)))
-        {
-          i++;
-        }
+        action.Next = null;
+        i++;
       }
       if (i < _actionEditorUis.Length - 1)
       {
-        action.Next = (i < _actionEditorUis.Length - 1) ? new ControllerAction() : null;
+        action.Next = action.Next ?? new ControllerAction();
         action = action?.Next;
       }
     }

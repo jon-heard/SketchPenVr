@@ -1,5 +1,3 @@
-- polish adding and removing items
-
 - experiment with feedback during drawing
 
 - add feedback before drawing
@@ -8,7 +6,7 @@
 
 - have handedness be dropdown in settings
 
-- make video
+- make tutorial video
 
  Post prototype
 ----------------
