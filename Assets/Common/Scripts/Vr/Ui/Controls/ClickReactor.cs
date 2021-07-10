@@ -15,9 +15,13 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
-    private void Start()
+    private void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
+    }
+    private void OnDisable()
+    {
+      Control.OnControlClicked -= OnClickedEventListener;
     }
   }
 }

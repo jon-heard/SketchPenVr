@@ -1,10 +1,19 @@
-- scrolling combobox (as keys are too long)
-	- finally make dropdown prefab (I know it's extra work, but it's necessary and worthy of effort)
-
 - polish adding and removing items
+
+- experiment with feedback during drawing
+
+- add feedback before drawing
+
+- add feedback toggle dropdown in settings
+
+- have handedness be dropdown in settings
+
+- make video
 
  Post prototype
 ----------------
+- have scrollbar adjust to different item visibility counts (5 items at a time vs 10, for example)
+- have scrollbar react to thumb up/down (necessitates blocking thumb input from main app)
 - control set update: one page for selecting preset, another for modifying preset
 - add option to download backgrounds from url
 - fix console spam

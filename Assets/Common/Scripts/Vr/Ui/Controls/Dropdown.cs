@@ -10,8 +10,11 @@ namespace Common.Vr.Ui.Controls
     [Header("Wiring")]
     [SerializeField] private TextMesh Label;
     [SerializeField] private Transform Geometry;
-    [SerializeField] private GameObject List;
+    [SerializeField] private GameObject DroppedUi;
+    [SerializeField] private Transform Items;
     [SerializeField] private DropdownItem ItemPrefab;
+    [SerializeField] private Button DownButton;
+    [SerializeField] private Scrollbar Scroll;
 
     public uint Index
     {
@@ -37,35 +40,40 @@ namespace Common.Vr.Ui.Controls
       {
         Destroy(listItem);
       }
+      _const_visibleListSize = App_Details.Instance.MyCommonDetails.SCROLLBAR_VISIBLE_LIST_SIZE;
       _listItems.Clear();
-      var parent = List.transform;
+      _scrollIndex = 0;
       for (uint i = 0; i < src.Count; i++)
       {
-        var newListItem = Instantiate(ItemPrefab, parent);
+        var newListItem = Instantiate(ItemPrefab, Items);
         _listItems.Add(newListItem);
         newListItem.Initialize(src[(int)i], this, i);
-        newListItem.gameObject.SetActive(true);
+        newListItem.gameObject.SetActive(i < _const_visibleListSize);
       }
+      Scroll.SetRange(_const_visibleListSize, (uint)src.Count);
     }
 
     public void ToggleListVisibility()
     {
-      List.SetActive(!List.activeSelf);
+      DroppedUi.SetActive(!DroppedUi.activeSelf);
     }
     public void SetListVisibility(bool isShown)
     {
-      List.SetActive(isShown);
+      DroppedUi.SetActive(isShown);
     }
 
     private List<DropdownItem> _listItems = new List<DropdownItem>();
+    private float _itemSize;
+    private uint _scrollIndex;
+    private uint _const_visibleListSize;
 
     protected void OnClickedEventListener(Control focus)
     {
-      if (focus == this)
+      if (focus == this || focus == DownButton)
       {
         ToggleListVisibility();
       }
-      else
+      else if (!Scroll.IsPartOfScroll(focus))
       {
         SetListVisibility(false);
       }
@@ -73,12 +81,38 @@ namespace Common.Vr.Ui.Controls
 
     private void Start()
     {
+      Scroll.OnScrollValueChanged += OnScrollValueChangedEventListener;
+      _itemSize = ItemPrefab.Height;
+    }
+
+    private void OnEnable()
+    {
       Control.OnControlClicked += OnClickedEventListener;
     }
 
     private void OnDisable()
     {
-      List.SetActive(false);
+      Control.OnControlClicked -= OnClickedEventListener;
+      DroppedUi.SetActive(false);
+    }
+
+    private void OnScrollValueChangedEventListener(uint value)
+    {
+      if (value != _scrollIndex)
+      {
+        var t = Items.localPosition;
+        t.y = value * _itemSize;
+        Items.localPosition = t;
+        for (var i = 0; i < _const_visibleListSize; i++)
+        {
+          _listItems[(int)(i + _scrollIndex)].gameObject.SetActive(false);
+        }
+        _scrollIndex = value;
+        for (var i = 0; i < _const_visibleListSize; i++)
+        {
+          _listItems[(int)(i + _scrollIndex)].gameObject.SetActive(true);
+        }
+      }
     }
   }
 }

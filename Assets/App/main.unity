@@ -1620,9 +1620,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70e449e2a9ccc240b1647cb03b45484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VrUiDetails:
+  MyCommonDetails:
     TEXTBOX_TEXT_X_OFFSET: 0.01
     TEXTBOX_CARET_BLINKSPEED: 0.2
+    SCROLLBAR_DRAGGER_MINSIZE: 0.035
+    SCROLLBAR_VISIBLE_LIST_SIZE: 10
   UseEmulatedControls: 0
   MAX_INTERACT_DISTANCE: 100
   TRIGGER_DOWN_PRESSURE: 0.5

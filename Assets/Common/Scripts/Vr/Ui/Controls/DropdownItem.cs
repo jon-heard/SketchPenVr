@@ -10,6 +10,11 @@ namespace Common.Vr.Ui.Controls
 
     public string Text { get; private set; }
 
+    public float Height
+    {
+      get { return _geometry.transform.localScale.y; }
+    }
+
     public void Initialize(string value, Dropdown owner, uint index)
     {
       Text = value;
@@ -18,7 +23,7 @@ namespace Common.Vr.Ui.Controls
 
       _label.text = value;
       var t = transform.localPosition;
-      t.y -= _geometry.transform.localScale.y * index;
+      t.y -= Height * index;
       transform.localPosition = t;
     }
 
@@ -33,9 +38,14 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
-    private void Start()
+    private void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
+    }
+
+    private void OnDisable()
+    {
+      Control.OnControlClicked -= OnClickedEventListener;
     }
   }
 }

@@ -347,8 +347,7 @@ public class Controller : MonoBehaviour
       }
 
       // Control focus
-      _inputHandler.PointerHovered(focusParent?.GetComponent<Control>());
-      _inputHandler.PointerDown(_isTriggerDown);
+      _inputHandler.UpdatePointer(focusParent?.GetComponent<Control>(), _isTriggerDown, hitInfo.textureCoord);
 
       // ControllerVis focus
       var newControllerVis = _focus?.GetComponent<ControllerVis>();
@@ -370,8 +369,7 @@ public class Controller : MonoBehaviour
       _focusDistance = _maxInteractDistance;
       _focus = null;
       FocusPointerEmulation = null;
-      _inputHandler.PointerHovered(null);
-      _inputHandler.PointerDown(_isTriggerDown);
+      _inputHandler.UpdatePointer(null, _isTriggerDown, Vector2.zero);
       if (_focusControllerVis)
       {
         _focusControllerVis.MyState = ControllerVis.State.Shadowed;

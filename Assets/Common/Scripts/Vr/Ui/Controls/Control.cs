@@ -15,6 +15,7 @@ namespace Common.Vr.Ui.Controls
     public static Action<Control> OnControlUp;
     public static Action<Control> OnControlHovered;
     public static Action<Control> OnControlUnhovered;
+    public static Action<Vector3> OnPointMoved;
 
     protected virtual void Awake()
     {

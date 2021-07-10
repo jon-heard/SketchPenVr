@@ -129,13 +129,22 @@ namespace Common.Vr.Ui.Controls
       _idleLabelMaterial = Label.GetComponent<Renderer>().material;
     }
 
-    protected virtual void Start()
+    private void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
       Control.OnControlDown += OnDownEventListener;
       Control.OnControlUp += OnUpEventListener;
       Control.OnControlHovered += OnHoveredEventListener;
       Control.OnControlUnhovered += OnUnhoveredEventListener;
+    }
+
+    private void OnDisable()
+    {
+      Control.OnControlClicked -= OnClickedEventListener;
+      Control.OnControlDown -= OnDownEventListener;
+      Control.OnControlUp -= OnUpEventListener;
+      Control.OnControlHovered -= OnHoveredEventListener;
+      Control.OnControlUnhovered -= OnUnhoveredEventListener;
     }
 
     private void OnLockStateChanged(bool isLocked)

@@ -84,9 +84,8 @@ public class Ui_Control_ControlSetter : Button
 
   private bool _editing = false;
 
-  protected override void Start()
+  protected void Start()
   {
-    base.Start();
     Control.OnControlClicked += OnClickedEventListener;
 
     var actionTypeList = new List<string>(Enum.GetNames(typeof(ControllerAction.ActionType)));

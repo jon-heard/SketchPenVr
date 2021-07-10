@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class App_Details : Common.SingletonComponent<App_Details>
 {
-  public Common.Vr.Ui.VrUiDetails VrUiDetails;
+  public Common.CommonDetails MyCommonDetails;
 
 #if UNITY_EDITOR
   public bool UseEmulatedControls = false;

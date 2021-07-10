@@ -23,7 +23,7 @@ namespace Common.Vr.Ui.Controls
         Label.text = _text + "<material=1>|</material>";
         var leftChar = 0;
         while (Label.GetTextWidth() >
-            Geometry.transform.localScale.x - App_Details.Instance.VrUiDetails.TEXTBOX_TEXT_X_OFFSET)
+            Geometry.transform.localScale.x - App_Details.Instance.MyCommonDetails.TEXTBOX_TEXT_X_OFFSET)
         {
           leftChar++;
           Label.text = "..." + _text.Substring(leftChar) + "<material=1>|</material>";
@@ -49,16 +49,21 @@ namespace Common.Vr.Ui.Controls
       base.Awake();
       Label.anchor = TextAnchor.MiddleLeft;
       var p = Label.transform.localPosition;
-      p.x = -Geometry.transform.localScale.x * 0.5f + App_Details.Instance.VrUiDetails.TEXTBOX_TEXT_X_OFFSET;
+      p.x = -Geometry.transform.localScale.x * 0.5f + App_Details.Instance.MyCommonDetails.TEXTBOX_TEXT_X_OFFSET;
       Label.transform.localPosition = p;
-      _blinkSpeed = App_Details.Instance.VrUiDetails.TEXTBOX_CARET_BLINKSPEED;
+      _blinkSpeed = App_Details.Instance.MyCommonDetails.TEXTBOX_CARET_BLINKSPEED;
       _blinkMaterial = Label.GetComponent<Renderer>().materials[1];
       Text = "";
     }
 
-    private void Start()
+    private void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
+    }
+
+    private void OnDisable()
+    {
+      Control.OnControlClicked -= OnClickedEventListener;
     }
 
     private void OnDestroy()
