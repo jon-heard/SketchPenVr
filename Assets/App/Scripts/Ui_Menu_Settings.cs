@@ -1,5 +1,6 @@
 using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ui_Menu_Settings : Ui_Menu
@@ -8,23 +9,14 @@ public class Ui_Menu_Settings : Ui_Menu
   [SerializeField] private Ui_Menu _menu_backdrops;
   [SerializeField] private Ui_Menu _menu_gripAdjust;
   [SerializeField] private Button _button_PressureLength;
-  [SerializeField] private GameObject _button_handedness_left;
-  [SerializeField] private GameObject _button_handedness_right;
+  [SerializeField] private Dropdown _dropdown_handedness;
   [SerializeField] private Dropdown _dropdown_pressureLength;
 
   public override bool Show(Button source = null)
   {
-    if (App_Details.Instance.IsLeftHanded)
-    {
-      _button_handedness_left.SetActive(true);
-      _button_handedness_right.SetActive(false);
-    }
-    else
-    {
-      _button_handedness_left.SetActive(false);
-      _button_handedness_right.SetActive(true);
-    }
+    _dropdown_handedness.Index = (uint)(App_Details.Instance.IsLeftHanded ? 0 : 1);
     _dropdown_pressureLength.gameObject.SetActive(false);
+    _dropdown_pressureLength.Index = App_Details.Instance.PressureLengthIndex;
     _button_PressureLength.State = Button.ButtonState.NotLockedDown;
     return base.Show(source);
   }
@@ -60,9 +52,9 @@ public class Ui_Menu_Settings : Ui_Menu
     App_Details.Instance.PressureLengthIndex = _dropdown_pressureLength.Index;
   }
 
-  public void OnHandednessButton()
+  public void OnHandednessChanged()
   {
-    App_Details.Instance.IsLeftHanded = !App_Details.Instance.IsLeftHanded;
+    App_Details.Instance.IsLeftHanded = (_dropdown_handedness.Index == 0);
     Hide();
   }
 
@@ -70,6 +62,6 @@ public class Ui_Menu_Settings : Ui_Menu
   {
     base.Start();
     _dropdown_pressureLength.SetList(App_Details.Instance.PressureLengthTitles);
-    _dropdown_pressureLength.Index = App_Details.Instance.PressureLengthIndex;
+    _dropdown_handedness.SetList(new List<string> { "Left handed", "Right handed" });
   }
 }
