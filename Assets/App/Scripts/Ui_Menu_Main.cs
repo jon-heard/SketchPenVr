@@ -19,7 +19,7 @@ public class Ui_Menu_Main : Common.Vr.Ui.Ui_Menu
 
   public void OnQuitButton(Button source)
   {
-    Ui_Popup_Confirm.ShowOnButtonParent(source, "Confirm quitting\nVirtualStylusVr", (confirmed) =>
+    Ui_Popup_Confirm.ShowOnButtonParent(source, "Confirm quitting\nSketchPenVr", (confirmed) =>
     {
       Hide();
       if (confirmed)
