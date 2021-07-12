@@ -2,6 +2,7 @@ using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR;
 using static UnityEngine.InputSystem.InputAction;
 
 public class Controller : MonoBehaviour
@@ -11,11 +12,11 @@ public class Controller : MonoBehaviour
   ///////////
   public enum ThumbState
   {
+    Center,
     Up = ControllerMapping.Controls.ThumbUp,
     Right = ControllerMapping.Controls.ThumbRight,
     Down = ControllerMapping.Controls.ThumbDown,
-    Left = ControllerMapping.Controls.ThumbLeft,
-    Center
+    Left = ControllerMapping.Controls.ThumbLeft
   }
 
   ///////////////
@@ -233,6 +234,7 @@ public class Controller : MonoBehaviour
   private bool _isLeft;
   private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
+  private InputDevice? _myXrDevice;
   private static float _maxInteractDistance;
   private static float _TriggerDownPressure;
   private static float _ThumbDownPressure;
@@ -302,6 +304,15 @@ public class Controller : MonoBehaviour
     // ControllerVis init
     _controllerVis.Mapping = _myControllerMapping =
       App_Details.Instance.MyControllerMappings.Mappings[_controllerIndex];
+
+    // Haptic feedback init
+    _myXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
+    HapticCapabilities caps;
+    if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
+    {
+      _myXrDevice = null;
+      Debug.Log("No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
+    }
   }
 
   //////////////////////////
@@ -347,7 +358,7 @@ public class Controller : MonoBehaviour
       }
 
       // Control focus
-      _inputHandler.UpdatePointer(focusParent?.GetComponent<Control>(), _isTriggerDown, hitInfo.textureCoord);
+      _inputHandler.UpdatePointer(focusParent?.GetComponent<Control>(), _isTriggerDown, hitInfo.point);
 
       // ControllerVis focus
       var newControllerVis = _focus?.GetComponent<ControllerVis>();
@@ -369,7 +380,7 @@ public class Controller : MonoBehaviour
       _focusDistance = _maxInteractDistance;
       _focus = null;
       FocusPointerEmulation = null;
-      _inputHandler.UpdatePointer(null, _isTriggerDown, Vector2.zero);
+      _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
       if (_focusControllerVis)
       {
         _focusControllerVis.MyState = ControllerVis.State.Shadowed;
@@ -433,13 +444,17 @@ public class Controller : MonoBehaviour
 
     // Update pen
 #if UNITY_EDITOR
-    if (!App_Details.Instance.UseEmulatedControls)
+    if (App_Details.Instance.MyInputType == App_Details.InputType.Vr)
 #endif
     {
       FocusPointerEmulation.SetPenState(
         penPressure * triggerAdjust, rotation, tilt, Controller.IsFlipped);
     }
     _isPenActive = true;
+    if (penPressure * triggerAdjust > 0.0f)
+    {
+      _myXrDevice?.SendHapticImpulse(0, 1.0f, 0.1f);
+    }
   }
 
   /////////////////
@@ -456,7 +471,7 @@ public class Controller : MonoBehaviour
       _input.VrLeftHandActions.TriggerPressure.ReadValue<float>() :
       _input.VrRightHandActions.TriggerPressure.ReadValue<float>();
 #if UNITY_EDITOR
-    if (App_Details.Instance.UseEmulatedControls)
+    if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
     {
       _triggerPressure = _trigger;
     }
@@ -520,7 +535,7 @@ public class Controller : MonoBehaviour
       _input.VrLeftHandActions.ThumbPressure.ReadValue<Vector2>() :
       _input.VrRightHandActions.ThumbPressure.ReadValue<Vector2>();
 #if UNITY_EDITOR
-    if (App_Details.Instance.UseEmulatedControls)
+    if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
     {
       pressure.x = _thumbLR;
       pressure.x = _thumbTB;
@@ -552,7 +567,7 @@ public class Controller : MonoBehaviour
 #if UNITY_EDITOR
   private void HandleEmulatedButtons()
   {
-    if (App_Details.Instance.UseEmulatedControls)
+    if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
     {
       var dummy = new CallbackContext();
       if (_highButton && !_prevHighButton) { OnHighButtonStart(dummy); }

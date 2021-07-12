@@ -1,7 +1,7 @@
+- adjustable pressure range
+
 - experiment with feedback during drawing
-
 - add feedback before drawing
-
 - add feedback toggle dropdown in settings
 
 - have handedness be dropdown in settings

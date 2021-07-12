@@ -19,28 +19,31 @@ namespace Common.Vr.Ui.Controls
     private Vector3 _dragPoint;
     private Vector3 _dragStartPosition;
     private bool _isDragging;
-    private bool _isHovering = true;
+    private Material _idleMaterial;
 
     private void Start()
     {
       _originalSize = Geometry.size;
       _draggingSize = _originalSize.GetScaled(DraggingOverage);
+      _idleMaterial = Geometry.GetComponent<Renderer>().material;
     }
 
     private void OnEnable()
     {
       Control.OnControlDown += OnDownEventListener;
       Control.OnControlUp += OnUpEventListener;
+      Control.OnControlHovered += OnHoveredEventListener;
       Control.OnControlUnhovered += OnUnhoveredEventListener;
-      Control.OnPointMoved += OnPointerMovedEventListener;
+      Control.OnPointerMoved += OnPointerMovedEventListener;
     }
 
     private void OnDisable()
     {
       Control.OnControlDown -= OnDownEventListener;
       Control.OnControlUp -= OnUpEventListener;
+      Control.OnControlUnhovered += OnUnhoveredEventListener;
       Control.OnControlUnhovered -= OnUnhoveredEventListener;
-      Control.OnPointMoved -= OnPointerMovedEventListener;
+      Control.OnPointerMoved -= OnPointerMovedEventListener;
     }
 
     private void OnDownEventListener(Control focus)
@@ -60,12 +63,25 @@ namespace Common.Vr.Ui.Controls
       _isDragging = false;
     }
 
+    private void OnHoveredEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        Geometry.GetComponent<Renderer>().material =
+          App_Resources.Instance.MyCommonResources.ButtonHoveredMaterial;
+      }
+    }
+
     private void OnUnhoveredEventListener(Control focus)
     {
-      if (focus == this && _isDragging)
+      if (focus == this)
       {
-        transform.localPosition = _dragStartPosition;
-        OnDragged?.Invoke(transform.localPosition);
+        Geometry.GetComponent<Renderer>().material = _idleMaterial;
+        if (_isDragging)
+        {
+          transform.localPosition = _dragStartPosition;
+          OnDragged?.Invoke(transform.localPosition);
+        }
       }
     }
 
@@ -77,7 +93,7 @@ namespace Common.Vr.Ui.Controls
         if (_isDragging)
         {
           var dragAdjust = (transform.position - _point) - _dragPoint;
-          transform.position -= dragAdjust.GetScaled(AxisScales);
+          transform.localPosition -= dragAdjust.GetScaled(AxisScales);
           transform.localPosition = transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);
           OnDragged?.Invoke(transform.localPosition);
         }

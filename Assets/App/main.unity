@@ -1625,7 +1625,7 @@ MonoBehaviour:
     TEXTBOX_CARET_BLINKSPEED: 0.2
     SCROLLBAR_DRAGGER_MINSIZE: 0.035
     SCROLLBAR_VISIBLE_LIST_SIZE: 10
-  UseEmulatedControls: 0
+  MyInputType: 1
   MAX_INTERACT_DISTANCE: 100
   TRIGGER_DOWN_PRESSURE: 0.5
   THUMB_DOWN_PRESSURE: 0.75
@@ -1763,9 +1763,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4fead4fdc1653945910c1f9fcec709f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonHoveredMaterial: {fileID: 2100000, guid: 3d06d8bdc8d2e3044ba452d643069e70, type: 2}
-  ButtonDownMaterial: {fileID: 2100000, guid: f0043291d0f05774790f639bc8523e1d, type: 2}
-  LabelDisabledMaterial: {fileID: 2100000, guid: 1927d76f88c6a5c47931ed8fdff46e99, type: 2}
+  MyCommonResources:
+    ButtonHoveredMaterial: {fileID: 2100000, guid: 3d06d8bdc8d2e3044ba452d643069e70, type: 2}
+    ButtonDownMaterial: {fileID: 2100000, guid: f0043291d0f05774790f639bc8523e1d, type: 2}
+    LabelDisabledMaterial: {fileID: 2100000, guid: 1927d76f88c6a5c47931ed8fdff46e99, type: 2}
+    ScrollbarHoveredMaterial: {fileID: 2100000, guid: 9e048b8b12b0ca54089090686cbf2843, type: 2}
+    DropdownItemHoveredMaterial: {fileID: 2100000, guid: 68cca3a39d882d94382368507d4eb791, type: 2}
   ControllerVisHidden: {fileID: 2100000, guid: 0532788eca8ff7e4491f82888ce91b3f, type: 2}
   ControllerVisShadowed: {fileID: 2100000, guid: ed7180620dc1565458a4284a3908e9d2, type: 2}
   ControllerVisFull: {fileID: 2100000, guid: bb358aab5b7910d488f940b04eaa3072, type: 2}
@@ -2312,7 +2315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0

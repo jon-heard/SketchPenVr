@@ -95,13 +95,14 @@ namespace Common.Vr.Ui.Controls
     {
       if (State == ButtonState.LockedDown)
       {
-        Geometry.material = App_Resources.Instance.ButtonDownMaterial;
+        Geometry.material = App_Resources.Instance.MyCommonResources.ButtonDownMaterial;
         Label.GetComponent<Renderer>().material = _idleLabelMaterial;
       }
       else if (Locker.IsLocked)
       {
         Geometry.material = _idleMaterial;
-        Label.GetComponent<Renderer>().material = App_Resources.Instance.LabelDisabledMaterial;
+        Label.GetComponent<Renderer>().material =
+          App_Resources.Instance.MyCommonResources.LabelDisabledMaterial;
       }
       else
       {
@@ -111,10 +112,10 @@ namespace Common.Vr.Ui.Controls
             Geometry.material = _idleMaterial;
             break;
           case ButtonState.Hovered:
-            Geometry.material = App_Resources.Instance.ButtonHoveredMaterial;
+            Geometry.material = App_Resources.Instance.MyCommonResources.ButtonHoveredMaterial;
             break;
           case ButtonState.Down:
-            Geometry.material = App_Resources.Instance.ButtonDownMaterial;
+            Geometry.material = App_Resources.Instance.MyCommonResources.ButtonDownMaterial;
             break;
         }
         Label.GetComponent<Renderer>().material = _idleLabelMaterial;
@@ -129,7 +130,7 @@ namespace Common.Vr.Ui.Controls
       _idleLabelMaterial = Label.GetComponent<Renderer>().material;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
       Control.OnControlDown += OnDownEventListener;
@@ -138,7 +139,7 @@ namespace Common.Vr.Ui.Controls
       Control.OnControlUnhovered += OnUnhoveredEventListener;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
       Control.OnControlClicked -= OnClickedEventListener;
       Control.OnControlDown -= OnDownEventListener;

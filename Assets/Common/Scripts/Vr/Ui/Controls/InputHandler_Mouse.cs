@@ -7,7 +7,6 @@ namespace Common.Vr.Ui.Controls
   public class InputHandler_Mouse : InputHandler
   {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-
     public IEnumerator Update(
       Camera camera, InputAction mousePosition, InputAction mouseButton)
     {

@@ -29,8 +29,14 @@ namespace Common.Vr.Ui.Controls
 
     private Dropdown _owner;
     private uint _index;
+    private Material _idleMaterial;
 
-    protected void OnClickedEventListener(Control focus)
+    private void Start()
+    {
+      _idleMaterial = _geometry.GetComponent<Renderer>().material;
+    }
+
+    private void OnClickedEventListener(Control focus)
     {
       if (focus == this)
       {
@@ -38,14 +44,35 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
+    private void OnHoveredEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        _geometry.GetComponent<Renderer>().material =
+          App_Resources.Instance.MyCommonResources.DropdownItemHoveredMaterial;
+      }
+    }
+
+    private void OnUnhoveredEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        _geometry.GetComponent<Renderer>().material = _idleMaterial;
+      }
+    }
+
     private void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
+      Control.OnControlHovered += OnHoveredEventListener;
+      Control.OnControlUnhovered += OnUnhoveredEventListener;
     }
 
     private void OnDisable()
     {
       Control.OnControlClicked -= OnClickedEventListener;
+      Control.OnControlHovered -= OnHoveredEventListener;
+      Control.OnControlUnhovered -= OnUnhoveredEventListener;
     }
   }
 }

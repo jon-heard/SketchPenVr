@@ -20,7 +20,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   }
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-  private InputHandler_Mouse _mouseHandler = new InputHandler_Mouse();
+  private InputHandler_Mouse _mouseHandler;
 #endif
 
   private void Awake()
@@ -35,12 +35,16 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
     var input = new App_Input();
     input.Enable();
-    StartCoroutine(_mouseHandler.Update(
-      _camera, input.Mouse.Position, input.Mouse.LeftButton));
+    if (App_Details.Instance.MyInputType == App_Details.InputType.Mouse)
+    {
+      _mouseHandler = new InputHandler_Mouse();
+      StartCoroutine(_mouseHandler.Update(
+        _camera, input.Mouse.Position, input.Mouse.LeftButton));
+    }
 #endif
 
 #if UNITY_EDITOR
-    if (App_Details.Instance.UseEmulatedControls)
+    if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
     {
       StartCoroutine(Controller.SeparateControllers());
     }

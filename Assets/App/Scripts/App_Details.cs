@@ -4,9 +4,8 @@ public class App_Details : Common.SingletonComponent<App_Details>
 {
   public Common.CommonDetails MyCommonDetails;
 
-#if UNITY_EDITOR
-  public bool UseEmulatedControls = false;
-#endif
+  public enum InputType { Mouse, Vr, VrSimulation }
+  public InputType MyInputType;
 
   public float MAX_INTERACT_DISTANCE = 100.0f; // How near controller needs to be to interact with something at all
   public float TRIGGER_DOWN_PRESSURE = 0.5f; // How much pressure user puts on trigger before we consider it pressed

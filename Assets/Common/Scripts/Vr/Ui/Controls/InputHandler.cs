@@ -44,14 +44,14 @@ namespace Common.Vr.Ui.Controls
       // uv
       if (hoveredControl && point != _point)
       {
-        Control.OnPointMoved?.Invoke(point);
+        Control.OnPointerMoved?.Invoke(point);
         _point = point;
       }
     }
 
+    private Vector3 _point;
     private Control _hoveredControl;
     private Control _downControl;
     private bool _isDown;
-    private Vector3 _point;
   }
 }

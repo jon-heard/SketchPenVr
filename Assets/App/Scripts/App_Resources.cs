@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class App_Resources : Common.SingletonComponent<App_Resources>
 {
-  public Material ButtonHoveredMaterial;
-  public Material ButtonDownMaterial;
-  public Material LabelDisabledMaterial;
+  public Common.CommonResources MyCommonResources;
+
   public Material ControllerVisHidden;
   public Material ControllerVisShadowed;
   public Material ControllerVisFull;

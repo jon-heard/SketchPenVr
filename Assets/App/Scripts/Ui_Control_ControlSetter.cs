@@ -86,8 +86,6 @@ public class Ui_Control_ControlSetter : Button
 
   protected void Start()
   {
-    Control.OnControlClicked += OnClickedEventListener;
-
     var actionTypeList = new List<string>(Enum.GetNames(typeof(ControllerAction.ActionType)));
     var actionParameterList = KbdKeyHelp.GetTitleList();
     for(var i = 0; i < _actionEditorUis.Length; i++)
@@ -97,9 +95,17 @@ public class Ui_Control_ControlSetter : Button
     }
   }
 
-  private void OnEnable()
+  protected override void OnEnable()
   {
+    base.OnEnable();
+    Control.OnControlClicked += OnClickedEventListener;
     _actionDescription.text = Mapping.ActionTitles[(int)_focusControl];
+  }
+
+  protected override void OnDisable()
+  {
+    base.OnDisable();
+    Control.OnControlClicked -= OnClickedEventListener;
   }
 
   private void OnClickedEventListener(Control clicked)

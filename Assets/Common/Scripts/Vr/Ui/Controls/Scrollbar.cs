@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Common.Vr.Ui.Controls
 {
-  public class Scrollbar : MonoBehaviour
+  public class Scrollbar : Control
   {
     [SerializeField] private Transform _geometry;
     [SerializeField] private Transform _draggerGeometry;
@@ -12,6 +12,7 @@ namespace Common.Vr.Ui.Controls
     [NonSerialized] public Action<uint> OnScrollValueChanged;
 
     private Control_Draggable _dragger;
+    private Material _idleMaterial;
 
     public uint ScrollPosition
     {
@@ -27,7 +28,7 @@ namespace Common.Vr.Ui.Controls
 
     public bool IsPartOfScroll(Control focus)
     {
-      return focus == _dragger;
+      return focus == _dragger || focus == this;
     }
 
     public void SetRange(uint visibleCount, uint totalCount)
@@ -72,7 +73,7 @@ namespace Common.Vr.Ui.Controls
       _dragger.AxisClampLow.y = lowPosition;
       _dragger.AxisClampHigh.y = highPosition;
 
-      // Update dragger
+      // Update dragger position
       t = _dragger.transform.localPosition;
       t.y = _draggerPositions[ScrollPosition];
       _dragger.transform.localPosition = t;
@@ -81,12 +82,71 @@ namespace Common.Vr.Ui.Controls
     private uint _visibleCount;
     private uint _totalCount;
     private float[] _draggerPositions;
+    private Vector3 _pointerPosition;
 
     private static float _const_MinDraggerSize;
 
     private void Start()
     {
       _const_MinDraggerSize = App_Details.Instance.MyCommonDetails.SCROLLBAR_DRAGGER_MINSIZE;
+      _idleMaterial = _geometry.GetComponent<Renderer>().material;
+    }
+
+    private void OnEnable()
+    {
+      Control.OnControlDown += OnControlDownEventHandler;
+      Control.OnControlHovered += OnHoverEventListener;
+      Control.OnControlUnhovered += OnUnhoverEventListener;
+      Control.OnPointerMoved += OnPointerMovedEventHandler;
+    }
+
+    private void OnDisable()
+    {
+      Control.OnControlDown -= OnControlDownEventHandler;
+      Control.OnPointerMoved -= OnPointerMovedEventHandler;
+    }
+
+    private void OnControlDownEventHandler(Control focus)
+    {
+      if (focus == this)
+      {
+        var clickedAboveDragger = transform.worldToLocalMatrix.MultiplyPoint(_pointerPosition).y > _draggerPositions[_position];
+        if (clickedAboveDragger)
+        {
+          _position = (uint)Mathf.Max(0, _position - 10);
+        }
+        else
+        {
+          _position = (uint)Mathf.Min(_draggerPositions.Length - 1, _position + 10);
+        }
+        // Update dragger position
+        var t = _dragger.transform.localPosition;
+        t.y = _draggerPositions[ScrollPosition];
+        _dragger.transform.localPosition = t;
+        OnScrollValueChanged?.Invoke(_position);
+      }
+    }
+
+    private void OnPointerMovedEventHandler(Vector3 point)
+    {
+      _pointerPosition = point;
+    }
+
+    private void OnHoverEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        _geometry.GetComponent<Renderer>().material =
+          App_Resources.Instance.MyCommonResources.ScrollbarHoveredMaterial;
+      }
+    }
+
+    private void OnUnhoverEventListener(Control focus)
+    {
+      if (focus == this)
+      {
+        _geometry.GetComponent<Renderer>().material = _idleMaterial;
+      }
     }
 
     private void OnDragged(Vector3 draggerPosition)
