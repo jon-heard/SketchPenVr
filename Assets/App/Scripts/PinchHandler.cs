@@ -25,11 +25,11 @@ public class PinchHandler : MonoBehaviour
   private float _startPinchMagnitude;
   private Vector3 _startScale;
 
-  private float _minScaleSize;
+  private float _const_minScaleSize;
 
   private void Start()
   {
-    _minScaleSize = App_Details.Instance.MIN_SCALE_SIZE;
+    _const_minScaleSize = App_Details.Instance.MIN_SCALE_SIZE;
   }
 
   private void Update()
@@ -37,9 +37,9 @@ public class PinchHandler : MonoBehaviour
     if (!IsPinching) { return; }
     var currentPinch = transform.position - Other.transform.position;
     Focus.transform.localScale = _startScale * (currentPinch.magnitude / _startPinchMagnitude);
-    if (Focus.transform.localScale.x < _minScaleSize)
+    if (Focus.transform.localScale.x < _const_minScaleSize)
     {
-      Focus.transform.localScale *= (_minScaleSize / Focus.transform.localScale.x);
+      Focus.transform.localScale *= (_const_minScaleSize / Focus.transform.localScale.x);
     }
   }
 }

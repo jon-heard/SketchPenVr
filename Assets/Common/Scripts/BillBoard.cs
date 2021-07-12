@@ -4,21 +4,27 @@ public class BillBoard : MonoBehaviour
 {
   [SerializeField] private bool _reversed = false;
 
-  private void Update()
+  private void OnEnable()
   {
-    var c = Camera.current;
-    if (c)
+    Camera.onPreRender += OnPreRender;
+  }
+
+  private void OnDisable()
+  {
+    Camera.onPreRender -= OnPreRender;
+  }
+
+  private void OnPreRender(Camera c)
+  {
+    if (_reversed)
     {
-      if (_reversed)
-      {
-        var awayDirection = transform.position - c.transform.position;
-        var awayRotation = Quaternion.LookRotation(awayDirection);
-        transform.rotation = awayRotation;
-      }
-      else
-      {
-        transform.LookAt(c.transform);
-      }
+      var awayDirection = transform.position - c.transform.position;
+      var awayRotation = Quaternion.LookRotation(awayDirection);
+      transform.rotation = awayRotation;
+    }
+    else
+    {
+      transform.LookAt(c.transform);
     }
   }
 }

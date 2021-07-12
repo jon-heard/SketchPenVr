@@ -73,6 +73,7 @@ namespace Common.Vr.Ui.Controls
       Control.OnControlClicked -= OnClickedEventListener;
       Control.OnControlHovered -= OnHoveredEventListener;
       Control.OnControlUnhovered -= OnUnhoveredEventListener;
+      OnUnhoveredEventListener(this);
     }
   }
 }

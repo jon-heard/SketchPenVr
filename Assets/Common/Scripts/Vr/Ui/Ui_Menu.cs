@@ -54,6 +54,7 @@ namespace Common.Vr.Ui
     {
       if (_parentMenu) { transform.parent = _parentMenu.transform; }
     }
+
     protected virtual void Start()
     {
       foreach (Transform child in transform)

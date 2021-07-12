@@ -208,6 +208,14 @@ public class Controller : MonoBehaviour
     }
   }
 
+  //////////////////////////
+  // AdjustPressureLength //
+  //////////////////////////
+  public static void SetPressureLength(float length)
+  {
+    Controller._const_distanceFullPressure = Controller._const_distanceTouch - length;
+  }
+
   ////////////
   // Fields //
   ////////////
@@ -220,7 +228,7 @@ public class Controller : MonoBehaviour
   private float _triggerPressure;
   private ThumbState _thumbState = ThumbState.Center;
   private bool _isPenActive = false;
-  private bool _isNearFocus { get { return (_focusDistance <= _maxHoverDistance); } }
+  private bool _isNearFocus { get { return (_focusDistance <= _const_maxHoverDistance); } }
 
   // Focus info
   private Interactable _focus;
@@ -235,12 +243,12 @@ public class Controller : MonoBehaviour
   private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
   private InputDevice? _myXrDevice;
-  private static float _maxInteractDistance;
-  private static float _TriggerDownPressure;
-  private static float _ThumbDownPressure;
-  private static float _maxHoverDistance;
-  private static float _distanceTouch;
-  private static float _distanceFullPressure;
+  private static float _const_maxInteractDistance;
+  private static float _const_TriggerDownPressure;
+  private static float _const_ThumbDownPressure;
+  private static float _const_maxHoverDistance;
+  private static float _const_distanceTouch;
+  private static float _const_distanceFullPressure;
 
   ////////////////////
   // Initialization //
@@ -250,12 +258,12 @@ public class Controller : MonoBehaviour
     // Copies of values init (for efficiency)
     _isLeft = transform.parent.GetComponent<Vr_Hand>().IsLeft;
     _geometryMaterial = _pencil.material;
-    _maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
-    _TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
-    _ThumbDownPressure = App_Details.Instance.THUMB_DOWN_PRESSURE;
-    _maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
-    _distanceTouch = App_Details.Instance.CONTROLLER_DISTANCE_TOUCH;
-    _distanceFullPressure = App_Details.Instance.CONTROLLER_DISTANCE_FULL_PRESSURE;
+    _const_maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
+    _const_TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
+    _const_ThumbDownPressure = App_Details.Instance.THUMB_DOWN_PRESSURE;
+    _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
+    _const_distanceTouch = App_Details.Instance.CONTROLLER_DISTANCE_TOUCH;
+    _const_distanceFullPressure = App_Details.Instance.CONTROLLER_DISTANCE_FULL_PRESSURE;
 
     _controllerIndex = (uint)(_isLeft ? 0 : 1);
     _instances[_controllerIndex] = this;
@@ -336,7 +344,7 @@ public class Controller : MonoBehaviour
     _controllerVis.MyCollider.enabled = false;
     var hitInfo = new RaycastHit();
     if (Physics.Raycast(transform.position, transform.forward, out hitInfo) &&
-        hitInfo.distance < _maxInteractDistance)
+        hitInfo.distance < _const_maxInteractDistance)
     {
       _focusDistance = hitInfo.distance;
       _focusPosition = hitInfo.point;
@@ -377,7 +385,7 @@ public class Controller : MonoBehaviour
     }
     else
     {
-      _focusDistance = _maxInteractDistance;
+      _focusDistance = _const_maxInteractDistance;
       _focus = null;
       FocusPointerEmulation = null;
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
@@ -416,9 +424,9 @@ public class Controller : MonoBehaviour
 
     // Calc pen pressure
     var penPressure =
-      (_focusDistance > _distanceTouch) ? 0.0f :
-      (_focusDistance < _distanceFullPressure) ? 1.0f :
-      1.0f - (_focusDistance - _distanceFullPressure) / (_distanceTouch - _distanceFullPressure);
+      (_focusDistance > _const_distanceTouch) ? 0.0f :
+      (_focusDistance < _const_distanceFullPressure) ? 1.0f :
+      1.0f - (_focusDistance - _const_distanceFullPressure) / (_const_distanceTouch - _const_distanceFullPressure);
 
     // Calc pen rotation
     var rotation =
@@ -479,12 +487,12 @@ public class Controller : MonoBehaviour
 
     // Get value (Binary)
     var hasTriggerDownChanged = false;
-    if (_triggerPressure >= _TriggerDownPressure && !_isTriggerDown)
+    if (_triggerPressure >= _const_TriggerDownPressure && !_isTriggerDown)
     {
       _isTriggerDown = true;
       hasTriggerDownChanged = true;
     }
-    else if (_triggerPressure < _TriggerDownPressure && _isTriggerDown)
+    else if (_triggerPressure < _const_TriggerDownPressure && _isTriggerDown)
     {
       _isTriggerDown = false;
       hasTriggerDownChanged = true;
@@ -544,10 +552,10 @@ public class Controller : MonoBehaviour
     // Analogue to binary
     ThumbState newThumbState;
     newThumbState =
-      (pressure.x > +_ThumbDownPressure && Mathf.Abs(pressure.x) > Mathf.Abs(pressure.y)) ? ThumbState.Right :
-      (pressure.x < -_ThumbDownPressure && Mathf.Abs(pressure.x) > Mathf.Abs(pressure.y)) ? ThumbState.Left :
-      (pressure.y > +_ThumbDownPressure) ? ThumbState.Up :
-      (pressure.y < -_ThumbDownPressure) ? ThumbState.Down :
+      (pressure.x > +_const_ThumbDownPressure && Mathf.Abs(pressure.x) > Mathf.Abs(pressure.y)) ? ThumbState.Right :
+      (pressure.x < -_const_ThumbDownPressure && Mathf.Abs(pressure.x) > Mathf.Abs(pressure.y)) ? ThumbState.Left :
+      (pressure.y > +_const_ThumbDownPressure) ? ThumbState.Up :
+      (pressure.y < -_const_ThumbDownPressure) ? ThumbState.Down :
       ThumbState.Center;
 
     // React to value

@@ -1,3 +1,5 @@
+using Common;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class App_Details : Common.SingletonComponent<App_Details>
@@ -18,12 +20,15 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float TIMESPAN_BEFORE_SETTING_SCREEN_HEIGHT = 1.0f; // How long to wait before setting screen to user's eye level
   public float MIN_SCALE_SIZE = 0.25f; // How small to allow the screen to be sized
   public float CONTROLLER_EMULATED_SEPARATION = 0.2f; // How opaque the controller visuals are when not highlighted
+  public List<string> PressureLengthTitles;
+  public float[] PressureLengths;
 
   // Key constants
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
   public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
   public const string CFG__MAPPINGS = "setting:mappings";
   public const string CFG__BACKDROP = "setting:backdrop";
+  public const string CFG__PRESSURE_LENGTH_INDEX = "setting:PressureLengthIndex";
   public const string LOCK__DIRECT = "lock:direct";
   public const string LOCK__SKETCH_CONTROLLER = "lock:controller";
   public const string LOCK__SKETCH_IS_LOCKED = "lock:sketchLocked";
@@ -65,10 +70,24 @@ public class App_Details : Common.SingletonComponent<App_Details>
   }
   private string _backdrop;
 
+  public uint PressureLengthIndex
+  {
+    get { return _pressureLengthIndex; }
+    set
+    {
+      if (value == _pressureLengthIndex) { return; }
+      _pressureLengthIndex = value;
+      var _pressureLength = PressureLengths[_pressureLengthIndex];
+      CONTROLLER_DISTANCE_FULL_PRESSURE = CONTROLLER_DISTANCE_TOUCH - _pressureLength;
+      Controller.SetPressureLength(_pressureLength);
+      Mesh_Pencil.SetAllTipLengths(_pressureLength);
+      PlayerPrefs.SetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, (int)_pressureLengthIndex);
+    }
+  }
+  private uint _pressureLengthIndex = Global.NullUint;
+
   private void Awake()
   {
-    // Handedness
-    IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
 
     // Backdrop
     Backdrop = PlayerPrefs.GetString(App_Details.CFG__BACKDROP, "artStudio");
@@ -92,5 +111,14 @@ public class App_Details : Common.SingletonComponent<App_Details>
       MyControllerMappings = new MappingCollection();
       MyControllerMappings.SetupDefault();
     }
+  }
+
+  private void Start()
+  {
+    // Handedness
+    IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
+
+    // Pressure length
+    PressureLengthIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, 1);
   }
 }

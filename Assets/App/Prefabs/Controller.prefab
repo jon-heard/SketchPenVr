@@ -93,8 +93,8 @@ MonoBehaviour:
   _trigger: 0
   _thumbLR: 0
   _thumbTB: 0
-  _topButton: 0
-  _bottomButton: 0
+  _highButton: 0
+  _lowButton: 0
   _gripButton: 0
   _thumbButton: 0
   _flippedZPosition: 0
@@ -123,6 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8577251310690979634}
+  - component: {fileID: 8135326377836754764}
   - component: {fileID: 6908429208119113336}
   - component: {fileID: 7996723751775130348}
   m_Layer: 0
@@ -146,6 +147,19 @@ Transform:
   m_Father: {fileID: 171541496351756904}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &8135326377836754764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702187575160560649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e814fdc4ac367fb4db3e99b1f31e4651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TipPosition: 0.022
 --- !u!33 &6908429208119113336
 MeshFilter:
   m_ObjectHideFlags: 0

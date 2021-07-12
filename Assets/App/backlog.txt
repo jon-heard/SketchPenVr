@@ -1,9 +1,3 @@
-- adjustable pressure range
-
-- experiment with feedback during drawing
-- add feedback before drawing
-- add feedback toggle dropdown in settings
-
 - have handedness be dropdown in settings
 
 - make tutorial video
@@ -15,3 +9,7 @@
 - control set update: one page for selecting preset, another for modifying preset
 - add option to download backgrounds from url
 - fix console spam
+
+- experiment with feedback during drawing
+- add feedback before drawing
+- add feedback toggle dropdown in settings

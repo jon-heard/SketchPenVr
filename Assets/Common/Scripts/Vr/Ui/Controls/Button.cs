@@ -49,7 +49,7 @@ namespace Common.Vr.Ui.Controls
 
     private void OnClickedEventListener(Control focus)
     {
-      if (focus == this)
+      if (focus == this && !Locker.IsLocked)
       {
         OnClick.Invoke();
       }

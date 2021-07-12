@@ -90,7 +90,7 @@ public class PointerEmulation : MonoBehaviour
     OsHook_Pen.SetState((uint)p.x, (uint)p.y, pressure, rotation, t.x, t.y, usingEraser);
 
     // Setup the pen shadow
-    var size = (Distance - _maxNearDistance * 0.5f) * 2.0f;
+    var size = (Distance - _const_maxNearDistance * 0.5f) * 2.0f;
     var opacity = (size < .001f) ? 0.0f : (1.25f - size * 7.0f);
     ScreenRenderer.material.SetVector(
       "_ShadowState", new Vector4(Position.x, Position.y, size, opacity));
@@ -102,12 +102,12 @@ public class PointerEmulation : MonoBehaviour
   }
 
   private bool _isEmulatingMouse = false;
-  private float _maxNearDistance;
+  private float _const_maxNearDistance;
 
   private void Start()
   {
     OsHook_Pen.Init();
-    _maxNearDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
+    _const_maxNearDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
   }
   private void OnDestroy()
   {

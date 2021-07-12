@@ -38,7 +38,7 @@ namespace Common.Vr.Ui.Controls
     }
 
     private float _lastBlink;
-    private float _blinkSpeed;
+    private float _const_blinkSpeed;
     private Material _blinkMaterial;
 
     private static Textbox _focusTextbox;
@@ -51,7 +51,7 @@ namespace Common.Vr.Ui.Controls
       var p = Label.transform.localPosition;
       p.x = -Geometry.transform.localScale.x * 0.5f + App_Details.Instance.MyCommonDetails.TEXTBOX_TEXT_X_OFFSET;
       Label.transform.localPosition = p;
-      _blinkSpeed = App_Details.Instance.MyCommonDetails.TEXTBOX_CARET_BLINKSPEED;
+      _const_blinkSpeed = App_Details.Instance.MyCommonDetails.TEXTBOX_CARET_BLINKSPEED;
       _blinkMaterial = Label.GetComponent<Renderer>().materials[1];
       Text = "";
     }
@@ -119,7 +119,7 @@ namespace Common.Vr.Ui.Controls
       while (true)
       {
         yield return null;
-        if (Time.time - _lastBlink > _blinkSpeed)
+        if (Time.time - _lastBlink > _const_blinkSpeed)
         {
           _lastBlink = Time.time;
           var blinkColor = _blinkMaterial.color;
@@ -232,8 +232,8 @@ namespace Common.Vr.Ui.Controls
                 OnControlClicked(null);
                 break;
               case KbdKey.Left_Shift: _isLeftShiftDown = true; break;
-              case KbdKey.Right_Shift: _isLeftShiftDown = true; break;
-              case KbdKey.Left_Control: _isRightControlDown = true; break;
+              case KbdKey.Right_Shift: _isRightShiftDown = true; break;
+              case KbdKey.Left_Control: _isLeftControlDown = true; break;
               case KbdKey.Right_Control: _isRightControlDown = true; break;
               case KbdKey.Space: Text += " "; break;
               case KbdKey.Equals: Text += "="; break;
@@ -262,6 +262,13 @@ namespace Common.Vr.Ui.Controls
                 {
                   Text = Text.Substring(0, Text.Length - 1);
                 }
+                break;
+              case KbdKey.Escape:
+                Text = _focusTextboxInitialText;
+                OnControlClicked(null);
+                break;
+              case KbdKey.Enter:
+                OnControlClicked(null);
                 break;
               case KbdKey.Key_0: Text += ")"; break;
               case KbdKey.Key_1: Text += "!"; break;
