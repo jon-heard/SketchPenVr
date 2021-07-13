@@ -1,0 +1,36 @@
+- Overview of prototype 1 of the SketchPenVr application.
+- First I'll cover a few essentials to get you started.  If you don't follow this section then you'll probably have a bad experience.
+- After that I'll go over the rest of the features and settings from most to least important
+- finally, I'll wrap up with a few features that will be added if this prototype is liked by enough playtesters.
+
+First, the bare essentials.
+- There are four things you'll want to setup before you start playing with VirtualStylusVr
+- 1: install and run the Krita paint program.  It's the only paint application that I've confirmed to work with this prototype.  Known incompatibilities include Gimp (which needs drivers) and Medibang (which has known conflicts with any video streaming).
+- 2: Set Krita to use the "Windows Ink" tablet API
+- 3: In the application, set whether you are left or right handed
+- 4: In the application, set the pen grip to maximize control and comfort
+- <go through steps>
+
+Second, the rest of the features:
+- you can drag the desktop panel using the grip on either controller
+- dragging the desktop panel with both controllers allows resizing the panel
+- moving the drawing controller near to the panel puts it into pen mode.
+	- pen shadow
+- If you find it hard to control the pressure, you can increase the length of the pressure gradient on the pen.
+	- show how
+	- The main issue with a larger pressure gradient length is that going from a light to a heavy stroke requires more dramatic movement
+- If you want to reference what the controller buttons do, point to one controller with the other controller.
+- The drawing trigger has 4 pressure levels that adjust the pen pressure.
+	- pen visibility matches trigger pressure level
+- you can choose between a number of backgrounds.
+- Finally, you can assign custom actions to the controller buttons.
+
+Finally, here are some of the planned features (if this prototype works out):
+- full support for all major vr equipment and visual art applications
+- view images as separate panels from the desktop panel
+	- allow save/load of the scene (which images should be displayed where)
+	- A controller action to temporarily fade out the desktop panel.  This allows the user to view a subject placed just behind the desktop panel.
+- Save multiple presets for controller actions with an interface for rapid swapping
+- A panel with a clip of the desktop panel: movable, sizeable, zoomable.  Allows the user to focus in on a small piece of the larger work.
+- more friendly user interface for grip adjustment
+- set of high quality backgrounds with the option to import new ones

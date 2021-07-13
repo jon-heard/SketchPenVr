@@ -1,4 +1,4 @@
-using Common.Vr.Ui;
+ using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
 using System.Collections;
 using UnityEngine;
@@ -436,10 +436,11 @@ public class Controller : MonoBehaviour
     // Calc pen pressure trigger adjust
     var triggerAdjust = 1.0f;
     var geometryOpacity = 1.0f;
-    if      (_triggerPressure >  0.9f) { }
-    else if (_triggerPressure <= 0.0f) { triggerAdjust = 0.0f; geometryOpacity = 1.00f; }
-    else if (_triggerPressure >  0.3f) { triggerAdjust = 0.6f; geometryOpacity = 0.60f; }
-    else                               { triggerAdjust = 0.3f; geometryOpacity = 0.20f; }
+    if      (_triggerPressure > 0.9f) { }
+    else if (_triggerPressure <= 0.0f && IsFlipped) { }
+    else if (_triggerPressure <= 0.0f) { triggerAdjust = 0.0f; geometryOpacity = 1.0f; }
+    else if (_triggerPressure > 0.3f) { triggerAdjust = 0.6f; geometryOpacity = 0.6f; }
+    else { triggerAdjust = 0.3f; geometryOpacity = 0.2f; }
 
     // Calc tilt
     var forward = FocusPointerEmulation.transform.InverseTransformDirection(transform.forward);
