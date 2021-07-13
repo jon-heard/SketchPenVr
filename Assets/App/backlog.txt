@@ -1,5 +1,9 @@
 - make tutorial video
 
+- action keys: some have magenta backs
+- action keys: not scrolling at extreme angle
+- action keys: right-hand thumb directions not working
+
  Post prototype
 ----------------
 - have scrollbar adjust to different item visibility counts (5 items at a time vs 10, for example)
