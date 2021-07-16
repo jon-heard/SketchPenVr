@@ -1,8 +1,5 @@
-- make tutorial video
-
-- action keys: some have magenta backs
+- action keys - only in build?: some have magenta backs
 - action keys: not scrolling at extreme angle
-- action keys: right-hand thumb directions not working
 
  Post prototype
 ----------------

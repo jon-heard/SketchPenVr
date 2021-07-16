@@ -191,6 +191,10 @@ public class Ui_Control_ControlSetter : Button
     var action = Action;
     action.Type = ControllerAction.ActionType.Nothing;
     action.Key = KbdKey.None;
+    if (i == _actionEditorUis.Length)
+    {
+      action.Next = null;
+    }
     for (; i < _actionEditorUis.Length; i++)
     {
       if (action == null) { break; }
