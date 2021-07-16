@@ -31,7 +31,7 @@ namespace Common.Vr.Ui.Controls
     private uint _index;
     private Material _idleMaterial;
 
-    private void Start()
+    private void Awake()
     {
       _idleMaterial = _geometry.GetComponent<Renderer>().material;
     }

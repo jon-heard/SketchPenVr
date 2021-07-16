@@ -53,7 +53,7 @@ namespace Common.Vr.Ui.Controls
         Geometry.size = _draggingSize;
         _isDragging = true;
         _dragStartPosition = transform.localPosition;
-        _dragPoint = transform.position - _point;
+        _dragPoint = transform.localPosition - _point;
       }
     }
 
@@ -92,7 +92,7 @@ namespace Common.Vr.Ui.Controls
         _point = point;
         if (_isDragging)
         {
-          var dragAdjust = (transform.position - _point) - _dragPoint;
+          var dragAdjust = (transform.localPosition - _point) - _dragPoint;
           transform.localPosition -= dragAdjust.GetScaled(AxisScales);
           transform.localPosition = transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);
           OnDragged?.Invoke(transform.localPosition);

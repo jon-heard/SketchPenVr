@@ -1,4 +1,3 @@
-- action keys - only in build?: some have magenta backs
 - action keys: not scrolling at extreme angle
 
  Post prototype
