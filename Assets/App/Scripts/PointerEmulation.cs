@@ -7,9 +7,9 @@ using Common;
 //////////////////////////////////////////////////////////////////////
 public class PointerEmulation : MonoBehaviour
 {
-  public Vector2 Resolution = new Vector2(1920, 1080);
   public Renderer ScreenRenderer;
 
+  [NonSerialized] public Vector2Int Resolution;
   [NonSerialized] public Vector2 Position;
   [NonSerialized] public float Distance;
 
@@ -110,6 +110,13 @@ public class PointerEmulation : MonoBehaviour
 
   private bool _isEmulatingMouse = false;
   private float _const_maxNearDistance;
+
+  private void Awake()
+  {
+    Resolution = new Vector2Int(
+      UnityEngine.Screen.currentResolution.width,
+      UnityEngine.Screen.currentResolution.height);
+  }
 
   private void Start()
   {

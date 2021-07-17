@@ -5,7 +5,7 @@ using UnityEngine;
 public class App_Functions : Common.SingletonComponent<App_Functions>
 {
   [SerializeField] private Camera _camera;
-  public PointerEmulation Screen;
+  public Screen MyScreen;
   [SerializeField] private Controller _leftController;
   [SerializeField] private Controller _rightController;
   public Material Backdrop;
@@ -67,9 +67,9 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
     var initialHeadPosition = input.VrHeadTracking.Position.ReadValue<Vector3>();
     if (initialHeadPosition != Vector3.zero)
     {
-      var t = App_Functions.Instance.Screen.transform.position;
+      var t = App_Functions.Instance.MyScreen.transform.position;
       t.y = initialHeadPosition.y;
-      App_Functions.Instance.Screen.transform.position = t;
+      App_Functions.Instance.MyScreen.transform.position = t;
     }
   }
 

@@ -1,9 +1,5 @@
 Today
 ---------------
-- fix offset when not in 1080p
-
-- add "Hold Desktop" action
-
 - try out on alpaca and clip studio
 
 - setup trello board and discord channel
@@ -11,6 +7,7 @@ Today
 Future
 ----------
 - fix shadow
+- ActionTypes should have space in name
 - add align to surface options
   - "Desktop lock" - "None", "Plane", "Total"
 

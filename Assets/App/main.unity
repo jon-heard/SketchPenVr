@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.26850283, g: 0.2964846, b: 0.2828821, a: 1}
+  m_IndirectSpecularColor: {r: 0.3379158, g: 0.21902966, b: 0.07786783, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1824,7 +1824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 128828339}
-  Screen: {fileID: 1691673221}
+  MyScreen: {fileID: 1691673223}
   _leftController: {fileID: 42145022}
   _rightController: {fileID: 1526789121}
   Backdrop: {fileID: 2100000, guid: 2e84d236ce6b06142b6d6e6d1a9065f3, type: 2}
@@ -2671,7 +2671,7 @@ Transform:
   m_LocalScale: {x: 1, y: -0.5625, z: 1}
   m_Children: []
   m_Father: {fileID: 1691673220}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &773894698
 MeshCollider:
@@ -4031,7 +4031,7 @@ Transform:
   m_LocalScale: {x: 1, y: -0.5625, z: 1}
   m_Children: []
   m_Father: {fileID: 1691673220}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1082575909
 MonoBehaviour:
@@ -5717,6 +5717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1691673220}
+  - component: {fileID: 1691673223}
   - component: {fileID: 1691673221}
   - component: {fileID: 1691673222}
   m_Layer: 0
@@ -5737,8 +5738,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
-  - {fileID: 773894697}
   - {fileID: 1082575908}
+  - {fileID: 773894697}
   - {fileID: 514528676}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -5755,7 +5756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7d17e14a47b3b4c878b11ad7321011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Resolution: {x: 1920, y: 1080}
   ScreenRenderer: {fileID: 1082575911}
 --- !u!114 &1691673222
 MonoBehaviour:
@@ -5769,6 +5769,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34997820e68a0f428d0510ca2813f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1691673223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691673219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58ecf8c1dfbfe094dada1d01f539ba24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Geometries:
+  - {fileID: 1082575908}
+  - {fileID: 773894697}
 --- !u!1001 &1699372350
 PrefabInstance:
   m_ObjectHideFlags: 0

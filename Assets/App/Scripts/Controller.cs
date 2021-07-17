@@ -146,7 +146,7 @@ public class Controller : MonoBehaviour
       if (value == _isHoldingDesktop) { return; }
       _isHoldingDesktop = value;
       var originalFocus = _focus;
-      _focus = App_Functions.Instance.Screen.GetComponent<Interactable>();
+      _focus = App_Functions.Instance.MyScreen.GetComponent<Interactable>();
       IsHolding = value;
       _focus = originalFocus;
     }
