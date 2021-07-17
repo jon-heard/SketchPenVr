@@ -1,4 +1,18 @@
-- action keys: not scrolling at extreme angle
+Today
+---------------
+- fix offset when not in 1080p
+
+- add "Hold Desktop" action
+
+- try out on alpaca and clip studio
+
+- setup trello board and discord channel
+
+Future
+----------
+- fix shadow
+- add align to surface options
+  - "Desktop lock" - "None", "Plane", "Total"
 
  Post prototype
 ----------------
@@ -7,7 +21,6 @@
 - control set update: one page for selecting preset, another for modifying preset
 - add option to download backgrounds from url
 - fix console spam
-
 - experiment with feedback during drawing
 - add feedback before drawing
 - add feedback toggle dropdown in settings

@@ -535,7 +535,6 @@ public class Controller : MonoBehaviour
   private void HandleThumbPressure()
   {
     // Early out
-    if (this != _mainController) { return; }
     if (_isHolding) { return; }
 
     // Get value

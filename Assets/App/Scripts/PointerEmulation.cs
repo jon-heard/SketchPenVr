@@ -62,7 +62,10 @@ public class PointerEmulation : MonoBehaviour
     {
       _isEmulatingMouse = true;
       ClearPenState();
-      yield return new WaitForEndOfFrame();
+      // 2 yields is probably enough.  Hope 3 isn't too slow.
+      yield return null;
+      yield return null;
+      yield return null;
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
     }
@@ -70,9 +73,13 @@ public class PointerEmulation : MonoBehaviour
     {
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
-      yield return new WaitForEndOfFrame();
+      // 2 yields is probably enough.  Hope 3 isn't too slow.
+      yield return null;
+      yield return null;
+      yield return null;
       _isEmulatingMouse = false;
     }
+    yield break;
   }
 
   public void OnLostFocus()
