@@ -19,6 +19,7 @@ public class ControllerAction
   {
     Nothing,
     Hold,
+    HoldDesktop,
     PencilFlip,
     LeftMouseButton,
     RightMouseButton,
@@ -41,6 +42,9 @@ public class ControllerAction
         break;
       case ActionType.Hold:
         controller.IsHolding = isDown;
+        break;
+      case ActionType.HoldDesktop:
+        controller.IsHoldingDesktop = isDown;
         break;
       case ActionType.PencilFlip:
         Controller.IsFlipped = isDown;

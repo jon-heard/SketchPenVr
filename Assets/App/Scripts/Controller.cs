@@ -137,6 +137,22 @@ public class Controller : MonoBehaviour
     }
   }
   private bool _isHolding;
+
+  public bool IsHoldingDesktop
+  {
+    get { return _isHoldingDesktop; }
+    set
+    {
+      if (value == _isHoldingDesktop) { return; }
+      _isHoldingDesktop = value;
+      var originalFocus = _focus;
+      _focus = App_Functions.Instance.Screen.GetComponent<Interactable>();
+      IsHolding = value;
+      _focus = originalFocus;
+    }
+  }
+  private bool _isHoldingDesktop;
+
   private Interactable _held;
 
   /////////////////
