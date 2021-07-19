@@ -21,11 +21,6 @@ public class Ui_Menu_Settings : Ui_Menu
     return base.Show(source);
   }
 
-  public override bool Hide()
-  {
-    return base.Hide();
-  }
-
   public void OnPressureLengthButton(Button source)
   {
     _dropdown_pressureLength.gameObject.SetActive(true);

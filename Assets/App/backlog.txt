@@ -1,15 +1,11 @@
 Today
 ---------------
-- try out on alpaca and clip studio
-
-- setup trello board and discord channel
+- add align to surface options
 
 Future
 ----------
 - fix shadow
 - ActionTypes should have space in name
-- add align to surface options
-  - "Desktop lock" - "None", "Plane", "Total"
 
  Post prototype
 ----------------
@@ -18,6 +14,7 @@ Future
 - control set update: one page for selecting preset, another for modifying preset
 - add option to download backgrounds from url
 - fix console spam
-- experiment with feedback during drawing
-- add feedback before drawing
-- add feedback toggle dropdown in settings
+- haptic feedback
+  - experiment with feedback during drawing
+  - add feedback before drawing
+  - add feedback toggle dropdown in settings

@@ -258,7 +258,7 @@ public class Controller : MonoBehaviour
   private bool _isLeft;
   private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
-  private InputDevice? _myXrDevice;
+  //private InputDevice? _myXrDevice;0
   private static float _const_maxInteractDistance;
   private static float _const_TriggerDownPressure;
   private static float _const_ThumbDownPressure;
@@ -330,13 +330,13 @@ public class Controller : MonoBehaviour
       App_Details.Instance.MyControllerMappings.Mappings[_controllerIndex];
 
     // Haptic feedback init
-    _myXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
-    HapticCapabilities caps;
-    if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
-    {
-      _myXrDevice = null;
-      Debug.Log("No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
-    }
+    //_myXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
+    //HapticCapabilities caps;
+    //if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
+    //{
+    //  _myXrDevice = null;
+    //  Debug.Log("No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
+    //}
   }
 
   //////////////////////////
@@ -476,10 +476,10 @@ public class Controller : MonoBehaviour
         penPressure * triggerAdjust, rotation, tilt, Controller.IsFlipped);
     }
     _isPenActive = true;
-    if (penPressure * triggerAdjust > 0.0f)
-    {
-      _myXrDevice?.SendHapticImpulse(0, 1.0f, 0.1f);
-    }
+    //if (penPressure * triggerAdjust > 0.0f)
+    //{
+    //  _myXrDevice?.SendHapticImpulse(0, 1.0f, 0.1f);
+    //}
   }
 
   /////////////////
