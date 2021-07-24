@@ -1,7 +1,8 @@
+using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
 using UnityEngine;
 
-public class Ui_Menu_Backdrops : Common.Vr.Ui.Ui_Menu
+public class Ui_Menu_Backdrops : Ui_Menu
 {
   [SerializeField] private string[] _filenames;
   [SerializeField] private Button[] _backdropButtons;

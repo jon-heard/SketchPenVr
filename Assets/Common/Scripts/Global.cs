@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Common
@@ -32,6 +33,19 @@ namespace Common
     public static Vector3 GetScaled(this Vector3 source, Vector3 scale)
     {
       return new Vector3(source.x * scale.x, source.y * scale.y, source.z * scale.z);
+    }
+
+    public static Vector3 GetAverageVector(List<Vector3> vectors)
+    {
+      if (vectors.Count == 0) { return Vector3.zero; }
+      if (vectors.Count == 1) { return vectors[0]; }
+
+      Vector3 result = Vector3.zero;
+      foreach (var vector in vectors)
+      {
+        result += vector;
+      }
+      return result / vectors.Count;
     }
   }
 }

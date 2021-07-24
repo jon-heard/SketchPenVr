@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Common.Vr.Ui.Popups
 {
-  public class Ui_Popup_Confirm : SingletonComponent<Ui_Popup_Confirm>
+  public class Confirm : SingletonComponent<Confirm>
   {
     [SerializeField] private Transform _geometry;
     [SerializeField] private TextMesh _label;
@@ -85,7 +85,7 @@ namespace Common.Vr.Ui.Popups
 
     private void Awake()
     {
-      Ui_Popup_Confirm.InitializeSingletonComponent();
+      Confirm.InitializeSingletonComponent();
     }
     private void Start()
     {

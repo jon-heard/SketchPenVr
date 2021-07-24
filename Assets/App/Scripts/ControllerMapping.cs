@@ -50,7 +50,7 @@ public class ControllerMapping
   {
     var control = (int)Controls.Grip;
     ActionTitles[control] = "Hold";
-    Actions[control].Type = ControllerAction.ActionType.Hold;
+    Actions[control].Type = ControllerAction.ActionType.HoldDesktop;
 
     if (index == 0)
     {

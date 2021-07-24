@@ -1,5 +1,6 @@
- using Common.Vr.Ui;
+using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
@@ -39,10 +40,16 @@ public class Controller : MonoBehaviour
   [Header("Parameters")]
   [SerializeField] private float _flippedZPosition;
   [Header("Wiring")]
-  [SerializeField] private Renderer _pencil;
+  public Renderer Pencil;
   [SerializeField] private LineRenderer _rayVisual;
   [SerializeField] private PinchHandler _pinchHandler;
   [SerializeField] private ControllerVis _controllerVis;
+
+  //////////////////
+  // Input block //
+  //////////////////
+  [Flags] public enum InputBlockType { None = 0, PrimaryTrigger = 1, Grip = 2, Other = 4, All = 7 }
+  public static InputBlockType InputBlock = 0;
 
   ////////////////
   // Handedness //
@@ -58,8 +65,8 @@ public class Controller : MonoBehaviour
       _instances[0] = _instances[1];
       _instances[1] = buf;
       // Update controller infos to match purposes
-      _instances[0]._pencil.gameObject.SetActive(true);
-      _instances[1]._pencil.gameObject.SetActive(false);
+      _instances[0].Pencil.gameObject.SetActive(true);
+      _instances[1].Pencil.gameObject.SetActive(false);
       _instances[0]._controllerIndex = 0;
       _instances[1]._controllerIndex = 1;
       _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
@@ -68,9 +75,10 @@ public class Controller : MonoBehaviour
         App_Details.Instance.MyControllerMappings.Mappings[1];
     }
   }
-  private static Controller _mainController;
   private static Controller[] _instances = new Controller[2];
   private uint _controllerIndex = 0;
+  public static Controller PrimaryController { get { return _instances[0]; } }
+  public static Controller SecondaryController { get { return _instances[1]; } }
 
   //////////////
   // Flipping //
@@ -82,12 +90,12 @@ public class Controller : MonoBehaviour
     {
       if (value == _isFlipped) { return; }
       _isFlipped = value;
-      var t = _instances[0]._pencil.transform.localEulerAngles;
+      var t = _instances[0].Pencil.transform.localEulerAngles;
       t.y = value ? 180.0f : 0.0f;
-      _instances[0]._pencil.transform.localEulerAngles = t;
-      t = _instances[0]._pencil.transform.localPosition;
+      _instances[0].Pencil.transform.localEulerAngles = t;
+      t = _instances[0].Pencil.transform.localPosition;
       t.z = value ? _instances[0]._flippedZPosition : _instances[0]._zPosition;
-      _instances[0]._pencil.transform.localPosition = t;
+      _instances[0].Pencil.transform.localPosition = t;
     }
   }
   private static bool _isFlipped;
@@ -103,7 +111,16 @@ public class Controller : MonoBehaviour
       if (value == _isHolding) { return; }
       if (_isTriggerDown && value) { return; }
       _isHolding = value;
-      if (_isHolding) { _held = _focus; } // Have separate var for held in case lost focus
+      var screen = App_Functions.Instance.MyScreen;
+      // Break hold logic if holding a locked screen
+      if (_isHolding &&
+          Focus.DragInteractable.gameObject == screen.gameObject &&
+          screen._lockType == Screen.ScreenLockType.Full)
+      {
+        Debug.Log("breaking hold logic");
+        return;
+      }
+      if (_isHolding) { _held = Focus; } // Have separate var for held in case lost focus
       if (!IsInGripAdjust)
       {
         _held?.DragInteractable?.SetTemporaryParent(
@@ -145,10 +162,10 @@ public class Controller : MonoBehaviour
     {
       if (value == _isHoldingDesktop) { return; }
       _isHoldingDesktop = value;
-      var originalFocus = _focus;
-      _focus = App_Functions.Instance.MyScreen.GetComponent<Interactable>();
+      var originalFocus = Focus;
+      Focus = App_Functions.Instance.MyScreen.GetComponent<Interactable>();
       IsHolding = value;
-      _focus = originalFocus;
+      Focus = originalFocus;
     }
   }
   private bool _isHoldingDesktop;
@@ -209,9 +226,9 @@ public class Controller : MonoBehaviour
     }
   }
 
-  ///////////////////////////////
-  // Emulated - separate hands //
-  ///////////////////////////////
+  ///////////////////////////////////
+  // Emulated - separate the hands //
+  ///////////////////////////////////
   public static IEnumerator SeparateControllers()
   {
     yield return new WaitForSeconds(App_Details.Instance.TIMESPAN_BEFORE_SETTING_SCREEN_HEIGHT);
@@ -247,7 +264,7 @@ public class Controller : MonoBehaviour
   private bool _isNearFocus { get { return (_focusDistance <= _const_maxHoverDistance); } }
 
   // Focus info
-  private Interactable _focus;
+  public Interactable Focus { get; private set; }
   private float _focusDistance;
   private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
@@ -273,7 +290,7 @@ public class Controller : MonoBehaviour
   {
     // Copies of values init (for efficiency)
     _isLeft = transform.parent.GetComponent<Vr_Hand>().IsLeft;
-    _geometryMaterial = _pencil.material;
+    _geometryMaterial = Pencil.material;
     _const_maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
     _const_TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
     _const_ThumbDownPressure = App_Details.Instance.THUMB_DOWN_PRESSURE;
@@ -288,7 +305,7 @@ public class Controller : MonoBehaviour
   private void Start()
   {
     // Fields init
-    _zPosition = _pencil.transform.localPosition.z;
+    _zPosition = Pencil.transform.localPosition.z;
     _rayVisualZOffset = _rayVisual.transform.localPosition.z;
 
     // User input init
@@ -296,7 +313,6 @@ public class Controller : MonoBehaviour
     _input.Enable();
     if (_isLeft)
     {
-      _mainController = this;
       _input.VrLeftHandActions.Grip.performed += OnGripButtonStart;
       _input.VrLeftHandActions.Grip.canceled += OnGripButtonEnd;
       _input.VrLeftHandActions.HighButton.performed += OnHighButtonStart;
@@ -342,20 +358,24 @@ public class Controller : MonoBehaviour
   //////////////////////////
   // Focus and draw logic //
   //////////////////////////
+  private void LateUpdate()
+  {
+    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
+  }
   private void Update()
   {
     // Input
-    HandleTrigger();
-    HandleThumbPressure();
+    Update_Trigger();
+    Update_ThumbPressure();
 #if UNITY_EDITOR
-    HandleEmulatedButtons();
+    Update_EmulatedButtons();
 #endif
 
     // Logic
-    HandleFocus();
-    HandleNearControl();
+    Update_Focus();
+    Update_NearControl();
   }
-  private void HandleFocus()
+  private void Update_Focus()
   {
     _controllerVis.MyCollider.enabled = false;
     var hitInfo = new RaycastHit();
@@ -364,8 +384,8 @@ public class Controller : MonoBehaviour
     {
       _focusDistance = hitInfo.distance;
       _focusPosition = hitInfo.point;
-      _focus = hitInfo.transform.GetComponent<Interactable>();
-      var focusParent = _focus?.transform?.parent;
+      Focus = hitInfo.transform.GetComponent<Interactable>();
+      var focusParent = Focus?.transform?.parent;
 
       // Screen focus
       var newFocusPointerEmulation = focusParent?.GetComponent<PointerEmulation>();
@@ -385,7 +405,7 @@ public class Controller : MonoBehaviour
       _inputHandler.UpdatePointer(focusParent?.GetComponent<Control>(), _isTriggerDown, hitInfo.point);
 
       // ControllerVis focus
-      var newControllerVis = _focus?.GetComponent<ControllerVis>();
+      var newControllerVis = Focus?.GetComponent<ControllerVis>();
       if (newControllerVis != _focusControllerVis)
       {
         if (_focusControllerVis)
@@ -402,7 +422,7 @@ public class Controller : MonoBehaviour
     else
     {
       _focusDistance = _const_maxInteractDistance;
-      _focus = null;
+      Focus = null;
       FocusPointerEmulation = null;
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
       if (_focusControllerVis)
@@ -411,12 +431,10 @@ public class Controller : MonoBehaviour
       }
       _focusControllerVis = null;
     }
-
-    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
     _controllerVis.MyCollider.enabled = true;
   }
 
-  private void HandleNearControl()
+  private void Update_NearControl()
   {
     // Early out
     if (_controllerIndex > 0 || IsInGripAdjust) { return; }
@@ -485,7 +503,7 @@ public class Controller : MonoBehaviour
   /////////////////
   // User inputs //
   /////////////////
-  private void HandleTrigger()
+  private void Update_Trigger()
   {
     // Early out
     if (_isHolding && !IsInGripAdjust) { return; }
@@ -501,6 +519,11 @@ public class Controller : MonoBehaviour
       _triggerPressure = _trigger;
     }
 #endif
+
+    if (InputBlock.HasFlag(InputBlockType.PrimaryTrigger) && _controllerIndex == 0)
+    {
+      _triggerPressure = 0;
+    }
 
     // Get value (Binary)
     var hasTriggerDownChanged = false;
@@ -548,7 +571,7 @@ public class Controller : MonoBehaviour
       }
     }
   }
-  private void HandleThumbPressure()
+  private void Update_ThumbPressure()
   {
     // Early out
     if (_isHolding) { return; }
@@ -582,14 +605,14 @@ public class Controller : MonoBehaviour
         _myControllerMapping.Actions[(int)_thumbState].Run(this, false);
       }
       _thumbState = newThumbState;
-      if (_thumbState != ThumbState.Center)
+      if (_thumbState != ThumbState.Center && !InputBlock.HasFlag(InputBlockType.Other))
       {
         _myControllerMapping.Actions[(int)_thumbState].Run(this, true);
       }
     }
   }
 #if UNITY_EDITOR
-  private void HandleEmulatedButtons()
+  private void Update_EmulatedButtons()
   {
     if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
     {
@@ -611,7 +634,10 @@ public class Controller : MonoBehaviour
 #endif
   private void OnGripButtonStart(CallbackContext obj)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, true);
+    if (!InputBlock.HasFlag(InputBlockType.Grip))
+    {
+      _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, true);
+    }
   }
   private void OnGripButtonEnd(CallbackContext obj)
   {
@@ -619,7 +645,10 @@ public class Controller : MonoBehaviour
   }
   private void OnHighButtonStart(CallbackContext obj)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, true);
+    if (!InputBlock.HasFlag(InputBlockType.Other))
+    {
+      _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, true);
+    }
   }
   private void OnHighButtonEnd(CallbackContext obj)
   {
@@ -627,7 +656,10 @@ public class Controller : MonoBehaviour
   }
   private void OnLowButtonStart(CallbackContext obj)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, true);
+    if (!InputBlock.HasFlag(InputBlockType.Other))
+    {
+      _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, true);
+    }
   }
   private void OnLowButtonEnd(CallbackContext obj)
   {
@@ -635,7 +667,10 @@ public class Controller : MonoBehaviour
   }
   private void OnThumbButtonStart(CallbackContext obj)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.ThumbButton].Run(this, true);
+    if (!InputBlock.HasFlag(InputBlockType.Other))
+    {
+      _myControllerMapping.Actions[(int)ControllerMapping.Controls.ThumbButton].Run(this, true);
+    }
   }
   private void OnThumbButtonEnd(CallbackContext obj)
   {

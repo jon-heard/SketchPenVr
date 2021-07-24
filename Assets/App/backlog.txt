@@ -1,20 +1,131 @@
-Today
----------------
-- add align to surface options
-
-Future
+0.1.02.00 - prototype
 ----------
-- fix shadow
+- if trigger pressed, disables controller collider (i.e. no reference)
+- make video of grip adjustment and add to setup on webpage
+
+- VR: fix pen going through panel while drawing and being broken
+
+0.1.03.00 - prototype
+----------
+- VR: haptic feedback
+  - add feedback toggle dropdown in settings
+    - Full, Light, None
+  - experiment with feedback during drawing
+  - experiment with quick quick flash when touching and untouching panel
+  - add growing feedback before drawing
+
+- test with digital art apps and get ideal settings (on laptop, in case I need to try them again later):
+  - clip studio paint
+  - blastllama (or whatever it's called)
+  - Photopea
+  - photoshop free trial
+  - affinity art designer
+  - corel painter
+  - autodesk Sketchbook
+  - Rebelle
+  - PaintTool SAI
+  - procreate
+  - artrage
+  - photoshop sketch
+  - adobe illustrator
+  - adobe fresco
+  - adobe indesign
+  - paintstorm
+  - artweaver
+  - black ink
+  - astropad
+  - inkscape
+  - inspire pro
+  - pixaki
+  - concepts
+  - comic draw
+  - paper
+  - tayasui sketches
+  - rough animator
+  - xara designer
+  - gravit designer
+  - visme (online)
+  - genially
+  - vectr
+- try and get medibang working
+- find optimal settings for each app and add to website
+- look for easy ways to make website more appealing (look at each paint app's website for ideas)
+- go over entire website once more
+- point out website to drakfyre
+
+- try and make RL-Plane align functionality more accurate (look up ways to maximize accuracy: don't move headset, keep headset close to controller, etc)
+
+- look for other playtesters
+
+0.2.00.00 - dev
+----------
+- add an about page with version display
+
+- add in-app console for debugging
+  - have it be based on a build define (not set then no console slow-down)
+
 - ActionTypes should have space in name
 
- Post prototype
-----------------
-- have scrollbar adjust to different item visibility counts (5 items at a time vs 10, for example)
 - have scrollbar react to thumb up/down (necessitates blocking thumb input from main app)
+
+0.2.01.00 - dev
+----------
+- image panels
+
+- action to fade desktop panel
+
+- save/load scene
+
+0.2.02.00 - dev
+----------
+- should detect hybrid computer and auto-switch to it if necessary
+  - make sure it's obvious to the user that it's running in that mode as it's less performant
+
+- fix shadow in hybrid mode
+
+0.2.03.00 - dev
+----------
+- desktop panel clip
+
+0.2.04.00 - dev
+----------
+- controller action presets
+
 - control set update: one page for selecting preset, another for modifying preset
-- add option to download backgrounds from url
-- fix console spam
-- haptic feedback
-  - experiment with feedback during drawing
-  - add feedback before drawing
-  - add feedback toggle dropdown in settings
+
+0.2.05.00 - dev
+----------
+- grip adjustment improvements
+  - hold trigger and hover over hand allows gripping pencil and moving it
+  - If shake while hovering with trigger, calculates fulcrum and shows red dot at point
+
+- hold trigger and hover over pen highlights pen.  Hovering over tip base highlights that and allows dragging it
+  - snaps to presets (with a label showing name of each preset)
+
+0.2.06.00 - dev
+----------
+- come up with background replacements (borrow Pramod's camera)
+
+- come up with way to get new backgrounds in there
+
+
+0.3.00. - alpha
+----------
+
+0.4.00.000 - beta
+----------
+
+1.0.00.00 - release
+----------
+
+
+Miscelaneous todos
+------------------
+- switch "Vr_Head" and "Vr_Hand" to single system and put into common.  Make it compatible with archery game as much as possible.
+- have scrollbar adjust to different item visibility counts (5 items at a time vs 10, for example)
+
+People to reach out to for input
+--------------------------------
+- Brad Colbow
+- Jazza
+- BoroCG

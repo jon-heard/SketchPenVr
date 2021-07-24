@@ -1,10 +1,11 @@
+using Common.Vr.Ui;
 using System;
 using UnityEngine;
 
 public class PinchHandler : MonoBehaviour
 {
   [NonSerialized] public PinchHandler Other;
-  [NonSerialized] public Common.Vr.Ui.Interactable Focus;
+  [NonSerialized] public Interactable Focus;
 
   public bool IsPinching
   {

@@ -18,7 +18,7 @@ public class Vr_Head : MonoBehaviour
     transform.localRotation = _input.VrHeadTracking.Rotation.ReadValue<Quaternion>();
     foreach (var Hand in Hands)
     {
-      Hand.OnPreRender();
+      Hand.OnCameraPreRender();
     }
   }
 }

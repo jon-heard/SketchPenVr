@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,7 @@ namespace Common.Vr.Ui.Controls
   public class Dropdown : Control
   {
     [SerializeField] private UnityEvent OnItemSet;
+    [SerializeField] private bool ItemReselectedTriggersItemSetEvent;
     [Header("Wiring")]
     [SerializeField] private TextMesh Label;
     [SerializeField] private Transform Geometry;
@@ -16,14 +18,17 @@ namespace Common.Vr.Ui.Controls
     [SerializeField] private Button DownButton;
     [SerializeField] private Scrollbar Scroll;
 
+    [NonSerialized] public bool ItemSelected = false;
+
     public uint Index
     {
       get { return _index; }
       set
       {
-        if (value != _index)
+        if (value != _index || (ItemReselectedTriggersItemSetEvent && ItemSelected))
         {
           _index = value;
+          ItemSelected = false;
           OnItemSet.Invoke();
         }
         if (_index < _listItems.Count)

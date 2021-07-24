@@ -155,7 +155,7 @@ namespace Common.Vr.Ui.Controls
         var key = KbdKeyHelp.GetFromOsCode((uint)Marshal.ReadInt32(lParam));
         if (key != KbdKey.None)
         {
-          _focusTextbox.handleKeystroke(key, wParam == (IntPtr)WM_KEYDOWN);
+          _focusTextbox.HandleKeystroke(key, wParam == (IntPtr)WM_KEYDOWN);
         }
       }
       return IntPtr.Zero + 1; // We're eating keystrokes while focused on this textbox
@@ -182,7 +182,7 @@ namespace Common.Vr.Ui.Controls
       var e = Event.current;
       if (e.isKey)
       {
-        handleKeystroke(KbdKeyHelp.GetFromUnityCode(e.keyCode), e.type == EventType.KeyDown);
+        HandleKeystroke(KbdKeyHelp.GetFromUnityCode(e.keyCode), e.type == EventType.KeyDown);
       }
     }
 
@@ -192,7 +192,7 @@ namespace Common.Vr.Ui.Controls
     private bool _isRightControlDown = false;
     private bool _isShiftDown { get { return _isLeftShiftDown || _isRightShiftDown; } }
     private bool _isControlDown { get { return _isLeftControlDown || _isRightControlDown; } }
-    private void handleKeystroke(KbdKey key, bool isDown)
+    private void HandleKeystroke(KbdKey key, bool isDown)
     {
       if (isDown)
       {

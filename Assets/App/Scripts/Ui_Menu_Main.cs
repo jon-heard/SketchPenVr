@@ -1,3 +1,4 @@
+using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
 using Common.Vr.Ui.Popups;
 using System;
@@ -5,9 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ui_Menu_Main : Common.Vr.Ui.Ui_Menu
+public class Ui_Menu_Main : Ui_Menu
 {
-  [SerializeField] private Common.Vr.Ui.Ui_Menu Menu_Settings;
+  [SerializeField] private Ui_Menu Menu_Settings;
+  [SerializeField] private Ui_Menu Menu_RLPlaneAlign;
   [SerializeField] private Dropdown _dropdown_lock;
   [SerializeField] private Button _button_lock;
 
@@ -41,9 +43,14 @@ public class Ui_Menu_Main : Common.Vr.Ui.Ui_Menu
     Hide();
   }
 
+  public void OnRLPlaneAlignButton(Button source)
+  {
+    Menu_RLPlaneAlign.Show(source);
+  }
+
   public void OnQuitButton(Button source)
   {
-    Ui_Popup_Confirm.ShowOnButtonParent(source, "Confirm quitting\nSketchPenVr", (confirmed) =>
+    Confirm.ShowOnButtonParent(source, "Confirm quitting\nSketchPenVr", (confirmed) =>
     {
       Hide();
       if (confirmed)

@@ -4,7 +4,7 @@ public class Vr_Hand : MonoBehaviour
 {
   public bool IsLeft = false;
 
-  public void OnPreRender()
+  public void OnCameraPreRender()
   {
     if (IsLeft)
     {

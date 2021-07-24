@@ -42,6 +42,11 @@ namespace Common.Vr.Ui.Controls
     }
     private ButtonState _state = ButtonState.Idle;
 
+    public void SimulateClick()
+    {
+      OnClickedEventListener(this);
+    }
+
     private Material _idleMaterial;
     private Material _idleLabelMaterial;
     private bool _isHovering;

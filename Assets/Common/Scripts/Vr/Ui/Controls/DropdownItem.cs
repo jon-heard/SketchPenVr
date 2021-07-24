@@ -41,6 +41,7 @@ namespace Common.Vr.Ui.Controls
     {
       if (focus == this)
       {
+        _owner.ItemSelected = true;
         _owner.Index = _index;
       }
     }

@@ -6,15 +6,15 @@ public class BillBoard : MonoBehaviour
 
   private void OnEnable()
   {
-    Camera.onPreRender += OnPreRender;
+    Camera.onPreRender += OnCameraPreRender;
   }
 
   private void OnDisable()
   {
-    Camera.onPreRender -= OnPreRender;
+    Camera.onPreRender -= OnCameraPreRender;
   }
 
-  private void OnPreRender(Camera c)
+  private void OnCameraPreRender(Camera c)
   {
     if (_reversed)
     {

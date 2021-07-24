@@ -98,7 +98,7 @@ MonoBehaviour:
   _gripButton: 0
   _thumbButton: 0
   _flippedZPosition: 0
-  _pencil: {fileID: 7996723751775130348}
+  Pencil: {fileID: 7996723751775130348}
   _rayVisual: {fileID: 4384208187201864639}
   _pinchHandler: {fileID: 8581508006627028769}
   _controllerVis: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e814fdc4ac367fb4db3e99b1f31e4651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TipPosition: 0.022
+  TipLength: 0.022
 --- !u!33 &6908429208119113336
 MeshFilter:
   m_ObjectHideFlags: 0

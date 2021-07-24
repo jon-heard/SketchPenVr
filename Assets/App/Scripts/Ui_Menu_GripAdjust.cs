@@ -1,7 +1,8 @@
+using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
 using UnityEngine;
 
-public class Ui_Menu_GripAdjust : Common.Vr.Ui.Ui_Menu
+public class Ui_Menu_GripAdjust : Ui_Menu
 {
   [SerializeField] private Button[] _buttons;
 
