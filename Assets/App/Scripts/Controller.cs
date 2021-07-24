@@ -377,6 +377,7 @@ public class Controller : MonoBehaviour
   }
   private void Update_Focus()
   {
+    var originalEnabled = _controllerVis.MyCollider.enabled;
     _controllerVis.MyCollider.enabled = false;
     var hitInfo = new RaycastHit();
     if (Physics.Raycast(transform.position, transform.forward, out hitInfo) &&
@@ -431,7 +432,7 @@ public class Controller : MonoBehaviour
       }
       _focusControllerVis = null;
     }
-    _controllerVis.MyCollider.enabled = true;
+    _controllerVis.MyCollider.enabled = originalEnabled;
   }
 
   private void Update_NearControl()
@@ -564,7 +565,7 @@ public class Controller : MonoBehaviour
         }
       }
       // Trigger action for non-main controller
-      if (_controllerIndex > 0)
+      if (_controllerIndex == 1)
       {
         _myControllerMapping.Actions[(int)ControllerMapping.Controls.Trigger].
           Run(this, _isTriggerDown);

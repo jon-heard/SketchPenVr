@@ -55,11 +55,25 @@ public class ControllerVis : MonoBehaviour
   private ControllerMapping _mapping;
 
   private Renderer _myRenderer;
+  private App_Input _input;
+  private float _const_TriggerDownPressure;
 
   private void Start()
   {
     _myRenderer = GetComponent<Renderer>();
     MyCollider = GetComponent<Collider>();
     MyState = State.Shadowed;
+    _input = new App_Input();
+    _input.Enable();
+    _const_TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
+  }
+
+  private void Update()
+  {
+    var triggerPressure =
+      Controller.IsLeftHanded ?
+      _input.VrLeftHandActions.TriggerPressure.ReadValue<float>() :
+      _input.VrRightHandActions.TriggerPressure.ReadValue<float>();
+    MyCollider.enabled = (triggerPressure < _const_TriggerDownPressure);
   }
 }
