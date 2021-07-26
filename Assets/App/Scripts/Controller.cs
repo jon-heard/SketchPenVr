@@ -424,7 +424,7 @@ public class Controller : MonoBehaviour
     {
       _focusDistance = _const_maxInteractDistance;
       Focus = null;
-      FocusPointerEmulation?.SetPenState(0, 0, Vector2.zero, Controller.IsFlipped);
+      FocusPointerEmulation?.SetPenState(0.0f, 0, Vector2.zero, Controller.IsFlipped);
       FocusPointerEmulation = null;
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
       if (_focusControllerVis)
@@ -473,7 +473,7 @@ public class Controller : MonoBehaviour
     var triggerAdjust = 1.0f;
     var geometryOpacity = 1.0f;
     if      (_triggerPressure > 0.9f) { }
-    else if (_triggerPressure <= 0.0f && IsFlipped) { }
+    else if (_triggerPressure <= 0.0f && IsFlipped) { } // Erase without needing trigger down
     else if (_triggerPressure <= 0.0f) { triggerAdjust = 0.0f; geometryOpacity = 1.0f; }
     else if (_triggerPressure > 0.3f) { triggerAdjust = 0.6f; geometryOpacity = 0.6f; }
     else { triggerAdjust = 0.3f; geometryOpacity = 0.2f; }

@@ -25,6 +25,7 @@ public class ControllerAction
     RightMouseButton,
     Undo,
     Redo,
+    RedoOldStyle,
     KeyHit,
     KeyPress
   }
@@ -78,6 +79,15 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Key_Z, true);
           OsHook_Keyboard.SetKeyState(KbdKey.Key_Z, false);
           OsHook_Keyboard.SetKeyState(KbdKey.Shift, false);
+          OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
+        }
+        break;
+      case ActionType.RedoOldStyle:
+        if (isDown)
+        {
+          OsHook_Keyboard.SetKeyState(KbdKey.Control, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Key_Y, true);
+          OsHook_Keyboard.SetKeyState(KbdKey.Key_Y, false);
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;

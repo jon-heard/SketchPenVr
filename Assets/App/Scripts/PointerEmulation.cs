@@ -62,7 +62,7 @@ public class PointerEmulation : MonoBehaviour
     {
       _isEmulatingMouse = true;
       ClearPenState();
-      yield return new WaitForSeconds(0.035f); // "clear" needs a moment to process
+      yield return new WaitForSeconds(App_Details.Instance.TIMESPAN_POINTER_CHANGEOVER); // "clear" needs a moment to process
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
     }
@@ -70,7 +70,7 @@ public class PointerEmulation : MonoBehaviour
     {
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
-      yield return new WaitForSeconds(0.035f); // "clear" needs a moment to process
+      yield return new WaitForSeconds(App_Details.Instance.TIMESPAN_POINTER_CHANGEOVER); // "clear" needs a moment to process
       _isEmulatingMouse = false;
     }
     yield break;

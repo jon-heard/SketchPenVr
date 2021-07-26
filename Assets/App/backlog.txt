@@ -1,7 +1,5 @@
 0.1.02.00 - prototype
 ----------
-- VR:  swapping between eraser and draw messes up
-
 - VR: haptic feedback
   - add feedback toggle dropdown in settings
     - Full, Light, None
@@ -17,7 +15,7 @@
 
 - adjust setup instructions:
   - add instruction to alter pressure gradient (optional step)
-  - make sure to mention that pressure control is visual instead of tactile, which takes some getting used to
+    - mention that pressure control is visual instead of tactile, which takes some getting used to: closer to painting than pen drawing
   - update setup pic for handedness for new ui
 - test with digital art apps and get ideal settings (on laptop, in case I need to try them again later):
   - clip studio paint

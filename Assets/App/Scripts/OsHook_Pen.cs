@@ -19,6 +19,8 @@ public static class OsHook_Pen
     _info.i.penInfo.pointerInfo.InputData = 0;
     _info.i.penInfo.pointerInfo.dwKeyStates = 0;
     _info.i.penInfo.pointerInfo.PerformanceCount = 0;
+
+    _const_PenChangeoverTimeSpan = App_Details.Instance.TIMESPAN_POINTER_CHANGEOVER;
 #endif
   }
 
@@ -34,7 +36,34 @@ public static class OsHook_Pen
   {
 #if UNITY_STANDALONE_WIN
     // Windows requires using and not-using eraser to be in separate states
-    if (_prevUsingEraser != usingEraser) { ClearState(); }
+    if (_prevUsingEraser != usingEraser)
+    {
+      if (!_isNewInteraction)
+      {
+        SetState(x, y, 0.0f, 0, 0, 0, !usingEraser);
+        _penBlocked = true;
+        _penBlockedTime = UnityEngine.Time.time;
+      }
+      _prevUsingEraser = usingEraser;
+    }
+
+    if (_penBlocked)
+    {
+      if ((UnityEngine.Time.time - _penBlockedTime) > _const_PenChangeoverTimeSpan * 2)
+      {
+        _penBlocked = false;
+        SetState(x, y, 0.0f, 0, 0, 0, usingEraser);
+      }
+      else if ((UnityEngine.Time.time - _penBlockedTime) > _const_PenChangeoverTimeSpan && !_isNewInteraction)
+      {
+        ClearState();
+        return;
+      }
+      else
+      {
+        return;
+      }
+    }
 
     _info.i.penInfo.pointerInfo.ptPixelLocation.x =
       _info.i.penInfo.pointerInfo.ptHimetricLocation.x =
@@ -66,7 +95,6 @@ public static class OsHook_Pen
     InjectSyntheticPointerInput(_penHandle, ref _info, 1);
 
     _prevInContact = inContact;
-    _prevUsingEraser = usingEraser;
     _isNewInteraction = false;
 #endif
   }
@@ -100,6 +128,9 @@ public static class OsHook_Pen
   private static bool _prevInContact;
   private static bool _prevUsingEraser;
   private static bool _isNewInteraction;
+  private static bool _penBlocked;
+  private static float _penBlockedTime;
+  private static float _const_PenChangeoverTimeSpan;
 
 
   [DllImport("User32.dll")]

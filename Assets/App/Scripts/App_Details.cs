@@ -21,6 +21,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float MIN_SCALE_SIZE = 0.25f; // How small to allow the screen to be sized
   public float CONTROLLER_EMULATED_SEPARATION = 0.2f; // How opaque the controller visuals are when not highlighted
   public float ALIGN_DATA_DISTANCE = 0.1f; // How close together to take the data points for calculating alignment to a real-life plane
+  public float TIMESPAN_POINTER_CHANGEOVER = 0.04f; // How long to delay after changing the pointer from pen to something else
   public List<string> PressureLengthTitles;
   public float[] PressureLengths;
 
