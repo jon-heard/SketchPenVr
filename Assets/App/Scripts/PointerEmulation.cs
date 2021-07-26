@@ -62,10 +62,7 @@ public class PointerEmulation : MonoBehaviour
     {
       _isEmulatingMouse = true;
       ClearPenState();
-      // 2 yields is probably enough.  Hope 3 isn't too slow.
-      yield return null;
-      yield return null;
-      yield return null;
+      yield return new WaitForSeconds(0.035f); // "clear" needs a moment to process
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
     }
@@ -73,10 +70,7 @@ public class PointerEmulation : MonoBehaviour
     {
       UpdateMousePosition();
       OsHook_Mouse.SetButton(button, down);
-      // 2 yields is probably enough.  Hope 3 isn't too slow.
-      yield return null;
-      yield return null;
-      yield return null;
+      yield return new WaitForSeconds(0.035f); // "clear" needs a moment to process
       _isEmulatingMouse = false;
     }
     yield break;

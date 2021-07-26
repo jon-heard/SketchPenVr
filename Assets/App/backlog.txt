@@ -1,12 +1,7 @@
 0.1.02.00 - prototype
 ----------
-- if trigger pressed, disables controller collider (i.e. no reference)
-- make video of grip adjustment and add to setup on webpage
+- VR:  swapping between eraser and draw messes up
 
-- VR: fix pen going through panel while drawing and being broken
-
-0.1.03.00 - prototype
-----------
 - VR: haptic feedback
   - add feedback toggle dropdown in settings
     - Full, Light, None
@@ -14,15 +9,19 @@
   - experiment with quick quick flash when touching and untouching panel
   - add growing feedback before drawing
 
+- add transparent overlay to menu
+- move set controls over all ui except for settings/options button
+- move handedness dropdown as subbutton like I did for other buttons
+
+- experiment with how much mipmapping slows down screen capture
+
+- adjust setup instructions:
+  - add instruction to alter pressure gradient (optional step)
+  - make sure to mention that pressure control is visual instead of tactile, which takes some getting used to
+  - update setup pic for handedness for new ui
 - test with digital art apps and get ideal settings (on laptop, in case I need to try them again later):
   - clip studio paint
-  - blastllama (or whatever it's called)
-  - Photopea
-  - photoshop free trial
-  - affinity art designer
-  - corel painter
-  - autodesk Sketchbook
-  - Rebelle
+  - blastll 
   - PaintTool SAI
   - procreate
   - artrage
@@ -47,13 +46,15 @@
   - visme (online)
   - genially
   - vectr
-- try and get medibang working
+- find smoothness settings for medibang and then update website that it works and instructions
 - find optimal settings for each app and add to website
 - look for easy ways to make website more appealing (look at each paint app's website for ideas)
 - go over entire website once more
 - point out website to drakfyre
 
 - try and make RL-Plane align functionality more accurate (look up ways to maximize accuracy: don't move headset, keep headset close to controller, etc)
+  - add controls for fine tuning plane that show up while plane locked
+    - feature instruction update: bring up these controls
 
 - look for other playtesters
 

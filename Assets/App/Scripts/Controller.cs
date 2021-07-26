@@ -246,7 +246,7 @@ public class Controller : MonoBehaviour
   //////////////////////////
   public static void SetPressureLength(float length)
   {
-    Controller._const_distanceFullPressure = Controller._const_distanceTouch - length;
+    Controller._const_distance_tipBase = Controller._const_distance_tipPoint - length;
   }
 
   ////////////
@@ -280,8 +280,8 @@ public class Controller : MonoBehaviour
   private static float _const_TriggerDownPressure;
   private static float _const_ThumbDownPressure;
   private static float _const_maxHoverDistance;
-  private static float _const_distanceTouch;
-  private static float _const_distanceFullPressure;
+  private static float _const_distance_tipPoint;
+  private static float _const_distance_tipBase;
 
   ////////////////////
   // Initialization //
@@ -295,8 +295,8 @@ public class Controller : MonoBehaviour
     _const_TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
     _const_ThumbDownPressure = App_Details.Instance.THUMB_DOWN_PRESSURE;
     _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
-    _const_distanceTouch = App_Details.Instance.CONTROLLER_DISTANCE_TOUCH;
-    _const_distanceFullPressure = App_Details.Instance.CONTROLLER_DISTANCE_FULL_PRESSURE;
+    _const_distance_tipPoint = App_Details.Instance.CONTROLLER_DISTANCE_TIP_POINT;
+    _const_distance_tipBase = App_Details.Instance.CONTROLLER_DISTANCE_TIP_BASE;
 
     _controllerIndex = (uint)(_isLeft ? 0 : 1);
     _instances[_controllerIndex] = this;
@@ -424,6 +424,7 @@ public class Controller : MonoBehaviour
     {
       _focusDistance = _const_maxInteractDistance;
       Focus = null;
+      FocusPointerEmulation?.SetPenState(0, 0, Vector2.zero, Controller.IsFlipped);
       FocusPointerEmulation = null;
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
       if (_focusControllerVis)
@@ -459,9 +460,9 @@ public class Controller : MonoBehaviour
 
     // Calc pen pressure
     var penPressure =
-      (_focusDistance > _const_distanceTouch) ? 0.0f :
-      (_focusDistance < _const_distanceFullPressure) ? 1.0f :
-      1.0f - (_focusDistance - _const_distanceFullPressure) / (_const_distanceTouch - _const_distanceFullPressure);
+      (_focusDistance > _const_distance_tipPoint) ? 0.0f :
+      (_focusDistance < _const_distance_tipBase) ? 1.0f :
+      1.0f - (_focusDistance - _const_distance_tipBase) / (_const_distance_tipPoint - _const_distance_tipBase);
 
     // Calc pen rotation
     var rotation =

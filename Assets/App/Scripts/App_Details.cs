@@ -13,8 +13,8 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float TRIGGER_DOWN_PRESSURE = 0.5f; // How much pressure user puts on trigger before we consider it pressed
   public float THUMB_DOWN_PRESSURE = 0.75f; // How much directional pressure user puts on thumb before we consider it pressed
   public float CONTROLLER_DISTANCE_NEAR_SCREEN = 0.232f; // How near controller needs to be to hover over screen
-  public float CONTROLLER_DISTANCE_TOUCH = 0.129f; // How near controller needs to be to touch screen
-  public float CONTROLLER_DISTANCE_FULL_PRESSURE = 0.107f; // How near controller needs to be to put full pressure on screen
+  public float CONTROLLER_DISTANCE_TIP_POINT = 0.129f; // How near controller needs to be to touch screen
+  public float CONTROLLER_DISTANCE_TIP_BASE = 0.107f; // How near controller needs to be to put full pressure on screen
   public float PANEL_X_MARGIN = 0.16f; // How big of a margin to put at edge of panels
   public float DISTANCE_BETWEEN_PANELS = 0.0085f; // How much space to put between panels
   public float TIMESPAN_BEFORE_SETTING_SCREEN_HEIGHT = 1.0f; // How long to wait before setting screen to user's eye level
@@ -90,7 +90,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
     {
       if (value == _pressureLength) { return; }
       _pressureLength = value;
-      CONTROLLER_DISTANCE_FULL_PRESSURE = CONTROLLER_DISTANCE_TOUCH - _pressureLength;
+      CONTROLLER_DISTANCE_TIP_BASE = CONTROLLER_DISTANCE_TIP_POINT - _pressureLength;
       Controller.SetPressureLength(_pressureLength);
       Mesh_Pencil.SetAllTipLengths(_pressureLength);
     }
