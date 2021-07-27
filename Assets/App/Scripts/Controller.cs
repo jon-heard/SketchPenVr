@@ -479,8 +479,14 @@ public class Controller : MonoBehaviour
         _geometryMaterial.color = Color.white;
         _rayVisual.gameObject.SetActive(true);
         _controllerVis.MyState = ControllerVis.State.Shadowed;
+        _isTriggerDown = false; // force mouse down if trigger is pushed when leaving near-zone
       }
       return;
+    }
+
+    if (!_isPenActive)
+    {
+      FocusPointerEmulation.MouseLeftButton = false;
     }
 
     _rayVisual.gameObject.SetActive(false);
