@@ -1,18 +1,15 @@
 0.1.02.00 - prototype
 ----------
-- experiment with how much mipmapping slows down screen capture
-
 - add transparent overlay to menu
 - move set controls over all ui except for settings/options button
-- move handedness dropdown as subbutton like I did for other buttons
 
 - adjust setup instructions:
   - add instruction to alter pressure gradient (optional step)
     - mention that pressure control is visual instead of tactile, which takes some getting used to: closer to painting than pen drawing
   - update setup pic for handedness for new ui
   - mention smoothness instructions as part of app-specific tutorial in setup
-- find smoothness settings for medibang and then update website that it works and instructions
-- test with digital art apps and get ideal settings (on laptop, in case I need to try them again later):
+- VR: find smoothness settings for medibang and then update website that it works and instructions
+- VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
   - clip studio paint
   - blastll 
   - PaintTool SAI
@@ -39,7 +36,6 @@
   - visme (online)
   - genially
   - vectr
-- find optimal settings for each app and add to website
 - look for easy ways to make website more appealing (look at each paint app's website for ideas)
 - go over entire website once more
 - point out website to drakfyre
@@ -101,6 +97,11 @@
 
 - come up with way to get new backgrounds in there
 
+0.2.07.00 - dev
+----------
+- Try and come up with DD & WGC engines on my own to optimize speed
+
+- experiment with how much mipmapping slows down screen capture (now that we have access to screen capture)
 
 0.3.00. - alpha
 ----------
