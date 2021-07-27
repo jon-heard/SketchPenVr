@@ -34,4 +34,12 @@ public class Ui_Menu_SetControls : Ui_Menu
   }
 
   private string _oldControlSettings;
+
+  protected override void Start()
+  {
+    base.Start();
+    var t = transform.localPosition;
+    t.x = 0;
+    transform.localPosition = t;
+  }
 }

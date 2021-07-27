@@ -1,41 +1,38 @@
 0.1.02.00 - prototype
 ----------
-- add transparent overlay to menu
-- move set controls over all ui except for settings/options button
+- VR: find smoothness settings for medibang and then update website that it works and instructions
+- VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
+  / T: clip studio paint
+  / T: rebelle
+  / T: PaintTool SAI
+    X: procreate (mac only)
+  / T: artrage
+  / F: photopia
+  - T: photoshop
+  - ?: photoshop sketch
+  - ?: adobe illustrator
+  - ?: adobe fresco
+  - ?: adobe indesign
+  / T: paintstorm
+  / T: artweaver
+  / T: black ink
+    X: astropad (mac only)
+  / F: inkscape
+    X: inspire pro (mac only)
+    X: pixaki (mac only)
+  / F: concepts
+  / T: comic life
+    X: paper (can't find this)
+    X: tayasui sketches (mac & mobile only)
+  / T: rough animator
+
+
 
 - adjust setup instructions:
   - add instruction to alter pressure gradient (optional step)
     - mention that pressure control is visual instead of tactile, which takes some getting used to: closer to painting than pen drawing
   - update setup pic for handedness for new ui
   - mention smoothness instructions as part of app-specific tutorial in setup
-- VR: find smoothness settings for medibang and then update website that it works and instructions
-- VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
-  - clip studio paint
-  - blastll 
-  - PaintTool SAI
-  - procreate
-  - artrage
-  - photoshop sketch
-  - adobe illustrator
-  - adobe fresco
-  - adobe indesign
-  - paintstorm
-  - artweaver
-  - black ink
-  - astropad
-  - inkscape
-  - inspire pro
-  - pixaki
-  - concepts
-  - comic draw
-  - paper
-  - tayasui sketches
-  - rough animator
-  - xara designer
-  - gravit designer
-  - visme (online)
-  - genially
-  - vectr
 - look for easy ways to make website more appealing (look at each paint app's website for ideas)
 - go over entire website once more
 - point out website to drakfyre

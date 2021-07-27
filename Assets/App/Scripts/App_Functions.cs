@@ -9,6 +9,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   [SerializeField] private Controller _leftController;
   [SerializeField] private Controller _rightController;
   public Material Backdrop;
+  public Renderer ScreenRenderer;
 
   // Lock/unlock entire ui
   public void SetFullUiLock(bool isLocked)

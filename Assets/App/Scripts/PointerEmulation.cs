@@ -7,8 +7,6 @@ using Common;
 //////////////////////////////////////////////////////////////////////
 public class PointerEmulation : MonoBehaviour
 {
-  public Renderer ScreenRenderer;
-
   [NonSerialized] public Vector2Int Resolution;
   [NonSerialized] public Vector2 Position;
   [NonSerialized] public float Distance;
@@ -93,7 +91,7 @@ public class PointerEmulation : MonoBehaviour
     // Setup the pen shadow
     var size = (Distance - _const_maxNearDistance * 0.5f) * 2.0f;
     var opacity = (size < .001f) ? 0.0f : (1.25f - size * 7.0f);
-    ScreenRenderer.material.SetVector(
+    _screenRenderer.material.SetVector(
       "_ShadowState", new Vector4(Position.x, Position.y, size, opacity));
   }
 
@@ -104,6 +102,7 @@ public class PointerEmulation : MonoBehaviour
 
   private bool _isEmulatingMouse = false;
   private float _const_maxNearDistance;
+  private Renderer _screenRenderer;
 
   private void Awake()
   {
@@ -116,6 +115,7 @@ public class PointerEmulation : MonoBehaviour
   {
     OsHook_Pen.Init();
     _const_maxNearDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
+    _screenRenderer = App_Functions.Instance.ScreenRenderer;
   }
   private void OnDestroy()
   {

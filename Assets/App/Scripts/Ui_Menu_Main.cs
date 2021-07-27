@@ -12,6 +12,7 @@ public class Ui_Menu_Main : Ui_Menu
   [SerializeField] private Ui_Menu Menu_RLPlaneAlign;
   [SerializeField] private Dropdown _dropdown_lock;
   [SerializeField] private Button _button_lock;
+  [SerializeField] private Transform _dimmer;
 
   public override bool Show(Button source = null)
   {
@@ -70,6 +71,12 @@ public class Ui_Menu_Main : Ui_Menu
   private IEnumerator PostStart()
   {
     yield return new WaitForEndOfFrame();
+
+    var screen = App_Functions.Instance.ScreenRenderer.transform;
+    _dimmer.position = screen.position + new Vector3(0.0f, 0.0f, -0.0005f);
+    _dimmer.rotation = screen.rotation;
+    _dimmer.localScale = screen.lossyScale;
+
     Hide();
   }
 }
