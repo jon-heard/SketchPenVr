@@ -255,6 +255,7 @@ public class Controller : MonoBehaviour
   private App_Input _input;
   private float _zPosition;
   private float _rayVisualZOffset;
+  private bool _isDrawing;
 
   // User input
   private bool _isTriggerDown;
@@ -275,13 +276,16 @@ public class Controller : MonoBehaviour
   private bool _isLeft;
   private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
-  //private InputDevice? _myXrDevice;0
+  public InputDevice? _myXrDevice;
   private static float _const_maxInteractDistance;
   private static float _const_TriggerDownPressure;
   private static float _const_ThumbDownPressure;
   private static float _const_maxHoverDistance;
   private static float _const_distance_tipPoint;
   private static float _const_distance_tipBase;
+  private static float _const_rumbleStrength_hard;
+  private static float _const_rumbleStrength_medium;
+  private static float _const_rumbleStrength_light;
 
   ////////////////////
   // Initialization //
@@ -297,6 +301,9 @@ public class Controller : MonoBehaviour
     _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
     _const_distance_tipPoint = App_Details.Instance.CONTROLLER_DISTANCE_TIP_POINT;
     _const_distance_tipBase = App_Details.Instance.CONTROLLER_DISTANCE_TIP_BASE;
+    _const_rumbleStrength_hard = App_Details.Instance.RUMBLE_STRENGTH_HARD;
+    _const_rumbleStrength_medium = App_Details.Instance.RUMBLE_STRENGTH_MEDIUM;
+    _const_rumbleStrength_light = App_Details.Instance.RUMBLE_STRENGTH_LIGHT;
 
     _controllerIndex = (uint)(_isLeft ? 0 : 1);
     _instances[_controllerIndex] = this;
@@ -346,13 +353,13 @@ public class Controller : MonoBehaviour
       App_Details.Instance.MyControllerMappings.Mappings[_controllerIndex];
 
     // Haptic feedback init
-    //_myXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
-    //HapticCapabilities caps;
-    //if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
-    //{
-    //  _myXrDevice = null;
-    //  Debug.Log("No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
-    //}
+    _myXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
+    HapticCapabilities caps;
+    if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
+    {
+      _myXrDevice = null;
+      Debug.Log("No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
+    }
   }
 
   //////////////////////////
@@ -436,6 +443,22 @@ public class Controller : MonoBehaviour
     _controllerVis.MyCollider.enabled = originalEnabled;
   }
 
+  private void DoSnapRumble()
+  {
+    var rumbleStrength = App_Details.Instance.RumbleStrength;
+    if (rumbleStrength != App_Details.RumbleStrengthType.None)
+    {
+      var a =
+        (rumbleStrength == App_Details.RumbleStrengthType.Hard) ? _const_rumbleStrength_hard :
+        (rumbleStrength == App_Details.RumbleStrengthType.Medium) ? _const_rumbleStrength_medium :
+        _const_rumbleStrength_light;
+      _myXrDevice?.SendHapticImpulse(0, a, 0.1f);
+      _myXrDevice?.SendHapticImpulse(1, a, 0.1f);
+      _myXrDevice?.SendHapticImpulse(2, a, 0.1f);
+      _myXrDevice?.SendHapticImpulse(3, a, 0.1f);
+    }
+  }
+
   private void Update_NearControl()
   {
     // Early out
@@ -447,6 +470,11 @@ public class Controller : MonoBehaviour
       if (_isPenActive)
       {
         _isPenActive = false;
+        if (_isDrawing)
+        {
+          _isDrawing = false;
+          DoSnapRumble();
+        }
         FocusPointerEmulation?.ClearPenState();
         _geometryMaterial.color = Color.white;
         _rayVisual.gameObject.SetActive(true);
@@ -495,11 +523,16 @@ public class Controller : MonoBehaviour
       FocusPointerEmulation.SetPenState(
         penPressure * triggerAdjust, rotation, tilt, Controller.IsFlipped);
     }
+
+    // Calc _isDrawing
+    var newIsDrawing = (penPressure * triggerAdjust) > 0.0f;
+    if (newIsDrawing != _isDrawing)
+    {
+      _isDrawing = newIsDrawing;
+      DoSnapRumble();
+    }
+
     _isPenActive = true;
-    //if (penPressure * triggerAdjust > 0.0f)
-    //{
-    //  _myXrDevice?.SendHapticImpulse(0, 1.0f, 0.1f);
-    //}
   }
 
   /////////////////

@@ -1,11 +1,6 @@
 0.1.02.00 - prototype
 ----------
-- VR: haptic feedback
-  - add feedback toggle dropdown in settings
-    - Full, Light, None
-  - experiment with feedback during drawing
-  - experiment with quick quick flash when touching and untouching panel
-  - add growing feedback before drawing
+- fix mouse getting stuck down when moving into range with mouse down
 
 - add transparent overlay to menu
 - move set controls over all ui except for settings/options button

@@ -1,5 +1,6 @@
 using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,23 +9,41 @@ public class Ui_Menu_Settings : Ui_Menu
   [SerializeField] private Ui_Menu _menu_setControls;
   [SerializeField] private Ui_Menu _menu_backdrops;
   [SerializeField] private Ui_Menu _menu_gripAdjust;
-  [SerializeField] private Button _button_PressureLength;
+  [SerializeField] private Button _button_pressureLength;
+  [SerializeField] private Button _button_rumble;
   [SerializeField] private Dropdown _dropdown_handedness;
+  [SerializeField] private Dropdown _dropdown_rumble;
   [SerializeField] private Dropdown _dropdown_pressureLength;
 
   public override bool Show(Button source = null)
   {
-    _dropdown_handedness.Index = (uint)(App_Details.Instance.IsLeftHanded ? 0 : 1);
-    _dropdown_pressureLength.gameObject.SetActive(false);
     _dropdown_pressureLength.Index = App_Details.Instance.PressureLengthIndex;
-    _button_PressureLength.State = Button.ButtonState.NotLockedDown;
+    _dropdown_pressureLength.gameObject.SetActive(false);
+    _button_pressureLength.State = Button.ButtonState.NotLockedDown;
+
+    _dropdown_rumble.Index = (uint)App_Details.Instance.RumbleStrength;
+    _dropdown_rumble.gameObject.SetActive(false);
+    _button_rumble.State = Button.ButtonState.NotLockedDown;
+    if (Controller.PrimaryController._myXrDevice == null)
+    {
+      _button_rumble.State = Button.ButtonState.Disabled;
+    }
+
+    _dropdown_handedness.Index = (uint)(App_Details.Instance.IsLeftHanded ? 0 : 1);
+
     return base.Show(source);
   }
 
   public void OnPressureLengthButton(Button source)
   {
     _dropdown_pressureLength.gameObject.SetActive(true);
-    _button_PressureLength.State = Button.ButtonState.LockedDown;
+    _button_pressureLength.State = Button.ButtonState.LockedDown;
+  }
+
+  public void PressureLengthChanged()
+  {
+    App_Details.Instance.PressureLengthIndex = _dropdown_pressureLength.Index;
+    Hide();
   }
 
   public void OnSetControlsButton(Button source)
@@ -42,9 +61,16 @@ public class Ui_Menu_Settings : Ui_Menu
     _menu_gripAdjust.Show(source);
   }
 
-  public void PressureLengthChanged()
+  public void OnRumbleButton(Button source)
   {
-    App_Details.Instance.PressureLengthIndex = _dropdown_pressureLength.Index;
+    _dropdown_rumble.gameObject.SetActive(true);
+    _button_rumble.State = Button.ButtonState.LockedDown;
+  }
+
+  public void RumbleChanged()
+  {
+    App_Details.Instance.RumbleStrength = (App_Details.RumbleStrengthType)_dropdown_rumble.Index;
+    Hide();
   }
 
   public void OnHandednessChanged()
@@ -58,5 +84,7 @@ public class Ui_Menu_Settings : Ui_Menu
     base.Start();
     _dropdown_pressureLength.SetList(App_Details.Instance.PressureLengthTitles);
     _dropdown_handedness.SetList(new List<string> { "Left handed", "Right handed" });
+    _dropdown_rumble.SetList(
+      new List<string>(Enum.GetNames(typeof(App_Details.RumbleStrengthType))));
   }
 }
