@@ -500,7 +500,7 @@ public class Controller : MonoBehaviour
 
     // Calc pen rotation
     var rotation =
-      (uint)((int)(transform.eulerAngles.z - FocusPointerEmulation.transform.eulerAngles.z + 360)
+      (uint)((int)(FocusPointerEmulation.transform.eulerAngles.z - transform.eulerAngles.z + 360)
       % 360);
 
     // Calc pen pressure trigger adjust
