@@ -50,7 +50,7 @@ public class ControllerMapping
   {
     var control = (int)Controls.Grip;
     ActionTitles[control] = "Hold";
-    Actions[control].Type = ControllerAction.ActionType.HoldDesktop;
+    Actions[control].Type = ControllerAction.ActionType.Hold_desktop;
 
     if (index == 0)
     {
@@ -66,53 +66,53 @@ public class ControllerMapping
       // Left - Low button - color pic - control
       control = (int)Controls.LowButton;
       ActionTitles[control] = "Color pick";
-      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Key = KbdKey.Control;
       Actions[control].Next = new ControllerAction();
-      Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
 
       // Left - Thumb down - rotate - shift, space, left mouse
       control = (int)Controls.ThumbButton;
       ActionTitles[control] = "Rotate";
-      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Key = KbdKey.Shift;
       Actions[control].Next = new ControllerAction();
-      Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Next.Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Next.Key = KbdKey.Space;
       Actions[control].Next.Next = new ControllerAction();
-      Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
 
       // Left - Thumb left - brush size - shift, left mouse
       control = (int)Controls.ThumbLeft;
       ActionTitles[control] = "Brush size";
-      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Key = KbdKey.Shift;
       Actions[control].Next = new ControllerAction();
-      Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
 
       // Left - Thumb up - pan - space, left mouse
       control = (int)Controls.ThumbUp;
       ActionTitles[control] = "Pan";
-      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Key = KbdKey.Space;
       Actions[control].Next = new ControllerAction();
-      Actions[control].Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
 
       // Left - Thumb down - zoom - control, space, left mouse
       control = (int)Controls.ThumbDown;
       ActionTitles[control] = "Zoom";
-      Actions[control].Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Key = KbdKey.Control;
       Actions[control].Next = new ControllerAction();
-      Actions[control].Next.Type = ControllerAction.ActionType.KeyPress;
+      Actions[control].Next.Type = ControllerAction.ActionType.Key_Press;
       Actions[control].Next.Key = KbdKey.Space;
       Actions[control].Next.Next = new ControllerAction();
-      Actions[control].Next.Next.Type = ControllerAction.ActionType.LeftMouseButton;
+      Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
 
       // Left - Thumb right - mirror - M toggles
       control = (int)Controls.ThumbRight;
       ActionTitles[control] = "Mirror";
-      Actions[control].Type = ControllerAction.ActionType.KeyHit;
+      Actions[control].Type = ControllerAction.ActionType.Key_Hit;
       Actions[control].Key = KbdKey.Key_M;
     }
     else
@@ -120,17 +120,17 @@ public class ControllerMapping
       // Right - Trigger button - pencil flip
       control = (int)Controls.Trigger;
       ActionTitles[control] = "Eraser";
-      Actions[control].Type = ControllerAction.ActionType.PencilFlip;
+      Actions[control].Type = ControllerAction.ActionType.Pencil_flip;
 
       // Right - Top button - redo
       control = (int)Controls.HighButton;
       ActionTitles[control] = "Redo";
-      Actions[control].Type = ControllerAction.ActionType.Redo;
+      Actions[control].Type = ControllerAction.ActionType.Redo__ctrl___y;
 
       // Right - Bottom button - brush wheel - right mouse
       control = (int)Controls.LowButton;
       ActionTitles[control] = "Brush Select";
-      Actions[control].Type = ControllerAction.ActionType.RightMouseButton;
+      Actions[control].Type = ControllerAction.ActionType.Mouse_button__right;
     }
   }
 }

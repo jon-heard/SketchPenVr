@@ -7,8 +7,8 @@ public static class ActionTypeExtension
   public static bool HasKey(this ControllerAction.ActionType type)
   {
     return
-      type == ControllerAction.ActionType.KeyHit ||
-      type == ControllerAction.ActionType.KeyPress;
+      type == ControllerAction.ActionType.Key_Hit ||
+      type == ControllerAction.ActionType.Key_Press;
   }
 }
 
@@ -19,15 +19,15 @@ public class ControllerAction
   {
     Nothing,
     Hold,
-    HoldDesktop,
-    PencilFlip,
-    LeftMouseButton,
-    RightMouseButton,
+    Hold_desktop,
+    Pencil_flip,
+    Mouse_button__left,
+    Mouse_button__right,
     Undo,
-    Redo,
-    RedoOldStyle,
-    KeyHit,
-    KeyPress
+    Redo__ctrl___shift___z,
+    Redo__ctrl___y,
+    Key_Hit,
+    Key_Press
   }
 
   public ActionType Type;
@@ -44,19 +44,19 @@ public class ControllerAction
       case ActionType.Hold:
         controller.IsHolding = isDown;
         break;
-      case ActionType.HoldDesktop:
+      case ActionType.Hold_desktop:
         controller.IsHoldingDesktop = isDown;
         break;
-      case ActionType.PencilFlip:
+      case ActionType.Pencil_flip:
         Controller.IsFlipped = isDown;
         break;
-      case ActionType.LeftMouseButton:
+      case ActionType.Mouse_button__left:
         if (controller.FocusPointerEmulation)
         {
           controller.FocusPointerEmulation.MouseLeftButton = isDown;
         }
         break;
-      case ActionType.RightMouseButton:
+      case ActionType.Mouse_button__right:
         if (controller.FocusPointerEmulation)
         {
           controller.FocusPointerEmulation.MouseRightButton = isDown;
@@ -71,7 +71,7 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
-      case ActionType.Redo:
+      case ActionType.Redo__ctrl___shift___z:
         if (isDown)
         {
           OsHook_Keyboard.SetKeyState(KbdKey.Control, true);
@@ -82,7 +82,7 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
-      case ActionType.RedoOldStyle:
+      case ActionType.Redo__ctrl___y:
         if (isDown)
         {
           OsHook_Keyboard.SetKeyState(KbdKey.Control, true);
@@ -91,14 +91,14 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
-      case ActionType.KeyHit:
+      case ActionType.Key_Hit:
         if (isDown)
         {
           OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
           OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
         }
         break;
-      case ActionType.KeyPress:
+      case ActionType.Key_Press:
         OsHook_Keyboard.SetKeyState((KbdKey)Key, isDown);
         break;
       default:

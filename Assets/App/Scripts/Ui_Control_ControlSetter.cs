@@ -87,6 +87,11 @@ public class Ui_Control_ControlSetter : Button
   protected void Start()
   {
     var actionTypeList = new List<string>(Enum.GetNames(typeof(ControllerAction.ActionType)));
+    for (var i = 0; i < actionTypeList.Count; i++)
+    {
+      actionTypeList[i] =
+        actionTypeList[i].Replace("___", "-").Replace("__", ": ").Replace("_", " ");
+    }
     var actionParameterList = KbdKeyHelp.GetTitleList();
     for(var i = 0; i < _actionEditorUis.Length; i++)
     {

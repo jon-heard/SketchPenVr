@@ -1,35 +1,55 @@
 0.1.02.00 - prototype
 ----------
 - VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
-  / F: FireAlpaca
-  / T: rebelle
-  / T: PaintTool SAI
-  / T: artrage
-  / T: paintstorm
-  / T: artweaver
-  / T: black ink
-  / T: comic life
-  / T: rough animator
-  - T: photoshop
-  - ?: photoshop sketch
-  - ?: adobe illustrator
-  - ?: adobe fresco
-  - ?: adobe indesign
-  - ?: Corel Painter
-    X: paper (can't find this)
-    X: tayasui sketches (mac & mobile only)
-    X: procreate (mac only)
-    X: astropad (mac only)
-    X: inspire pro (mac only)
-    X: pixaki (mac only)
-  + F: inkscape
-  + F: concepts
-  + T: clip studio paint
+  X T: PaintTool SAI
+  X T: comic life
+  / ?: Twisted brush
+  / ?: Leonardo Beta
+  / ?: PaintShop Pro
+    _: Sketchbook (No trial or free version)
+    _: paper (can't find this)
+    _: tayasui sketches (mac & mobile only)
+    _: procreate (mac only)
+    _: astropad (mac only)
+    _: inspire pro (mac only)
+    _: pixaki (mac only)
+    _: photoshop sketch (mobile only)
+    T: inkscape
+    T: concepts
+    T: clip studio paint
+    T: FireAlpaca
+    T: rebelle
+    T: artrage
+    T: rough animator
+    T: paintstorm
+    T: artweaver
+    T: black ink
+    T: photoshop
+    T: Corel Painter
+    T: Adobe illustrator
+    T: MyPaint
+    T: Drawpile
+    T: Chasys Draw IES
+    T: Affinity designer
+
+- add demo video and link to it under about
 
 - look for easy ways to make website more appealing (look at each paint app's website for ideas)
+
 - go over entire website once more
 
-- point out website and new version to drakfyre
+0.1.03.00
+
+- add an about page with version display
+
+- add action groups buttons: mouse-left, mouse-right, pen-left, pen-right
+- add scroll-up & scroll-down actions
+	- make scroll-up & scroll-down defaults for mouse mode
+
+- add in-app console for debugging
+  - have it be based on a build define (not set then no console slow-down)
+
+- have scrollbar react to thumb up/down (necessitates blocking thumb input from main app)
 
 - try and make RL-Plane align functionality more accurate (look up ways to maximize accuracy: don't move headset, keep headset close to controller, etc)
   - add controls for fine tuning plane that show up while plane locked
@@ -39,41 +59,30 @@
 
 0.2.00.00 - dev
 ----------
-- add an about page with version display
-
-- add in-app console for debugging
-  - have it be based on a build define (not set then no console slow-down)
-
-- ActionTypes should have space in name
-
-- have scrollbar react to thumb up/down (necessitates blocking thumb input from main app)
-
-0.2.01.00 - dev
-----------
 - image panels
 
 - action to fade desktop panel
 
 - save/load scene
 
-0.2.02.00 - dev
+0.2.01.00 - dev
 ----------
 - should detect hybrid computer and auto-switch to it if necessary
   - make sure it's obvious to the user that it's running in that mode as it's less performant
 
 - fix shadow in hybrid mode
 
-0.2.03.00 - dev
+0.2.02.00 - dev
 ----------
 - desktop panel clip
 
-0.2.04.00 - dev
+0.2.03.00 - dev
 ----------
 - controller action presets
 
 - control set update: one page for selecting preset, another for modifying preset
 
-0.2.05.00 - dev
+0.2.04.00 - dev
 ----------
 - grip adjustment improvements
   - hold trigger and hover over hand allows gripping pencil and moving it
@@ -82,19 +91,19 @@
 - hold trigger and hover over pen highlights pen.  Hovering over tip base highlights that and allows dragging it
   - snaps to presets (with a label showing name of each preset)
 
-0.2.06.00 - dev
+0.2.05.00 - dev
 ----------
 - come up with background replacements (borrow Pramod's camera)
 
 - come up with way to get new backgrounds in there
 
-0.2.07.00 - dev
+0.2.06.00 - dev
 ----------
 - Try and come up with DD & WGC engines on my own to optimize speed
 
 - experiment with how much mipmapping slows down screen capture (now that we have access to screen capture)
 
-0.3.00. - alpha
+0.3.00.00 - alpha
 ----------
 
 0.4.00.000 - beta
