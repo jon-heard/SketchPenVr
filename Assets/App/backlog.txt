@@ -39,9 +39,6 @@
 - go over entire website once more
 
 0.1.03.00
-
-- add an about page with version display
-
 - add action groups buttons: mouse-left, mouse-right, pen-left, pen-right
 - add scroll-up & scroll-down actions
 	- make scroll-up & scroll-down defaults for mouse mode
@@ -50,10 +47,6 @@
   - have it be based on a build define (not set then no console slow-down)
 
 - have scrollbar react to thumb up/down (necessitates blocking thumb input from main app)
-
-- try and make RL-Plane align functionality more accurate (look up ways to maximize accuracy: don't move headset, keep headset close to controller, etc)
-  - add controls for fine tuning plane that show up while plane locked
-    - feature instruction update: bring up these controls
 
 - look for other playtesters
 
@@ -71,6 +64,10 @@
   - make sure it's obvious to the user that it's running in that mode as it's less performant
 
 - fix shadow in hybrid mode
+
+- try and make RL-Plane align functionality more accurate (look up ways to maximize accuracy: don't move headset, keep headset close to controller, etc)
+  - add controls for fine tuning plane that show up while plane locked
+    - feature instruction update: bring up these controls
 
 0.2.02.00 - dev
 ----------

@@ -49,6 +49,11 @@ public class Ui_Menu_Main : Ui_Menu
     Menu_RLPlaneAlign.Show(source);
   }
 
+  public void OnAboutButton(Button source)
+  {
+    Alert.ShowOnButtonParent(source, Application.productName + "  v." + Application.version + "\nCopyright (C) 2021 " + Application.companyName + "\n" + App_Details.Instance.MyCommonDetails.PRODUCT_WEBSITE);
+  }
+
   public void OnQuitButton(Button source)
   {
     Confirm.ShowOnButtonParent(source, "Confirm quitting\nSketchPenVr", (confirmed) =>
