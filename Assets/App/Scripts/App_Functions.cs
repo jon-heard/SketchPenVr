@@ -8,7 +8,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   public Screen MyScreen;
   [SerializeField] private Controller _leftController;
   [SerializeField] private Controller _rightController;
-  public Material Backdrop;
+  public Material Background;
   public Renderer ScreenRenderer;
   public InputManager MyInputManager;
   public Console MyConsole;
@@ -35,8 +35,8 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
 
   private void Awake()
   {
-    Backdrop = new Material(Backdrop);
-    RenderSettings.skybox = Backdrop;
+    Background = new Material(Background);
+    RenderSettings.skybox = Background;
   }
 
   private void Start()

@@ -9,10 +9,6 @@ possible main apps
 
 0.1.03.00
 ----------
-- use ScrolledList for dropdown control
-
-- replace background change buttons with a dropdown
-
 - add action groups buttons: Primary controller, Secondary controller, Primary controller: pen
 - add scroll-up & scroll-down actions
 	- make scroll-up & scroll-down defaults for mouse mode
@@ -32,6 +28,8 @@ possible main apps
 
 0.2.00.00 - dev
 ----------
+- use ScrolledList for dropdown control
+
 - image panels
 
 - action to fade desktop panel

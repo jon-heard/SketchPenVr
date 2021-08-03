@@ -32,7 +32,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
   public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
   public const string CFG__MAPPINGS = "setting:mappings";
-  public const string CFG__BACKDROP = "setting:backdrop";
+  public const string CFG__BACKGROUND = "setting:background";
   public const string CFG__PRESSURE_LENGTH_INDEX = "setting:PressureLengthIndex";
   public const string CFG__RUMBLE_STRENGTH = "setting:RumbleStrength";
   public const string LOCK__DIRECT = "lock:direct";
@@ -62,19 +62,19 @@ public class App_Details : Common.SingletonComponent<App_Details>
     }
   }
 
-  public string Backdrop
+  public string Background
   {
-    get { return _backdrop; }
+    get { return _background; }
     set
     {
-      if (value == _backdrop) { return; }
-      _backdrop = value;
-      App_Functions.Instance.Backdrop.SetTexture(
-        "_Tex", Resources.Load<Cubemap>("Backdrops/" + _backdrop));
-      PlayerPrefs.SetString(App_Details.CFG__BACKDROP, _backdrop);
+      if (value == _background) { return; }
+      _background = value;
+      App_Functions.Instance.Background.SetTexture(
+        "_Tex", Resources.Load<Cubemap>("Backgrounds/" + _background));
+      PlayerPrefs.SetString(App_Details.CFG__BACKGROUND, _background);
     }
   }
-  private string _backdrop;
+  private string _background;
 
   public uint PressureLengthIndex
   {
@@ -118,8 +118,8 @@ public class App_Details : Common.SingletonComponent<App_Details>
   private void Awake()
   {
 
-    // Backdrop
-    Backdrop = PlayerPrefs.GetString(App_Details.CFG__BACKDROP, "artStudio");
+    // Background
+    Background = PlayerPrefs.GetString(App_Details.CFG__BACKGROUND, "artStudio");
 
     // Mappings
     var mappingsString = PlayerPrefs.GetString(App_Details.CFG__MAPPINGS, null);
