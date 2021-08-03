@@ -23,6 +23,16 @@ namespace Common.Vr.Ui.Controls
     }
     private uint _position;
 
+    public bool IsAtBottom
+    {
+      get
+      {
+        if (_totalCount <= _visibleCount) { return true; }
+        if (ScrollPosition == _totalCount - _visibleCount) { return true; }
+        return false;
+      }
+    }
+
     public bool IsPartOfScroll(Control focus)
     {
       return focus == _dragger || focus == this;
@@ -56,6 +66,7 @@ namespace Common.Vr.Ui.Controls
       {
         _draggerPositions[i] = Mathf.Lerp(highPosition, lowPosition, (float)i / _draggerPositions.Length);
       }
+      _draggerEndPosition = lowPosition;
 
       // Visuals
       var t = _draggerGeometry.localScale;
@@ -70,21 +81,38 @@ namespace Common.Vr.Ui.Controls
       _dragger.AxisClampLow.y = lowPosition;
       _dragger.AxisClampHigh.y = highPosition;
 
-      // Update dragger position
-      t = _dragger.transform.localPosition;
-      t.y = _draggerPositions[ScrollPosition];
+      UpdateDraggerPosition();
+    }
+
+    public void UpdateDraggerPosition()
+    {
+      var t = _dragger.transform.localPosition;
+      // If NOT last position, place at pre-calculated spot
+      if (!IsAtBottom)
+      {
+        t.y = _draggerPositions[ScrollPosition];
+      }
+      // ... otherwise at last position: place at very end of scrollbar
+      else
+      {
+        t.y = _draggerEndPosition;
+      }
       _dragger.transform.localPosition = t;
     }
 
     public bool IsListeningForThumbstick
     {
       get { return _dragger.IsListeningForThumbstick; }
-      set { _dragger.IsListeningForThumbstick = value; }
+      set
+      {
+        if (_dragger) { _dragger.IsListeningForThumbstick = value; }
+      }
     }
 
     private uint _visibleCount;
     private uint _totalCount;
     private float[] _draggerPositions;
+    private float _draggerEndPosition;
     private Vector3 _pointerPosition;
     private Control_Draggable _dragger;
     private Material _idleMaterial;

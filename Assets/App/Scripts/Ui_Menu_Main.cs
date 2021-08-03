@@ -13,6 +13,8 @@ public class Ui_Menu_Main : Ui_Menu
   [SerializeField] private Dropdown _dropdown_lock;
   [SerializeField] private Button _button_lock;
   [SerializeField] private Transform _dimmer;
+  [SerializeField] private Common.Vr.Ui.Controls.Console _console;
+  [SerializeField] private Button _button_console;
 
   public override bool Show(Button source = null)
   {
@@ -67,11 +69,24 @@ public class Ui_Menu_Main : Ui_Menu
     });
   }
 
+  public void OnShowConsole()
+  {
+    _console.transform.parent = App_Functions.Instance.MyScreen.transform;
+    _console.transform.localPosition = new Vector3(0.0f, 0.0f, -0.01f);
+    _console.transform.localEulerAngles = Vector3.zero;
+    _console.transform.parent = null;
+    _console.gameObject.SetActive(true);
+    Hide();
+  }
+
   protected override void Start()
   {
     base.Start();
     _dropdown_lock.SetList(new List<string>(Enum.GetNames(typeof(Screen.ScreenLockType))));
     StartCoroutine(PostStart());
+#if !DEV
+    _button_console.gameObject.SetActive(false);
+#endif
   }
   private IEnumerator PostStart()
   {

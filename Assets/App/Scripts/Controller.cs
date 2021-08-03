@@ -108,10 +108,9 @@ public class Controller : MonoBehaviour
       var screen = App_Functions.Instance.MyScreen;
       // Break hold logic if holding a locked screen
       if (_isHolding &&
-          Focus.DragInteractable.gameObject == screen.gameObject &&
+          Focus?.DragInteractable?.gameObject == screen.gameObject &&
           screen._lockType == Screen.ScreenLockType.Full)
       {
-        Debug.Log("breaking hold logic");
         return;
       }
       if (_isHolding) { _held = Focus; } // Have separate var for held in case lost focus

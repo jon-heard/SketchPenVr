@@ -11,6 +11,14 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   public Material Backdrop;
   public Renderer ScreenRenderer;
   public InputManager MyInputManager;
+  public Console MyConsole;
+
+  public void Print(string text)
+  {
+#if DEV
+    MyConsole.Print(text);
+#endif
+  }
 
   // Lock/unlock entire ui
   public void SetFullUiLock(bool isLocked)
@@ -83,8 +91,10 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
     // Logic to minimize this window
     OsHook_Window.Minimize();
 #endif
-
-
+    Print(Application.productName + " v." + Application.version);
+    Print("Copyright (C) 2021 " + Application.companyName);
+    Print(App_Details.Instance.MyCommonDetails.PRODUCT_WEBSITE);
+    Print("----------------------------");
   }
 
   private IEnumerator SetupScreenHeight(App_Input input)
