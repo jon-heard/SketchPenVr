@@ -1,52 +1,31 @@
-0.1.02.00 - prototype
-----------
-- VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
-  X T: PaintTool SAI
-  X T: comic life
-  / ?: Twisted brush
-  / ?: Leonardo Beta
-  / ?: PaintShop Pro
-    _: Sketchbook (No trial or free version)
-    _: paper (can't find this)
-    _: tayasui sketches (mac & mobile only)
-    _: procreate (mac only)
-    _: astropad (mac only)
-    _: inspire pro (mac only)
-    _: pixaki (mac only)
-    _: photoshop sketch (mobile only)
-    T: inkscape
-    T: concepts
-    T: clip studio paint
-    T: FireAlpaca
-    T: rebelle
-    T: artrage
-    T: rough animator
-    T: paintstorm
-    T: artweaver
-    T: black ink
-    T: photoshop
-    T: Corel Painter
-    T: Adobe illustrator
-    T: MyPaint
-    T: Drawpile
-    T: Chasys Draw IES
-    T: Affinity designer
-
-- add demo video and link to it under about
-
-- look for easy ways to make website more appealing (look at each paint app's website for ideas)
-
-- go over entire website once more
+possible main apps
+  - artrage             indefinite
+  - artweaver           free
+  - clip studio paint   November (3 months)
+  - corel painter       8/14 (15 days)
+  - firealpaca          free
+  - medibang            free
+  - rebelle             ???
 
 0.1.03.00
+----------
 - add action groups buttons: mouse-left, mouse-right, pen-left, pen-right
 - add scroll-up & scroll-down actions
 	- make scroll-up & scroll-down defaults for mouse mode
 
 - add in-app console for debugging
-  - have it be based on a build define (not set then no console slow-down)
+- have it be based on a build define (not set then no console slow-down)
 
-- have scrollbar react to thumb up/down (necessitates blocking thumb input from main app)
+- add demo video and link to it under about
+
+- VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
+  / ?: PaintShop Pro
+  / ?: Leonardo Beta
+  / ?: Twisted brush
+  X T: PaintTool SAI
+  X T: comic life
+- look for easy ways to make website more appealing (look at each paint app's website for ideas)
+- go over entire website once more
 
 - look for other playtesters
 

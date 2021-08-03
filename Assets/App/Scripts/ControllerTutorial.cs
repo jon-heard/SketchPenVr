@@ -23,23 +23,23 @@ public class ControllerTutorial : MonoBehaviour
 
   public void OnMappingChanged(ControllerMapping mapping)
   {
-    HighButton.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.HighButton];
+    HighButton.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.HighButton];
     HighButton.Line.SetActive(HighButton.Label.text != "");
-    LowButton.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.LowButton];
+    LowButton.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.LowButton];
     LowButton.Line.SetActive(LowButton.Label.text != "");
-    Trigger.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.Trigger];
+    Trigger.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.Trigger];
     Trigger.Line.SetActive(Trigger.Label.text != "");
-    Grip.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.Grip];
+    Grip.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.Grip];
     Grip.Line.SetActive(Grip.Label.text != "");
-    ThumbButton.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.ThumbButton];
+    ThumbButton.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.ThumbButton];
     ThumbButton.Line.SetActive(ThumbButton.Label.text != "");
-    ThumbUp.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.ThumbUp];
+    ThumbUp.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.ThumbUp];
     ThumbUp.Line.SetActive(ThumbUp.Label.text != "");
-    ThumbRight.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.ThumbRight];
+    ThumbRight.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.ThumbRight];
     ThumbRight.Line.SetActive(ThumbRight.Label.text != "");
-    ThumbDown.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.ThumbDown];
+    ThumbDown.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.ThumbDown];
     ThumbDown.Line.SetActive(ThumbDown.Label.text != "");
-    ThumbLeft.Label.text = mapping.ActionTitles[(int)ControllerMapping.Controls.ThumbLeft];
+    ThumbLeft.Label.text = mapping.ActionTitles[(int)ControllerMapping.ControllerInput.ThumbLeft];
     ThumbLeft.Line.SetActive(ThumbLeft.Label.text != "");
     ThumbLine.SetActive(
       ThumbButton.Label.text != "" ||

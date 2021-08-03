@@ -160,7 +160,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ThumbPressure",
+                    "name": "ThumbstickDirection",
                     "type": "Value",
                     "id": "67bcb26a-ea46-42a5-883d-7b4794c05b97",
                     "expectedControlType": "Vector2",
@@ -168,7 +168,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ThumbDown",
+                    "name": "ThumbstickDown",
                     "type": "Button",
                     "id": "59339095-f694-4254-b04a-ba1d58bd3f44",
                     "expectedControlType": "Button",
@@ -211,7 +211,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ThumbPressure",
+                    "action": "ThumbstickDirection",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -222,7 +222,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ThumbDown",
+                    "action": "ThumbstickDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -282,7 +282,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ThumbPressure",
+                    "name": "ThumbstickDirection",
                     "type": "Value",
                     "id": "310f2ffa-6179-44f2-a222-2a38f462759a",
                     "expectedControlType": "Vector2",
@@ -290,7 +290,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ThumbDown",
+                    "name": "ThumbstickDown",
                     "type": "Button",
                     "id": "25c4066a-eaa5-4fd4-a52b-82f3952aed97",
                     "expectedControlType": "Button",
@@ -344,7 +344,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ThumbPressure",
+                    "action": "ThumbstickDirection",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -355,7 +355,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ThumbDown",
+                    "action": "ThumbstickDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

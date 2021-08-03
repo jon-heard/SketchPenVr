@@ -65,7 +65,7 @@ public class ControllerVis : MonoBehaviour
     MyState = State.Shadowed;
     _input = new App_Input();
     _input.Enable();
-    _const_TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
+    _const_TriggerDownPressure = App_Details.Instance.TRIGGER_ACTIVATE_PRESSURE;
   }
 
   private void Update()

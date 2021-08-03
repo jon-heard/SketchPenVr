@@ -246,8 +246,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126303607799743947}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.005}
-  m_LocalScale: {x: 0.6, y: 0.15, z: 0.005}
+  m_LocalPosition: {x: 0.002, y: 0, z: 0.005}
+  m_LocalScale: {x: 0.68, y: 0.15, z: 0.005}
   m_Children: []
   m_Father: {fileID: 2390926867127651301}
   m_RootOrder: 2
@@ -651,8 +651,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4815655696524231947}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.005}
-  m_LocalScale: {x: 0.6, y: 0.15, z: 0.005}
+  m_LocalPosition: {x: 0.002, y: 0, z: 0.005}
+  m_LocalScale: {x: 0.68, y: 0.15, z: 0.005}
   m_Children: []
   m_Father: {fileID: 7865815816425858631}
   m_RootOrder: 2
@@ -1202,8 +1202,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7081730551792703768}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.005}
-  m_LocalScale: {x: 0.6, y: 0.15, z: 0.005}
+  m_LocalPosition: {x: 0.002, y: 0, z: 0.005}
+  m_LocalScale: {x: 0.68, y: 0.15, z: 0.005}
   m_Children: []
   m_Father: {fileID: 5620226562306615031}
   m_RootOrder: 2
@@ -1731,8 +1731,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8884896525864326779}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.005}
-  m_LocalScale: {x: 0.6, y: 0.15, z: 0.005}
+  m_LocalPosition: {x: 0.002, y: 0, z: 0.005}
+  m_LocalScale: {x: 0.68, y: 0.15, z: 0.005}
   m_Children: []
   m_Father: {fileID: 507110229512873032}
   m_RootOrder: 2
@@ -1908,7 +1908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3251028682687905570, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.62
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -2471,7 +2471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3251028682687905570, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.62
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -2768,7 +2768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3237752837015526896, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.083
+      value: 1.084
       objectReference: {fileID: 0}
     - target: {fileID: 3237752837015526896, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2796,7 +2796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3251028682687905570, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.62
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -3121,7 +3121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3251028682687905570, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.62
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3481681406936030728, guid: 2c6ece210dcaade44bc40c9eb398448d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size

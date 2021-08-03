@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Common.Vr.Ui.Controls
 {
-  public class InputHandler_Mouse : InputHandler
+  public class UiInputHandler_Mouse : UiInputHandler
   {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
     public IEnumerator Update(

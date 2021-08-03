@@ -13,6 +13,31 @@ namespace Common.Vr.Ui.Controls
     [SerializeField] private BoxCollider Geometry;
     public Action<Vector3> OnDragged;
 
+    public bool IsListeningForThumbstick
+    {
+      get { return _isListeningForThumbstick; }
+      set
+      {
+        if (value == _isListeningForThumbstick) { return; }
+        _isListeningForThumbstick = value;
+        if (_isListeningForThumbstick)
+        {
+          _listeningTicket_ThumbstickUp = App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yPos", 75, OnThumbstickUp, true);
+          _listeningTicket_ThumbstickDown = App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yNeg", 75, OnThumbstickDown, true);
+        }
+        else
+        {
+          _listeningTicket_ThumbstickUp?.StopListening();
+          _listeningTicket_ThumbstickDown?.StopListening();
+          _listeningTicket_ThumbstickUp = null;
+          _listeningTicket_ThumbstickDown = null;
+        }
+      }
+    }
+    private bool _isListeningForThumbstick;
+    private InputManager.ListenerTicket _listeningTicket_ThumbstickUp;
+    private InputManager.ListenerTicket _listeningTicket_ThumbstickDown;
+
     private Vector3 _originalSize;
     private Vector3 _draggingSize;
     private Vector3 _point;
@@ -20,12 +45,14 @@ namespace Common.Vr.Ui.Controls
     private Vector3 _dragStartPosition;
     private bool _isDragging;
     private Material _idleMaterial;
+    private float _const_thumbstickSpeed;
 
     private void Start()
     {
       _originalSize = Geometry.size;
       _draggingSize = _originalSize.GetScaled(DraggingOverage);
       _idleMaterial = Geometry.GetComponent<Renderer>().material;
+      _const_thumbstickSpeed = App_Details.Instance.MyCommonDetails.DRAGGABLE_THUMBSTICK_SPEED;
     }
 
     private void OnEnable()
@@ -69,6 +96,7 @@ namespace Common.Vr.Ui.Controls
       {
         Geometry.GetComponent<Renderer>().material =
           App_Resources.Instance.MyCommonResources.ButtonHoveredMaterial;
+        IsListeningForThumbstick = true;
       }
     }
 
@@ -77,6 +105,7 @@ namespace Common.Vr.Ui.Controls
       if (focus == this)
       {
         Geometry.GetComponent<Renderer>().material = _idleMaterial;
+        IsListeningForThumbstick = false;
         if (_isDragging)
         {
           transform.localPosition = _dragStartPosition;
@@ -94,10 +123,31 @@ namespace Common.Vr.Ui.Controls
         {
           var dragAdjust = (transform.localPosition - _point) - _dragPoint;
           transform.localPosition -= dragAdjust.GetScaled(AxisScales);
-          transform.localPosition = transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);
+          transform.localPosition =
+            transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);
           OnDragged?.Invoke(transform.localPosition);
         }
       }
+    }
+
+    private void OnThumbstickUp(bool flag, float value)
+    {
+      var t = transform.localPosition;
+      t.y += _const_thumbstickSpeed * value * Time.deltaTime;
+      transform.localPosition = t;
+      transform.localPosition =
+        transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);
+      OnDragged?.Invoke(transform.localPosition);
+    }
+
+    private void OnThumbstickDown(bool flag, float value)
+    {
+      var t = transform.localPosition;
+      t.y -= _const_thumbstickSpeed * value * Time.deltaTime;
+      transform.localPosition = t;
+      transform.localPosition =
+        transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);
+      OnDragged?.Invoke(transform.localPosition);
     }
   }
 }

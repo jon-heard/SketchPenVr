@@ -14,10 +14,10 @@ public class Controller : MonoBehaviour
   public enum ThumbState
   {
     Center,
-    Up = ControllerMapping.Controls.ThumbUp,
-    Right = ControllerMapping.Controls.ThumbRight,
-    Down = ControllerMapping.Controls.ThumbDown,
-    Left = ControllerMapping.Controls.ThumbLeft
+    Up = ControllerMapping.ControllerInput.ThumbUp,
+    Right = ControllerMapping.ControllerInput.ThumbRight,
+    Down = ControllerMapping.ControllerInput.ThumbDown,
+    Left = ControllerMapping.ControllerInput.ThumbLeft
   }
 
   ///////////////
@@ -44,12 +44,6 @@ public class Controller : MonoBehaviour
   [SerializeField] private LineRenderer _rayVisual;
   [SerializeField] private PinchHandler _pinchHandler;
   [SerializeField] private ControllerVis _controllerVis;
-
-  //////////////////
-  // Input block //
-  //////////////////
-  [Flags] public enum InputBlockType { None = 0, PrimaryTrigger = 1, Grip = 2, Other = 4, All = 7 }
-  public static InputBlockType InputBlock = 0;
 
   ////////////////
   // Handedness //
@@ -260,9 +254,8 @@ public class Controller : MonoBehaviour
   // User input
   private bool _isTriggerDown;
   private float _triggerPressure;
-  private ThumbState _thumbState = ThumbState.Center;
   private bool _isPenActive = false;
-  private bool _isNearFocus { get { return (_focusDistance <= _const_maxHoverDistance); } }
+  private bool _isPenMode { get { return (_focusDistance <= _const_maxHoverDistance); } }
 
   // Focus info
   public Interactable Focus { get; private set; }
@@ -270,7 +263,7 @@ public class Controller : MonoBehaviour
   private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
   private ControllerVis _focusControllerVis;
-  private InputHandler _inputHandler = new InputHandler();
+  private UiInputHandler _inputHandler = new UiInputHandler();
 
   // Copies of values (for efficiency)
   private bool _isLeft;
@@ -278,8 +271,6 @@ public class Controller : MonoBehaviour
   private ControllerMapping _myControllerMapping;
   public InputDevice? _myXrDevice;
   private static float _const_maxInteractDistance;
-  private static float _const_TriggerDownPressure;
-  private static float _const_ThumbDownPressure;
   private static float _const_maxHoverDistance;
   private static float _const_distance_tipPoint;
   private static float _const_distance_tipBase;
@@ -296,8 +287,6 @@ public class Controller : MonoBehaviour
     _isLeft = transform.parent.GetComponent<Vr_Hand>().IsLeft;
     _geometryMaterial = Pencil.material;
     _const_maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
-    _const_TriggerDownPressure = App_Details.Instance.TRIGGER_DOWN_PRESSURE;
-    _const_ThumbDownPressure = App_Details.Instance.THUMB_DOWN_PRESSURE;
     _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
     _const_distance_tipPoint = App_Details.Instance.CONTROLLER_DISTANCE_TIP_POINT;
     _const_distance_tipBase = App_Details.Instance.CONTROLLER_DISTANCE_TIP_BASE;
@@ -320,25 +309,27 @@ public class Controller : MonoBehaviour
     _input.Enable();
     if (_isLeft)
     {
-      _input.VrLeftHandActions.Grip.performed += OnGripButtonStart;
-      _input.VrLeftHandActions.Grip.canceled += OnGripButtonEnd;
-      _input.VrLeftHandActions.HighButton.performed += OnHighButtonStart;
-      _input.VrLeftHandActions.HighButton.canceled += OnHighButtonEnd;
-      _input.VrLeftHandActions.LowButton.performed += OnLowButtonStart;
-      _input.VrLeftHandActions.LowButton.canceled += OnLowButtonEnd;
-      _input.VrLeftHandActions.ThumbDown.performed += OnThumbButtonStart;
-      _input.VrLeftHandActions.ThumbDown.canceled += OnThumbButtonEnd;
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_trigger", 100, OnTrigger, true);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("left_grip", 100, OnGripButton);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("left_high", 100, OnHighButton);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("left_low", 100, OnLowButton);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("left_thumbstick_down", 100, OnThumbstickDown);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_xPos", 100, OnThumbstickRight, false);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_xNeg", 100, OnThumbstickLeft, false);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yPos", 100, OnThumbstickUp, false);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yNeg", 100, OnThumbstickDown, false);
     }
     else
     {
-      _input.VrRightHandActions.Grip.performed += OnGripButtonStart;
-      _input.VrRightHandActions.Grip.canceled += OnGripButtonEnd;
-      _input.VrRightHandActions.HighButton.performed += OnHighButtonStart;
-      _input.VrRightHandActions.HighButton.canceled += OnHighButtonEnd;
-      _input.VrRightHandActions.LowButton.performed += OnLowButtonStart;
-      _input.VrRightHandActions.LowButton.canceled += OnLowButtonEnd;
-      _input.VrRightHandActions.ThumbDown.performed += OnThumbButtonStart;
-      _input.VrRightHandActions.ThumbDown.canceled += OnThumbButtonEnd;
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_trigger", 100, OnTrigger, true);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("right_grip", 100, OnGripButton);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("right_high", 100, OnHighButton);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("right_low", 100, OnLowButton);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("right_thumbstick_down", 100, OnThumbstickDown);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_xPos", 100, OnThumbstickRight, false);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_xNeg", 100, OnThumbstickLeft, false);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yPos", 100, OnThumbstickUp, false);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yNeg", 100, OnThumbstickDown, false);
     }
 
     // Grip adjust init
@@ -372,8 +363,6 @@ public class Controller : MonoBehaviour
   private void Update()
   {
     // Input
-    Update_Trigger();
-    Update_ThumbPressure();
 #if UNITY_EDITOR
     Update_EmulatedButtons();
 #endif
@@ -465,7 +454,7 @@ public class Controller : MonoBehaviour
     if (_controllerIndex > 0 || IsInGripAdjust) { return; }
 
     // Turn off pen if not near the screen or if holding
-    if (!_isNearFocus || !FocusPointerEmulation || _isHolding)
+    if (!_isPenMode || !FocusPointerEmulation || _isHolding)
     {
       if (_isPenActive)
       {
@@ -544,128 +533,16 @@ public class Controller : MonoBehaviour
   /////////////////
   // User inputs //
   /////////////////
-  private void Update_Trigger()
-  {
-    // Early out
-    if (_isHolding && !IsInGripAdjust) { return; }
-
-    // Get value (Analogue)
-    _triggerPressure =
-      _isLeft ?
-      _input.VrLeftHandActions.TriggerPressure.ReadValue<float>() :
-      _input.VrRightHandActions.TriggerPressure.ReadValue<float>();
-#if UNITY_EDITOR
-    if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
-    {
-      _triggerPressure = _trigger;
-    }
-#endif
-
-    if (InputBlock.HasFlag(InputBlockType.PrimaryTrigger) && _controllerIndex == 0)
-    {
-      _triggerPressure = 0;
-    }
-
-    // Get value (Binary)
-    var hasTriggerDownChanged = false;
-    if (_triggerPressure >= _const_TriggerDownPressure && !_isTriggerDown)
-    {
-      _isTriggerDown = true;
-      hasTriggerDownChanged = true;
-    }
-    else if (_triggerPressure < _const_TriggerDownPressure && _isTriggerDown)
-    {
-      _isTriggerDown = false;
-      hasTriggerDownChanged = true;
-    }
-
-    // React to value (binary)
-    if (hasTriggerDownChanged)
-    {
-      // Is down
-      if (_isTriggerDown)
-      {
-        // Screen
-        if (FocusPointerEmulation)
-        {
-          FocusPointerEmulation.IsEmulating = true;
-          if (_controllerIndex == 0 && !_isNearFocus)
-          {
-            FocusPointerEmulation.MouseLeftButton = true;
-          }
-        }
-      }
-      // Is up
-      else
-      {
-        // Screen
-        if (FocusPointerEmulation && _controllerIndex == 0 && !_isNearFocus)
-        {
-          FocusPointerEmulation.MouseLeftButton = false;
-        }
-      }
-      // Trigger action for non-main controller
-      if (_controllerIndex == 1)
-      {
-        _myControllerMapping.Actions[(int)ControllerMapping.Controls.Trigger].
-          Run(this, _isTriggerDown);
-      }
-    }
-  }
-  private void Update_ThumbPressure()
-  {
-    // Early out
-    if (_isHolding) { return; }
-
-    // Get value
-    var pressure =
-      _isLeft ?
-      _input.VrLeftHandActions.ThumbPressure.ReadValue<Vector2>() :
-      _input.VrRightHandActions.ThumbPressure.ReadValue<Vector2>();
-#if UNITY_EDITOR
-    if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
-    {
-      pressure.x = _thumbLR;
-      pressure.x = _thumbTB;
-    }
-#endif
-    // Analogue to binary
-    ThumbState newThumbState;
-    newThumbState =
-      (pressure.x > +_const_ThumbDownPressure && Mathf.Abs(pressure.x) > Mathf.Abs(pressure.y)) ? ThumbState.Right :
-      (pressure.x < -_const_ThumbDownPressure && Mathf.Abs(pressure.x) > Mathf.Abs(pressure.y)) ? ThumbState.Left :
-      (pressure.y > +_const_ThumbDownPressure) ? ThumbState.Up :
-      (pressure.y < -_const_ThumbDownPressure) ? ThumbState.Down :
-      ThumbState.Center;
-
-    // React to value
-    if (newThumbState != _thumbState)
-    {
-      if (_thumbState != ThumbState.Center)
-      {
-        _myControllerMapping.Actions[(int)_thumbState].Run(this, false);
-      }
-      _thumbState = newThumbState;
-      if (_thumbState != ThumbState.Center && !InputBlock.HasFlag(InputBlockType.Other))
-      {
-        _myControllerMapping.Actions[(int)_thumbState].Run(this, true);
-      }
-    }
-  }
 #if UNITY_EDITOR
   private void Update_EmulatedButtons()
   {
     if (App_Details.Instance.MyInputType == App_Details.InputType.VrSimulation)
     {
-      var dummy = new CallbackContext();
-      if (_highButton && !_prevHighButton) { OnHighButtonStart(dummy); }
-      if (!_highButton && _prevHighButton) { OnHighButtonEnd(dummy); }
-      if (_lowButton && !_prevLowButton) { OnLowButtonStart(dummy); }
-      if (!_lowButton && _prevLowButton) { OnLowButtonEnd(dummy); }
-      if (_gripButton && !_prevGripButton) { OnGripButtonStart(dummy); }
-      if (!_gripButton && _prevGripButton) { OnGripButtonEnd(dummy); }
-      if (_thumbButton && !_prevThumbButton) { OnThumbButtonStart(dummy); }
-      if (!_thumbButton && _prevThumbButton) { OnThumbButtonEnd(dummy); }
+      OnTrigger(_trigger > App_Details.Instance.TRIGGER_ACTIVATE_PRESSURE, _trigger);
+      if (_gripButton != _prevHighButton) { OnGripButton(_gripButton); }
+      if (_highButton != _prevHighButton) { OnHighButton(_highButton); }
+      if (_lowButton != _prevLowButton) { OnLowButton(_lowButton); }
+      if (_thumbButton != _prevThumbButton) { OnThumbstickDown(_thumbButton); }
       _prevHighButton = _highButton;
       _prevLowButton = _lowButton;
       _prevGripButton = _gripButton;
@@ -673,48 +550,71 @@ public class Controller : MonoBehaviour
     }
   }
 #endif
-  private void OnGripButtonStart(CallbackContext obj)
+
+  private void OnTrigger(bool flag, float value)
   {
-    if (!InputBlock.HasFlag(InputBlockType.Grip))
+    if (_isHolding && !IsInGripAdjust) { return; }
+    if (flag != _isTriggerDown)
     {
-      _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, true);
+      // Primary controller - Update screen based on input
+      if (_controllerIndex == 0 && FocusPointerEmulation)
+      {
+        // In mouse-mode, have trigger press/release left mouse button
+        if (!_isPenMode)
+        {
+          FocusPointerEmulation.MouseLeftButton = flag;
+        }
+        // Reestablish emulation if it was disabled (through escape key)
+        FocusPointerEmulation.IsEmulating = true;
+      }
+      // Secondary controller - Update action from mapping
+      else if (_controllerIndex == 1)
+      {
+        _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.Trigger].
+          Run(this, flag);
+      }
     }
+    _triggerPressure = value;
+    _isTriggerDown = flag;
   }
-  private void OnGripButtonEnd(CallbackContext obj)
+  private void OnGripButton(bool value)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.Grip].Run(this, false);
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.Grip].Run(this, value);
   }
-  private void OnHighButtonStart(CallbackContext obj)
+  private void OnHighButton(bool value)
   {
-    if (!InputBlock.HasFlag(InputBlockType.Other))
-    {
-      _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, true);
-    }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.HighButton].Run(this, value);
   }
-  private void OnHighButtonEnd(CallbackContext obj)
+  private void OnLowButton(bool value)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.HighButton].Run(this, false);
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.LowButton].Run(this, value);
   }
-  private void OnLowButtonStart(CallbackContext obj)
+  private void OnThumbstickDown(bool value)
   {
-    if (!InputBlock.HasFlag(InputBlockType.Other))
-    {
-      _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, true);
-    }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbButton].Run(this, value);
   }
-  private void OnLowButtonEnd(CallbackContext obj)
+  private void OnThumbstickRight(bool flag, float value)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.LowButton].Run(this, false);
+    if (_isHolding) { return; }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbRight].
+      Run(this, flag);
   }
-  private void OnThumbButtonStart(CallbackContext obj)
+  private void OnThumbstickLeft(bool flag, float value)
   {
-    if (!InputBlock.HasFlag(InputBlockType.Other))
-    {
-      _myControllerMapping.Actions[(int)ControllerMapping.Controls.ThumbButton].Run(this, true);
-    }
+    if (_isHolding) { return; }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbLeft].
+      Run(this, flag);
   }
-  private void OnThumbButtonEnd(CallbackContext obj)
+  private void OnThumbstickUp(bool flag, float value)
   {
-    _myControllerMapping.Actions[(int)ControllerMapping.Controls.ThumbButton].Run(this, false);
+    if (_isHolding) { return; }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbUp].
+      Run(this, flag);
+  }
+  private void OnThumbstickDown(bool flag, float value)
+  {
+    if (_isHolding) { return; }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbDown].
+      Run(this, flag);
   }
 }

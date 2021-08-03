@@ -11,9 +11,6 @@ namespace Common.Vr.Ui.Controls
 
     [NonSerialized] public Action<uint> OnScrollValueChanged;
 
-    private Control_Draggable _dragger;
-    private Material _idleMaterial;
-
     public uint ScrollPosition
     {
       get { return _position; }
@@ -79,10 +76,18 @@ namespace Common.Vr.Ui.Controls
       _dragger.transform.localPosition = t;
     }
 
+    public bool IsListeningForThumbstick
+    {
+      get { return _dragger.IsListeningForThumbstick; }
+      set { _dragger.IsListeningForThumbstick = value; }
+    }
+
     private uint _visibleCount;
     private uint _totalCount;
     private float[] _draggerPositions;
     private Vector3 _pointerPosition;
+    private Control_Draggable _dragger;
+    private Material _idleMaterial;
 
     private static float _const_MinDraggerSize;
 
@@ -103,6 +108,9 @@ namespace Common.Vr.Ui.Controls
     private void OnDisable()
     {
       Control.OnControlDown -= OnControlDownEventHandler;
+      Control.OnControlHovered -= OnHoverEventListener;
+      Control.OnControlUnhovered -= OnUnhoverEventListener;
+      OnUnhoverEventListener(this);
       Control.OnPointerMoved -= OnPointerMovedEventHandler;
     }
 
@@ -138,6 +146,7 @@ namespace Common.Vr.Ui.Controls
       {
         _geometry.GetComponent<Renderer>().material =
           App_Resources.Instance.MyCommonResources.ScrollbarHoveredMaterial;
+        IsListeningForThumbstick = true;
       }
     }
 
@@ -146,6 +155,7 @@ namespace Common.Vr.Ui.Controls
       if (focus == this)
       {
         _geometry.GetComponent<Renderer>().material = _idleMaterial;
+        IsListeningForThumbstick = false;
       }
     }
 

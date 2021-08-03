@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc3657fd6437dd4c838182493cda580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyScrollbar: {fileID: 8724824343706339675}
   _label: {fileID: 6166368488557216981}
   _geometry: {fileID: 6253897850279400367}
 --- !u!114 &5127875518638768704
@@ -111,6 +112,7 @@ MonoBehaviour:
   OnItemSet:
     m_PersistentCalls:
       m_Calls: []
+  ItemReselectedTriggersItemSetEvent: 0
   Label: {fileID: 5393242311367964610}
   Geometry: {fileID: 5120703708128097187}
   DroppedUi: {fileID: 8041657556096776725}

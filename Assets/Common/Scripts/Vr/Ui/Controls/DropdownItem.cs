@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Common.Vr.Ui.Controls
 {
-  public class DropdownItem : Control
+  public class DropdownItem : Scrolled
   {
     [SerializeField] private TextMesh _label;
     [SerializeField] private Transform _geometry;
@@ -46,8 +46,9 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
-    private void OnHoveredEventListener(Control focus)
+    protected override void OnHoveredEventListener(Control focus)
     {
+      base.OnHoveredEventListener(focus);
       if (focus == this)
       {
         _geometry.GetComponent<Renderer>().material =
@@ -55,27 +56,25 @@ namespace Common.Vr.Ui.Controls
       }
     }
 
-    private void OnUnhoveredEventListener(Control focus)
+    protected override void OnUnhoveredEventListener(Control focus)
     {
+      base.OnUnhoveredEventListener(focus);
       if (focus == this)
       {
         _geometry.GetComponent<Renderer>().material = _idleMaterial;
       }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
       Control.OnControlClicked += OnClickedEventListener;
-      Control.OnControlHovered += OnHoveredEventListener;
-      Control.OnControlUnhovered += OnUnhoveredEventListener;
+      base.OnEnable();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
       Control.OnControlClicked -= OnClickedEventListener;
-      Control.OnControlHovered -= OnHoveredEventListener;
-      Control.OnControlUnhovered -= OnUnhoveredEventListener;
-      OnUnhoveredEventListener(this);
+      base.OnDisable();
     }
   }
 }

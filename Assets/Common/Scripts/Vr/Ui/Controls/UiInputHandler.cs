@@ -2,7 +2,7 @@
 
 namespace Common.Vr.Ui.Controls
 {
-  public class InputHandler
+  public class UiInputHandler
   {
     public void UpdatePointer(Control hoveredControl, bool isDown, Vector3 point)
     {

@@ -10,8 +10,8 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public InputType MyInputType;
 
   public float MAX_INTERACT_DISTANCE = 100.0f; // How near controller needs to be to interact with something at all
-  public float TRIGGER_DOWN_PRESSURE = 0.5f; // How much pressure user puts on trigger before we consider it pressed
-  public float THUMB_DOWN_PRESSURE = 0.75f; // How much directional pressure user puts on thumb before we consider it pressed
+  public float TRIGGER_ACTIVATE_PRESSURE = 0.5f; // How much pressure user puts on trigger before we consider it pressed
+  public float THUMBSTICK_ACTIVATE_PRESSURE = 0.75f; // How much directional pressure user puts on thumbstick before we consider it pressed
   public float CONTROLLER_DISTANCE_NEAR_SCREEN = 0.232f; // How near controller needs to be to hover over screen
   public float CONTROLLER_DISTANCE_TIP_POINT = 0.129f; // How near controller needs to be to touch screen
   public float CONTROLLER_DISTANCE_TIP_BASE = 0.107f; // How near controller needs to be to put full pressure on screen

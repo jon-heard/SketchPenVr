@@ -8,7 +8,7 @@ public class Ui_Control_ControlSetter : Button
 {
   [Header("Wiring")]
   [SerializeField] private uint _controllerId;
-  [SerializeField] private ControllerMapping.Controls _focusControl;
+  [SerializeField] private ControllerMapping.ControllerInput _focusControl;
   [Header("Wiring")]
   [SerializeField] private TextMesh _actionDescription;
   [SerializeField] private GameObject _editor;

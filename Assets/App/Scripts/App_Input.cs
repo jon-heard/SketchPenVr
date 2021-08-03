@@ -173,7 +173,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ThumbPressure"",
+                    ""name"": ""ThumbstickDirection"",
                     ""type"": ""Value"",
                     ""id"": ""67bcb26a-ea46-42a5-883d-7b4794c05b97"",
                     ""expectedControlType"": ""Vector2"",
@@ -181,7 +181,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ThumbDown"",
+                    ""name"": ""ThumbstickDown"",
                     ""type"": ""Button"",
                     ""id"": ""59339095-f694-4254-b04a-ba1d58bd3f44"",
                     ""expectedControlType"": ""Button"",
@@ -224,7 +224,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThumbPressure"",
+                    ""action"": ""ThumbstickDirection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -235,7 +235,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThumbDown"",
+                    ""action"": ""ThumbstickDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -295,7 +295,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ThumbPressure"",
+                    ""name"": ""ThumbstickDirection"",
                     ""type"": ""Value"",
                     ""id"": ""310f2ffa-6179-44f2-a222-2a38f462759a"",
                     ""expectedControlType"": ""Vector2"",
@@ -303,7 +303,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ThumbDown"",
+                    ""name"": ""ThumbstickDown"",
                     ""type"": ""Button"",
                     ""id"": ""25c4066a-eaa5-4fd4-a52b-82f3952aed97"",
                     ""expectedControlType"": ""Button"",
@@ -357,7 +357,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThumbPressure"",
+                    ""action"": ""ThumbstickDirection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -368,7 +368,7 @@ public class @App_Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThumbDown"",
+                    ""action"": ""ThumbstickDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -467,16 +467,16 @@ public class @App_Input : IInputActionCollection, IDisposable
         m_VrLeftHandActions = asset.FindActionMap("VrLeftHandActions", throwIfNotFound: true);
         m_VrLeftHandActions_Grip = m_VrLeftHandActions.FindAction("Grip", throwIfNotFound: true);
         m_VrLeftHandActions_TriggerPressure = m_VrLeftHandActions.FindAction("TriggerPressure", throwIfNotFound: true);
-        m_VrLeftHandActions_ThumbPressure = m_VrLeftHandActions.FindAction("ThumbPressure", throwIfNotFound: true);
-        m_VrLeftHandActions_ThumbDown = m_VrLeftHandActions.FindAction("ThumbDown", throwIfNotFound: true);
+        m_VrLeftHandActions_ThumbstickDirection = m_VrLeftHandActions.FindAction("ThumbstickDirection", throwIfNotFound: true);
+        m_VrLeftHandActions_ThumbstickDown = m_VrLeftHandActions.FindAction("ThumbstickDown", throwIfNotFound: true);
         m_VrLeftHandActions_LowButton = m_VrLeftHandActions.FindAction("LowButton", throwIfNotFound: true);
         m_VrLeftHandActions_HighButton = m_VrLeftHandActions.FindAction("HighButton", throwIfNotFound: true);
         // VrRightHandActions
         m_VrRightHandActions = asset.FindActionMap("VrRightHandActions", throwIfNotFound: true);
         m_VrRightHandActions_Grip = m_VrRightHandActions.FindAction("Grip", throwIfNotFound: true);
         m_VrRightHandActions_TriggerPressure = m_VrRightHandActions.FindAction("TriggerPressure", throwIfNotFound: true);
-        m_VrRightHandActions_ThumbPressure = m_VrRightHandActions.FindAction("ThumbPressure", throwIfNotFound: true);
-        m_VrRightHandActions_ThumbDown = m_VrRightHandActions.FindAction("ThumbDown", throwIfNotFound: true);
+        m_VrRightHandActions_ThumbstickDirection = m_VrRightHandActions.FindAction("ThumbstickDirection", throwIfNotFound: true);
+        m_VrRightHandActions_ThumbstickDown = m_VrRightHandActions.FindAction("ThumbstickDown", throwIfNotFound: true);
         m_VrRightHandActions_LowButton = m_VrRightHandActions.FindAction("LowButton", throwIfNotFound: true);
         m_VrRightHandActions_HighButton = m_VrRightHandActions.FindAction("HighButton", throwIfNotFound: true);
         // Mouse
@@ -657,8 +657,8 @@ public class @App_Input : IInputActionCollection, IDisposable
     private IVrLeftHandActionsActions m_VrLeftHandActionsActionsCallbackInterface;
     private readonly InputAction m_VrLeftHandActions_Grip;
     private readonly InputAction m_VrLeftHandActions_TriggerPressure;
-    private readonly InputAction m_VrLeftHandActions_ThumbPressure;
-    private readonly InputAction m_VrLeftHandActions_ThumbDown;
+    private readonly InputAction m_VrLeftHandActions_ThumbstickDirection;
+    private readonly InputAction m_VrLeftHandActions_ThumbstickDown;
     private readonly InputAction m_VrLeftHandActions_LowButton;
     private readonly InputAction m_VrLeftHandActions_HighButton;
     public struct VrLeftHandActionsActions
@@ -667,8 +667,8 @@ public class @App_Input : IInputActionCollection, IDisposable
         public VrLeftHandActionsActions(@App_Input wrapper) { m_Wrapper = wrapper; }
         public InputAction @Grip => m_Wrapper.m_VrLeftHandActions_Grip;
         public InputAction @TriggerPressure => m_Wrapper.m_VrLeftHandActions_TriggerPressure;
-        public InputAction @ThumbPressure => m_Wrapper.m_VrLeftHandActions_ThumbPressure;
-        public InputAction @ThumbDown => m_Wrapper.m_VrLeftHandActions_ThumbDown;
+        public InputAction @ThumbstickDirection => m_Wrapper.m_VrLeftHandActions_ThumbstickDirection;
+        public InputAction @ThumbstickDown => m_Wrapper.m_VrLeftHandActions_ThumbstickDown;
         public InputAction @LowButton => m_Wrapper.m_VrLeftHandActions_LowButton;
         public InputAction @HighButton => m_Wrapper.m_VrLeftHandActions_HighButton;
         public InputActionMap Get() { return m_Wrapper.m_VrLeftHandActions; }
@@ -686,12 +686,12 @@ public class @App_Input : IInputActionCollection, IDisposable
                 @TriggerPressure.started -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnTriggerPressure;
                 @TriggerPressure.performed -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnTriggerPressure;
                 @TriggerPressure.canceled -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnTriggerPressure;
-                @ThumbPressure.started -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbPressure;
-                @ThumbPressure.performed -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbPressure;
-                @ThumbPressure.canceled -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbPressure;
-                @ThumbDown.started -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbDown;
-                @ThumbDown.performed -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbDown;
-                @ThumbDown.canceled -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbDown;
+                @ThumbstickDirection.started -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbstickDirection;
+                @ThumbstickDirection.performed -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbstickDirection;
+                @ThumbstickDirection.canceled -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbstickDirection;
+                @ThumbstickDown.started -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbstickDown;
+                @ThumbstickDown.performed -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbstickDown;
+                @ThumbstickDown.canceled -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnThumbstickDown;
                 @LowButton.started -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnLowButton;
                 @LowButton.performed -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnLowButton;
                 @LowButton.canceled -= m_Wrapper.m_VrLeftHandActionsActionsCallbackInterface.OnLowButton;
@@ -708,12 +708,12 @@ public class @App_Input : IInputActionCollection, IDisposable
                 @TriggerPressure.started += instance.OnTriggerPressure;
                 @TriggerPressure.performed += instance.OnTriggerPressure;
                 @TriggerPressure.canceled += instance.OnTriggerPressure;
-                @ThumbPressure.started += instance.OnThumbPressure;
-                @ThumbPressure.performed += instance.OnThumbPressure;
-                @ThumbPressure.canceled += instance.OnThumbPressure;
-                @ThumbDown.started += instance.OnThumbDown;
-                @ThumbDown.performed += instance.OnThumbDown;
-                @ThumbDown.canceled += instance.OnThumbDown;
+                @ThumbstickDirection.started += instance.OnThumbstickDirection;
+                @ThumbstickDirection.performed += instance.OnThumbstickDirection;
+                @ThumbstickDirection.canceled += instance.OnThumbstickDirection;
+                @ThumbstickDown.started += instance.OnThumbstickDown;
+                @ThumbstickDown.performed += instance.OnThumbstickDown;
+                @ThumbstickDown.canceled += instance.OnThumbstickDown;
                 @LowButton.started += instance.OnLowButton;
                 @LowButton.performed += instance.OnLowButton;
                 @LowButton.canceled += instance.OnLowButton;
@@ -730,8 +730,8 @@ public class @App_Input : IInputActionCollection, IDisposable
     private IVrRightHandActionsActions m_VrRightHandActionsActionsCallbackInterface;
     private readonly InputAction m_VrRightHandActions_Grip;
     private readonly InputAction m_VrRightHandActions_TriggerPressure;
-    private readonly InputAction m_VrRightHandActions_ThumbPressure;
-    private readonly InputAction m_VrRightHandActions_ThumbDown;
+    private readonly InputAction m_VrRightHandActions_ThumbstickDirection;
+    private readonly InputAction m_VrRightHandActions_ThumbstickDown;
     private readonly InputAction m_VrRightHandActions_LowButton;
     private readonly InputAction m_VrRightHandActions_HighButton;
     public struct VrRightHandActionsActions
@@ -740,8 +740,8 @@ public class @App_Input : IInputActionCollection, IDisposable
         public VrRightHandActionsActions(@App_Input wrapper) { m_Wrapper = wrapper; }
         public InputAction @Grip => m_Wrapper.m_VrRightHandActions_Grip;
         public InputAction @TriggerPressure => m_Wrapper.m_VrRightHandActions_TriggerPressure;
-        public InputAction @ThumbPressure => m_Wrapper.m_VrRightHandActions_ThumbPressure;
-        public InputAction @ThumbDown => m_Wrapper.m_VrRightHandActions_ThumbDown;
+        public InputAction @ThumbstickDirection => m_Wrapper.m_VrRightHandActions_ThumbstickDirection;
+        public InputAction @ThumbstickDown => m_Wrapper.m_VrRightHandActions_ThumbstickDown;
         public InputAction @LowButton => m_Wrapper.m_VrRightHandActions_LowButton;
         public InputAction @HighButton => m_Wrapper.m_VrRightHandActions_HighButton;
         public InputActionMap Get() { return m_Wrapper.m_VrRightHandActions; }
@@ -759,12 +759,12 @@ public class @App_Input : IInputActionCollection, IDisposable
                 @TriggerPressure.started -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnTriggerPressure;
                 @TriggerPressure.performed -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnTriggerPressure;
                 @TriggerPressure.canceled -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnTriggerPressure;
-                @ThumbPressure.started -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbPressure;
-                @ThumbPressure.performed -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbPressure;
-                @ThumbPressure.canceled -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbPressure;
-                @ThumbDown.started -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbDown;
-                @ThumbDown.performed -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbDown;
-                @ThumbDown.canceled -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbDown;
+                @ThumbstickDirection.started -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbstickDirection;
+                @ThumbstickDirection.performed -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbstickDirection;
+                @ThumbstickDirection.canceled -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbstickDirection;
+                @ThumbstickDown.started -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbstickDown;
+                @ThumbstickDown.performed -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbstickDown;
+                @ThumbstickDown.canceled -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnThumbstickDown;
                 @LowButton.started -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnLowButton;
                 @LowButton.performed -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnLowButton;
                 @LowButton.canceled -= m_Wrapper.m_VrRightHandActionsActionsCallbackInterface.OnLowButton;
@@ -781,12 +781,12 @@ public class @App_Input : IInputActionCollection, IDisposable
                 @TriggerPressure.started += instance.OnTriggerPressure;
                 @TriggerPressure.performed += instance.OnTriggerPressure;
                 @TriggerPressure.canceled += instance.OnTriggerPressure;
-                @ThumbPressure.started += instance.OnThumbPressure;
-                @ThumbPressure.performed += instance.OnThumbPressure;
-                @ThumbPressure.canceled += instance.OnThumbPressure;
-                @ThumbDown.started += instance.OnThumbDown;
-                @ThumbDown.performed += instance.OnThumbDown;
-                @ThumbDown.canceled += instance.OnThumbDown;
+                @ThumbstickDirection.started += instance.OnThumbstickDirection;
+                @ThumbstickDirection.performed += instance.OnThumbstickDirection;
+                @ThumbstickDirection.canceled += instance.OnThumbstickDirection;
+                @ThumbstickDown.started += instance.OnThumbstickDown;
+                @ThumbstickDown.performed += instance.OnThumbstickDown;
+                @ThumbstickDown.canceled += instance.OnThumbstickDown;
                 @LowButton.started += instance.OnLowButton;
                 @LowButton.performed += instance.OnLowButton;
                 @LowButton.canceled += instance.OnLowButton;
@@ -866,8 +866,8 @@ public class @App_Input : IInputActionCollection, IDisposable
     {
         void OnGrip(InputAction.CallbackContext context);
         void OnTriggerPressure(InputAction.CallbackContext context);
-        void OnThumbPressure(InputAction.CallbackContext context);
-        void OnThumbDown(InputAction.CallbackContext context);
+        void OnThumbstickDirection(InputAction.CallbackContext context);
+        void OnThumbstickDown(InputAction.CallbackContext context);
         void OnLowButton(InputAction.CallbackContext context);
         void OnHighButton(InputAction.CallbackContext context);
     }
@@ -875,8 +875,8 @@ public class @App_Input : IInputActionCollection, IDisposable
     {
         void OnGrip(InputAction.CallbackContext context);
         void OnTriggerPressure(InputAction.CallbackContext context);
-        void OnThumbPressure(InputAction.CallbackContext context);
-        void OnThumbDown(InputAction.CallbackContext context);
+        void OnThumbstickDirection(InputAction.CallbackContext context);
+        void OnThumbstickDown(InputAction.CallbackContext context);
         void OnLowButton(InputAction.CallbackContext context);
         void OnHighButton(InputAction.CallbackContext context);
     }
