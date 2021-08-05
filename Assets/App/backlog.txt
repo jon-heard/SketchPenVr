@@ -9,11 +9,6 @@ possible main apps
 
 0.1.03.00
 ----------
-- fix: cant enter control action reference text
-
-- make long pressure length the default and update tutorial
-- make ctrl-shift-z the default redo
-
 - add scroll-up & scroll-down actions
 	- make scroll-up & scroll-down defaults for mouse mode
 
@@ -30,9 +25,12 @@ possible main apps
 
 - look for other playtesters
 
+- use ScrolledList for dropdown control
+
+- background material permenantly changes each time it's changed in play mode
+
 0.2.00.00 - dev
 ----------
-- use ScrolledList for dropdown control
 
 - image panels
 

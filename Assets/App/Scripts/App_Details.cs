@@ -162,7 +162,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
     IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
 
     // Pressure length
-    PressureLengthIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, 1);
+    PressureLengthIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, 2);
 
     // Rumble strength
     RumbleStrength = (RumbleStrengthType)PlayerPrefs.GetInt(App_Details.CFG__RUMBLE_STRENGTH, 1);

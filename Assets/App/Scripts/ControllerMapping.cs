@@ -112,7 +112,7 @@ public class ControllerMapping
         // Second - High button - redo
           control = (int)ControllerInput.HighButton;
           ActionTitles[control] = "Redo";
-          Actions[control].Type = ControllerAction.ActionType.Redo__ctrl___y;
+          Actions[control].Type = ControllerAction.ActionType.Redo__ctrl___shift___z;
         // Second - Low button - right mouse
           control = (int)ControllerInput.LowButton;
           ActionTitles[control] = "Right mouse";
