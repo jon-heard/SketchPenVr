@@ -60,9 +60,9 @@ public class Ui_Menu_Main : Ui_Menu
   {
     Confirm.ShowOnButtonParent(source, "Confirm quitting\nSketchPenVr", (confirmed) =>
     {
-      Hide();
       if (confirmed)
       {
+        Hide();
         Debug.Log("Quitting");
         Application.Quit();
       }

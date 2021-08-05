@@ -1,5 +1,6 @@
 using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
+using Common.Vr.Ui.Popups;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,10 +36,12 @@ public class Ui_Menu_Settings : Ui_Menu
     _dropdown_rumble.Index = (uint)App_Details.Instance.RumbleStrength;
     _dropdown_rumble.gameObject.SetActive(false);
     _button_rumble.State = Button.ButtonState.NotLockedDown;
+#if !UNITY_EDITOR
     if (Controller.PrimaryController._myXrDevice == null)
     {
       _button_rumble.State = Button.ButtonState.Disabled;
     }
+#endif
 
     _dropdown_handedness.Index = (uint)(App_Details.Instance.IsLeftHanded ? 0 : 1);
     _dropdown_handedness.gameObject.SetActive(false);
@@ -115,6 +118,18 @@ public class Ui_Menu_Settings : Ui_Menu
   {
     App_Details.Instance.IsLeftHanded = (_dropdown_handedness.Index == 0);
     Hide();
+  }
+
+  public void OnResetSettingsButton(Button source)
+  {
+    Confirm.ShowOnButtonParent(source, "Confirm resetting all\nsettings to defaults.", (confirmed) =>
+    {
+      if (confirmed)
+      {
+        Hide();
+        App_Details.Instance.ResetSettings();
+      }
+    });
   }
 
   protected override void Start()

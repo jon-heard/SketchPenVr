@@ -117,6 +117,14 @@ public class App_Details : Common.SingletonComponent<App_Details>
   }
   private uint _rumbleStrength = 1;
 
+  public void ResetSettings()
+  {
+    PlayerPrefs.DeleteAll();
+    Controller.ResetGripAdjust();
+    Awake();
+    Start();
+  }
+
   private void Awake()
   {
 
