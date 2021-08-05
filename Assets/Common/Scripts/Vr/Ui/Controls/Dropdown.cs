@@ -9,6 +9,7 @@ namespace Common.Vr.Ui.Controls
   {
     [SerializeField] private UnityEvent OnItemSet;
     [SerializeField] private bool ItemReselectedTriggersItemSetEvent;
+    [SerializeField] private List<string> Options;
     [Header("Wiring")]
     [SerializeField] private TextMesh Label;
     [SerializeField] private Transform Geometry;
@@ -88,6 +89,10 @@ namespace Common.Vr.Ui.Controls
     {
       Scroll.OnScrollValueChanged += OnScrollValueChangedEventListener;
       _itemSize = ItemPrefab.Height;
+      if (Options.Count > 0)
+      {
+        SetList(Options);
+      }
     }
 
     private void OnEnable()

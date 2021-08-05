@@ -31,8 +31,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
 
   public override bool Hide()
   {
-    _inputBlockingTicket?.StopListening();
-    _inputBlockingTicket = null;
+    _inputBlockingTicket.StopListening();
     return base.Hide();
   }
 
@@ -136,16 +135,6 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
     if (_alignConfirming) { Confirm.Instance.OnCancelButton(); }
   }
 
-  private string[] _inputIdsToBlock =
-  {
-    "left_trigger", "left_grip", "left_high", "left_low", "left_thumbstick_down",
-    "left_thumbstick_direction_xPos", "left_thumbstick_direction_xNeg",
-    "left_thumbstick_direction_yPos", "left_thumbstick_direction_yNeg",
-    "right_trigger", "right_grip", "right_high", "right_low", "right_thumbstick_down",
-    "right_thumbstick_direction_xPos", "right_thumbstick_direction_xNeg",
-    "right_thumbstick_direction_yPos", "right_thumbstick_direction_yNeg",
-  };
-
   private App_Input _input;
   private enum InfoGatherType { Align = 0, Lightest = 1, Heaviest = 2, None = 3}
   private InfoGatherType _infoGatherType;
@@ -172,6 +161,18 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
       t.y = 0;
       panel.transform.localPosition = t;
     }
+
+    _inputBlockingTicket =
+      App_Functions.Instance.MyInputManager.AddBlockingListeners(
+        new string[] {
+          "left_trigger", "left_grip", "left_high", "left_low", "left_thumbstick_down",
+          "left_thumbstick_direction_xPos", "left_thumbstick_direction_xNeg",
+          "left_thumbstick_direction_yPos", "left_thumbstick_direction_yNeg",
+          "right_trigger", "right_grip", "right_high", "right_low", "right_thumbstick_down",
+          "right_thumbstick_direction_xPos", "right_thumbstick_direction_xNeg",
+          "right_thumbstick_direction_yPos", "right_thumbstick_direction_yNeg",
+        }, 50);
+    _inputBlockingTicket.StopListening();
   }
 
   private void Update()
@@ -188,8 +189,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
   {
     _buttons[(int)type].State = Button.ButtonState.LockedDown;
     _panels[(int)type].SetActive(true);
-    _inputBlockingTicket =
-      App_Functions.Instance.MyInputManager.AddBlockingListeners(_inputIdsToBlock, 50);
+    _inputBlockingTicket.StartListening();
     _isTriggerDown = true;
     if (type == InfoGatherType.Align)
     {
@@ -208,8 +208,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
     _buttons[(int)_infoGatherType].State = Button.ButtonState.NotLockedDown;
     _panels[(int)_infoGatherType].SetActive(false);
     _infoGatherType = InfoGatherType.None;
-    _inputBlockingTicket?.StopListening();
-    _inputBlockingTicket = null;
+    _inputBlockingTicket.StopListening();
   }
 
   private void Update_InfoGather(bool IsTriggerDown)

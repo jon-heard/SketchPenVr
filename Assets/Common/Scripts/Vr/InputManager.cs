@@ -9,31 +9,38 @@ public class InputManager : MonoBehaviour
   public class ListenerTicket
   {
     private string _actionId;
+    private uint _level;
     private Listener? _listener;
     private InputManager _manager;
-    public ListenerTicket(string actionId, Listener listener, InputManager manager)
+    protected bool _isListening;
+    public ListenerTicket(string actionId, uint level, Listener? listener, InputManager manager)
     {
       _actionId = actionId;
+      _level = level;
       _listener = listener;
       _manager = manager;
+      _isListening = false;
     }
-    protected ListenerTicket()
+    public virtual void StartListening()
     {
-      _actionId = null;
-      _listener = null;
-      _manager = null;
+      if (_isListening) { return; }
+      _manager._listeners[_actionId].Add(_level, _listener.Value);
+      _isListening = true;
     }
     public virtual void StopListening()
     {
+      if (!_isListening) { return; }
       var listeners = _manager._listeners?[_actionId];
       var listenerIndex = listeners.IndexOfValue(_listener.Value);
       listeners.RemoveAt(listenerIndex);
+      _isListening = false;
     }
   }
   public class ListenerTicketMulti : ListenerTicket
   {
     private ListenerTicket[] _subTickets;
-    public ListenerTicketMulti(string[] actionIds, Listener[] listeners, InputManager manager)
+    public ListenerTicketMulti(string[] actionIds, uint level, Listener[] listeners, InputManager manager) :
+      base(null, 0, null, null)
     {
       if (actionIds.Length != listeners.Length)
       {
@@ -43,15 +50,26 @@ public class InputManager : MonoBehaviour
       _subTickets = new ListenerTicket[count];
       for (var i = 0; i < count; i++)
       {
-        _subTickets[i] = new ListenerTicket(actionIds[i], listeners[i], manager);
+        _subTickets[i] = new ListenerTicket(actionIds[i], level, listeners[i], manager);
       }
+    }
+    public override void StartListening()
+    {
+      if (_isListening) { return; }
+      for (var i = 0; i < _subTickets.Length; i++)
+      {
+        _subTickets[i].StartListening();
+      }
+      _isListening = true;
     }
     public override void StopListening()
     {
+      if (!_isListening) { return; }
       for (var i = 0; i < _subTickets.Length; i++)
       {
         _subTickets[i].StopListening();
       }
+      _isListening = false;
     }
   }
   public struct Listener
@@ -104,9 +122,10 @@ public class InputManager : MonoBehaviour
         _listeners.Add(actionIds[i], new SortedList<uint, Listener>());
       }
       listeners[i] = new Listener(null);
-      _listeners[actionIds[i]].Add(level, listeners[i]);
     }
-    return new ListenerTicketMulti(actionIds, listeners, this);
+    var result = new ListenerTicketMulti(actionIds, level, listeners, this);
+    result.StartListening();
+    return result;
   }
 
   public ListenerTicket AddBooleanListener(string actionId, uint level, Action<bool> evt)
@@ -116,19 +135,22 @@ public class InputManager : MonoBehaviour
       _listeners.Add(actionId, new SortedList<uint, Listener>());
     }
     var listener = new Listener(evt);
-    _listeners[actionId].Add(level, listener);
-    return new ListenerTicket(actionId, listener, this);
+    var result = new ListenerTicket(actionId, level, listener, this);
+    result.StartListening();
+    return result;
   }
 
-  public ListenerTicket AddNumericalListener(string actionId, uint level, Action<bool, float> evt, bool notifyEachFrame)
+  public ListenerTicket AddNumericalListener(
+    string actionId, uint level, Action<bool, float> evt, bool notifyEachFrame)
   {
     if (!_listeners.ContainsKey(actionId))
     {
       _listeners.Add(actionId, new SortedList<uint, Listener>());
     }
     var listener = new Listener(evt, notifyEachFrame);
-    _listeners[actionId].Add(level, listener);
-    return new ListenerTicket(actionId, listener, this);
+    var result = new ListenerTicket(actionId, level, listener, this);
+    result.StartListening();
+    return result;
   }
 
   public void AddBooleanInput(string id, InputAction action)

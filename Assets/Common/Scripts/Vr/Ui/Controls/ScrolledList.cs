@@ -13,7 +13,7 @@ namespace Common.Vr.Ui.Controls
     protected float _itemHeight;
     protected uint _scrollIndex = 0;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
       MyScrollbar.OnScrollValueChanged += OnScrollValueChangedEventListener;
     }

@@ -254,7 +254,10 @@ public class Controller : MonoBehaviour
   private bool _isTriggerDown;
   private float _triggerPressure;
   private bool _isPenActive = false;
-  private bool _isPenMode { get { return (_focusDistance <= _const_maxHoverDistance); } }
+  private bool _isPenMode
+  {
+    get { return (FocusPointerEmulation && _focusDistance <= _const_maxHoverDistance); }
+  }
 
   // Focus info
   public Interactable Focus { get; private set; }
@@ -406,12 +409,12 @@ public class Controller : MonoBehaviour
       {
         if (_focusControllerVis)
         {
-          _focusControllerVis.MyState = ControllerVis.State.Shadowed;
+          _focusControllerVis.IsFocused = false;
         }
         _focusControllerVis = newControllerVis;
         if (_focusControllerVis)
         {
-          _focusControllerVis.MyState = ControllerVis.State.Full;
+          _focusControllerVis.IsFocused = true;
         }
       }
     }
@@ -424,7 +427,7 @@ public class Controller : MonoBehaviour
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
       if (_focusControllerVis)
       {
-        _focusControllerVis.MyState = ControllerVis.State.Shadowed;
+        _focusControllerVis.IsFocused = false;
       }
       _focusControllerVis = null;
     }
@@ -452,8 +455,8 @@ public class Controller : MonoBehaviour
     // Early out
     if (_controllerIndex > 0 || IsInGripAdjust) { return; }
 
-    // Turn off pen if not near the screen or if holding
-    if (!_isPenMode || !FocusPointerEmulation || _isHolding)
+    // Turn off pen if not in pen mode or if holding
+    if (!_isPenMode || _isHolding)
     {
       if (_isPenActive)
       {
@@ -465,20 +468,28 @@ public class Controller : MonoBehaviour
         }
         FocusPointerEmulation?.ClearPenState();
         _geometryMaterial.color = Color.white;
+        _controllerVis.IsHidden = false;
         _rayVisual.gameObject.SetActive(true);
-        _controllerVis.MyState = ControllerVis.State.Shadowed;
         _isTriggerDown = false; // force mouse down if trigger is pushed when leaving near-zone
+
+        _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
+                App_Details.Instance.MyControllerMappings.Mappings[0];
       }
       return;
     }
-
-    if (!_isPenActive)
+    else
     {
-      FocusPointerEmulation.MouseLeftButton = false;
+      if (!_isPenActive)
+      {
+        _isPenActive = true;
+        FocusPointerEmulation.MouseLeftButton = false;
+        _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
+                App_Details.Instance.MyControllerMappings.Mappings[2];
+        _controllerVis.IsHidden = true;
+      }
     }
 
     _rayVisual.gameObject.SetActive(false);
-    _controllerVis.MyState = ControllerVis.State.Hidden;
 
     // Calc pen pressure
     var penPressure =
@@ -525,8 +536,6 @@ public class Controller : MonoBehaviour
       _isDrawing = newIsDrawing;
       DoSnapRumble();
     }
-
-    _isPenActive = true;
   }
 
   /////////////////
@@ -556,18 +565,21 @@ public class Controller : MonoBehaviour
     if (flag != _isTriggerDown)
     {
       // Primary controller - Update screen based on input
-      if (_controllerIndex == 0 && FocusPointerEmulation)
+      if (_controllerIndex == 0)
       {
-        // In mouse-mode, have trigger press/release left mouse button
-        if (!_isPenMode)
+        if (FocusPointerEmulation)
         {
-          FocusPointerEmulation.MouseLeftButton = flag;
+          // In mouse-mode, have trigger press/release left mouse button
+          if (!_isPenMode)
+          {
+            FocusPointerEmulation.MouseLeftButton = flag;
+          }
+          // Reestablish emulation if it was disabled (through escape key)
+          FocusPointerEmulation.IsEmulating = true;
         }
-        // Reestablish emulation if it was disabled (through escape key)
-        FocusPointerEmulation.IsEmulating = true;
       }
       // Secondary controller - Update action from mapping
-      else if (_controllerIndex == 1)
+      else
       {
         _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.Trigger].
           Run(this, flag);

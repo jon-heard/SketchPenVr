@@ -61,9 +61,9 @@ namespace Common.Vr.Ui.Controls
 
     private uint _placeholderCount;
 
-    protected override void Start()
+    protected override void Awake()
     {
-      base.Start();
+      base.Awake();
       _itemHeight = PrefabLabel.transform.parent.Find("Geometry").localScale.y;
       PrefabLabel.transform.parent.gameObject.SetActive(false);
       Clear();

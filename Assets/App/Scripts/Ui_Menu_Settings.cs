@@ -121,7 +121,6 @@ public class Ui_Menu_Settings : Ui_Menu
   {
     base.Start();
     _dropdown_pressureLength.SetList(App_Details.Instance.PressureLengthTitles);
-    _dropdown_handedness.SetList(new List<string> { "Lefty", "Righty" });
     _dropdown_rumble.SetList(
       new List<string>(Enum.GetNames(typeof(App_Details.RumbleStrengthType))));
     // Background dropdown

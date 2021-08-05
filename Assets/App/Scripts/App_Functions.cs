@@ -17,6 +17,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   {
 #if DEV
     MyConsole.Print(text);
+    Debug.Log("CONSOLE >> " + text);
 #endif
   }
 

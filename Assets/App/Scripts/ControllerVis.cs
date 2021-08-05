@@ -8,34 +8,29 @@ public class ControllerVis : MonoBehaviour
 
   [NonSerialized] public Collider MyCollider;
 
-  public enum State { Hidden, Shadowed, Full }
-  public State MyState
+  public bool IsHidden
   {
-    get { return _myState; }
+    get { return _isHidden; }
     set
     {
-      if (value == _myState) { return; }
-      _myState = value;
-      switch(_myState)
-      {
-        case State.Hidden:
-          _myRenderer.material = App_Resources.Instance.ControllerVisHidden;
-          break;
-        case State.Shadowed:
-          _myRenderer.material = App_Resources.Instance.ControllerVisShadowed;
-          break;
-        case State.Full:
-          _myRenderer.material = App_Resources.Instance.ControllerVisFull;
-          break;
-      }
-      _tutorial.gameObject.SetActive(_myState == State.Full);
-      foreach (var toHide in _toHideOnFull)
-      {
-        toHide.enabled = (_myState != State.Full);
-      }
+      if (value == _isHidden) { return; }
+      _isHidden = value;
+      Refresh();
     }
   }
-  private State _myState;
+  private bool _isHidden = false;
+
+  public bool IsFocused
+  {
+    get { return _isFocused; }
+    set
+    {
+      if (value == _isFocused) { return; }
+      _isFocused = value;
+      Refresh();
+    }
+  }
+  private bool _isFocused = false;
 
   public ControllerMapping Mapping
   {
@@ -62,10 +57,10 @@ public class ControllerVis : MonoBehaviour
   {
     _myRenderer = GetComponent<Renderer>();
     MyCollider = GetComponent<Collider>();
-    MyState = State.Shadowed;
     _input = new App_Input();
     _input.Enable();
     _const_TriggerDownPressure = App_Details.Instance.TRIGGER_ACTIVATE_PRESSURE;
+    Refresh();
   }
 
   private void Update()
@@ -75,5 +70,18 @@ public class ControllerVis : MonoBehaviour
       _input.VrLeftHandActions.TriggerPressure.ReadValue<float>() :
       _input.VrRightHandActions.TriggerPressure.ReadValue<float>();
     MyCollider.enabled = (triggerPressure < _const_TriggerDownPressure);
+  }
+
+  private void Refresh()
+  {
+    _myRenderer.material =
+      IsFocused ? App_Resources.Instance.ControllerVisFull :
+      IsHidden ? App_Resources.Instance.ControllerVisHidden :
+      App_Resources.Instance.ControllerVisShadowed;
+    _tutorial.gameObject.SetActive(IsFocused);
+    foreach (var toHide in _toHideOnFull)
+    {
+      toHide.enabled = !IsFocused;
+    }
   }
 }

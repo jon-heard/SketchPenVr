@@ -1,4 +1,5 @@
 using Common;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,13 +42,14 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public const string LOCK__ALL_UI = "lock:allUi";
   public const string LOCK__OTHER_IS_LOCKED_DOWN = "lock:otherIsLockedDown";
 
-  public MappingCollection MyControllerMappings;
+  [NonSerialized] public MappingCollection MyControllerMappings = new MappingCollection();
+
   public void SaveControllerMappings()
   {
     PlayerPrefs.SetString(App_Details.CFG__MAPPINGS, JsonUtility.ToJson(MyControllerMappings));
     foreach (var mapping in MyControllerMappings.Mappings)
     {
-      mapping.OnMappingChanged.Invoke(mapping);
+      mapping.OnMappingChanged?.Invoke(mapping);
     }
   }
 
@@ -128,6 +130,10 @@ public class App_Details : Common.SingletonComponent<App_Details>
       try
       {
         MyControllerMappings = JsonUtility.FromJson<MappingCollection>(mappingsString);
+        if (MyControllerMappings.Mappings.Length != MappingCollection.MappingsCount)
+        {
+          MyControllerMappings = null;
+        }
         if (MyControllerMappings == null) { mappingsString = null; }
       }
       catch

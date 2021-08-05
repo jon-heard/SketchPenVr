@@ -18,7 +18,7 @@ public class ControllerAction
   public enum ActionType
   {
     Nothing,
-    Hold,
+    Hold_focus,
     Hold_desktop,
     Pencil_flip,
     Mouse_button__left,
@@ -41,7 +41,7 @@ public class ControllerAction
     {
       case ActionType.Nothing:
         break;
-      case ActionType.Hold:
+      case ActionType.Hold_focus:
         controller.IsHolding = isDown;
         break;
       case ActionType.Hold_desktop:
