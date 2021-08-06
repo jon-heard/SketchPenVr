@@ -4,18 +4,26 @@ namespace Common.Vr.Ui.Controls
 {
   public class UiInputHandler
   {
-    public void UpdatePointer(Control hoveredControl, bool isDown, Vector3 point)
+    public void UpdatePointer(Control hoveredControl, bool isDown, Vector3 point, bool isPrimaryController)
     {
       // Hovering
       if (hoveredControl != _hoveredControl)
       {
-        if (_hoveredControl) { Control.OnControlUnhovered?.Invoke(_hoveredControl); }
+        if (_hoveredControl)
+        {
+          Control.WasPrimaryController = isPrimaryController;
+          Control.OnControlUnhovered?.Invoke(_hoveredControl);
+        }
         if (_downControl != null && hoveredControl != _downControl) { hoveredControl = null; }
         _hoveredControl = hoveredControl;
-        if (_hoveredControl) { Control.OnControlHovered?.Invoke(_hoveredControl); }
+        if (_hoveredControl)
+        {
+          Control.WasPrimaryController = isPrimaryController;
+          Control.OnControlHovered?.Invoke(_hoveredControl);
+        }
       }
 
-      // Mouse down
+      // Mouse down / up
       if (isDown != _isDown)
       {
         _isDown = isDown;
@@ -24,6 +32,7 @@ namespace Common.Vr.Ui.Controls
           if (_hoveredControl)
           {
             _downControl = _hoveredControl;
+            Control.WasPrimaryController = isPrimaryController;
             Control.OnControlDown?.Invoke(_downControl);
           }
         }
@@ -31,10 +40,12 @@ namespace Common.Vr.Ui.Controls
         {
           if (_downControl)
           {
+            Control.WasPrimaryController = isPrimaryController;
             Control.OnControlUp?.Invoke(_downControl);
             if (_downControl == _hoveredControl)
             {
-              Control.OnControlClicked(_downControl);
+              Control.WasPrimaryController = isPrimaryController;
+              Control.OnControlClicked?.Invoke(_downControl);
             }
             _downControl = null;
           }
@@ -44,6 +55,7 @@ namespace Common.Vr.Ui.Controls
       // uv
       if (hoveredControl && point != _point)
       {
+        Control.WasPrimaryController = isPrimaryController;
         Control.OnPointerMoved?.Invoke(point);
         _point = point;
       }

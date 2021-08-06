@@ -19,7 +19,8 @@ namespace Common.Vr.Ui.Controls
         UpdatePointer(
           rayHit ? hit.collider.GetComponent<ControlGeometry>()?.MyControl : null,
           mouseButton.ReadValue<float>() == 1.0f,
-          rayHit ? hit.point : Vector3.zero);
+          rayHit ? hit.point : Vector3.zero,
+          true);
       }
     }
 #endif

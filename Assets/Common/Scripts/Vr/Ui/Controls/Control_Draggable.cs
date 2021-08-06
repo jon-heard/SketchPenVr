@@ -20,24 +20,35 @@ namespace Common.Vr.Ui.Controls
       {
         if (value == _isListeningForThumbstick) { return; }
         _isListeningForThumbstick = value;
-        if (_isListeningForThumbstick)
+        if (!value)
         {
-          _listeningTicket_ThumbstickUp = App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yPos", 75, OnThumbstickUp, true);
-          _listeningTicket_ThumbstickDown = App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yNeg", 75, OnThumbstickDown, true);
+          _listeningTicket_Left_ThumbstickUp.IsListening =
+          _listeningTicket_Left_ThumbstickDown.IsListening =
+          _listeningTicket_Right_ThumbstickUp.IsListening =
+          _listeningTicket_Right_ThumbstickDown.IsListening = false;
+        }
+        else if (Control.WasPrimaryController == Controller.IsLeftHanded)
+        {
+          _listeningTicket_Left_ThumbstickUp.IsListening =
+          _listeningTicket_Left_ThumbstickDown.IsListening = true;
+          _listeningTicket_Right_ThumbstickUp.IsListening =
+          _listeningTicket_Right_ThumbstickDown.IsListening = false;
         }
         else
         {
-          _listeningTicket_ThumbstickUp?.StopListening();
-          _listeningTicket_ThumbstickDown?.StopListening();
-          _listeningTicket_ThumbstickUp = null;
-          _listeningTicket_ThumbstickDown = null;
+          _listeningTicket_Left_ThumbstickUp.IsListening =
+          _listeningTicket_Left_ThumbstickDown.IsListening = false;
+          _listeningTicket_Right_ThumbstickUp.IsListening =
+          _listeningTicket_Right_ThumbstickDown.IsListening = true;
         }
       }
     }
     private bool _isListeningForThumbstick;
-    private InputManager.ListenerTicket _listeningTicket_ThumbstickUp;
-    private InputManager.ListenerTicket _listeningTicket_ThumbstickDown;
 
+    private InputManager.ListenerTicket _listeningTicket_Left_ThumbstickUp;
+    private InputManager.ListenerTicket _listeningTicket_Left_ThumbstickDown;
+    private InputManager.ListenerTicket _listeningTicket_Right_ThumbstickUp;
+    private InputManager.ListenerTicket _listeningTicket_Right_ThumbstickDown;
     private Vector3 _originalSize;
     private Vector3 _draggingSize;
     private Vector3 _point;
@@ -53,6 +64,15 @@ namespace Common.Vr.Ui.Controls
       _draggingSize = _originalSize.GetScaled(DraggingOverage);
       _idleMaterial = Geometry.GetComponent<Renderer>().material;
       _const_thumbstickSpeed = App_Details.Instance.MyCommonDetails.DRAGGABLE_THUMBSTICK_SPEED;
+
+      _listeningTicket_Left_ThumbstickUp = App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yPos", 75, OnThumbstickUp, true);
+      _listeningTicket_Left_ThumbstickUp.IsListening = false;
+      _listeningTicket_Left_ThumbstickDown = App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yNeg", 75, OnThumbstickDown, true);
+      _listeningTicket_Left_ThumbstickDown.IsListening = false;
+      _listeningTicket_Right_ThumbstickUp = App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yPos", 75, OnThumbstickUp, true);
+      _listeningTicket_Right_ThumbstickUp.IsListening = false;
+      _listeningTicket_Right_ThumbstickDown = App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yNeg", 75, OnThumbstickDown, true);
+      _listeningTicket_Right_ThumbstickDown.IsListening = false;
     }
 
     private void OnEnable()

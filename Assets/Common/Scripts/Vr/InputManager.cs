@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
   public enum NumericalActionType { scalar1 = 1, scalar2 = 4, scalar3 = 6 }
+
   public class ListenerTicket
   {
     private string _actionId;
     private uint _level;
     private Listener? _listener;
     private InputManager _manager;
-    protected bool _isListening;
     public ListenerTicket(string actionId, uint level, Listener? listener, InputManager manager)
     {
       _actionId = actionId;
@@ -21,21 +21,28 @@ public class InputManager : MonoBehaviour
       _manager = manager;
       _isListening = false;
     }
-    public virtual void StartListening()
+    public virtual bool IsListening
     {
-      if (_isListening) { return; }
-      _manager._listeners[_actionId].Add(_level, _listener.Value);
-      _isListening = true;
+      get { return _isListening; }
+      set
+      {
+        if (value == _isListening) { return; }
+        _isListening = value;
+        if (_isListening)
+        {
+          _manager._listeners[_actionId].Add(_level, _listener.Value);
+        }
+        else
+        {
+          var listeners = _manager._listeners?[_actionId];
+          var listenerIndex = listeners.IndexOfValue(_listener.Value);
+          listeners.RemoveAt(listenerIndex);
+        }
+      }
     }
-    public virtual void StopListening()
-    {
-      if (!_isListening) { return; }
-      var listeners = _manager._listeners?[_actionId];
-      var listenerIndex = listeners.IndexOfValue(_listener.Value);
-      listeners.RemoveAt(listenerIndex);
-      _isListening = false;
-    }
+    protected bool _isListening;
   }
+
   public class ListenerTicketMulti : ListenerTicket
   {
     private ListenerTicket[] _subTickets;
@@ -53,25 +60,21 @@ public class InputManager : MonoBehaviour
         _subTickets[i] = new ListenerTicket(actionIds[i], level, listeners[i], manager);
       }
     }
-    public override void StartListening()
+    public override bool IsListening
     {
-      if (_isListening) { return; }
-      for (var i = 0; i < _subTickets.Length; i++)
+      get { return _isListening; }
+      set
       {
-        _subTickets[i].StartListening();
+        if (value == _isListening) { return; }
+        _isListening = value;
+        for (var i = 0; i < _subTickets.Length; i++)
+        {
+          _subTickets[i].IsListening = _isListening;
+        }
       }
-      _isListening = true;
-    }
-    public override void StopListening()
-    {
-      if (!_isListening) { return; }
-      for (var i = 0; i < _subTickets.Length; i++)
-      {
-        _subTickets[i].StopListening();
-      }
-      _isListening = false;
     }
   }
+
   public struct Listener
   {
     public enum ListenerType { Block, Bool, Numerical }
@@ -124,7 +127,7 @@ public class InputManager : MonoBehaviour
       listeners[i] = new Listener(null);
     }
     var result = new ListenerTicketMulti(actionIds, level, listeners, this);
-    result.StartListening();
+    result.IsListening = true;
     return result;
   }
 
@@ -136,7 +139,7 @@ public class InputManager : MonoBehaviour
     }
     var listener = new Listener(evt);
     var result = new ListenerTicket(actionId, level, listener, this);
-    result.StartListening();
+    result.IsListening = true;
     return result;
   }
 
@@ -149,7 +152,7 @@ public class InputManager : MonoBehaviour
     }
     var listener = new Listener(evt, notifyOnValueChanges);
     var result = new ListenerTicket(actionId, level, listener, this);
-    result.StartListening();
+    result.IsListening = true;
     return result;
   }
 

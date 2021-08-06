@@ -402,7 +402,9 @@ public class Controller : MonoBehaviour
       }
 
       // Control focus
-      _inputHandler.UpdatePointer(focusParent?.GetComponent<Control>(), _isTriggerDown, hitInfo.point);
+      _inputHandler.UpdatePointer(
+        focusParent?.GetComponent<Control>(), _isTriggerDown, hitInfo.point,
+        _controllerIndex == 0);
 
       // ControllerVis focus
       var newControllerVis = Focus?.GetComponent<ControllerVis>();
@@ -425,7 +427,7 @@ public class Controller : MonoBehaviour
       Focus = null;
       FocusPointerEmulation?.SetPenState(0.0f, 0, Vector2.zero, Controller.IsFlipped);
       FocusPointerEmulation = null;
-      _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero);
+      _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero, _controllerIndex == 0);
       if (_focusControllerVis)
       {
         _focusControllerVis.IsFocused = false;

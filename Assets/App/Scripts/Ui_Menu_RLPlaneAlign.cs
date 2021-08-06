@@ -31,7 +31,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
 
   public override bool Hide()
   {
-    _inputBlockingTicket.StopListening();
+    _inputBlockingTicket.IsListening = false;
     return base.Hide();
   }
 
@@ -172,7 +172,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
           "right_thumbstick_direction_xPos", "right_thumbstick_direction_xNeg",
           "right_thumbstick_direction_yPos", "right_thumbstick_direction_yNeg",
         }, 50);
-    _inputBlockingTicket.StopListening();
+    _inputBlockingTicket.IsListening = false;
   }
 
   private void Update()
@@ -189,7 +189,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
   {
     _buttons[(int)type].State = Button.ButtonState.LockedDown;
     _panels[(int)type].SetActive(true);
-    _inputBlockingTicket.StartListening();
+    _inputBlockingTicket.IsListening = true;
     _isTriggerDown = true;
     if (type == InfoGatherType.Align)
     {
@@ -208,7 +208,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
     _buttons[(int)_infoGatherType].State = Button.ButtonState.NotLockedDown;
     _panels[(int)_infoGatherType].SetActive(false);
     _infoGatherType = InfoGatherType.None;
-    _inputBlockingTicket.StopListening();
+    _inputBlockingTicket.IsListening = false;
   }
 
   private void Update_InfoGather(bool IsTriggerDown)

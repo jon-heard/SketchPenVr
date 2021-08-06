@@ -10,6 +10,7 @@ namespace Common.Vr.Ui.Controls
 
     public ObjectLocker Locker { get; private set; }
 
+    public static bool WasPrimaryController = false;
     public static Action<Control> OnControlClicked;
     public static Action<Control> OnControlDown;
     public static Action<Control> OnControlUp;

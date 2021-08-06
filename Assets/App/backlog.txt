@@ -10,7 +10,6 @@ possible main apps
 0.1.03.00
 ----------
 - scrollbars react to primary pointer if it's in vicinity OR to secondary pointer if not
-- test that scrollbar scroll with thumbsticks works for both thumbsticks properly regardless of which controller is pointing
 
 - add demo video and link to it under about
 
@@ -30,6 +29,10 @@ possible main apps
 - background material permenantly changes each time it's changed in play mode
 
 - Split App_Details into App_Details and App_Settings
+
+- InputManager: simplify
+  - don't start listening (need to set it)
+  - don't need Listener AND ListenerTicket (merge them)
 
 - use ScrolledList for dropdown control
 
