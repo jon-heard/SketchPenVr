@@ -9,8 +9,8 @@ possible main apps
 
 0.1.03.00
 ----------
-- add scroll-up & scroll-down actions
-	- make scroll-up & scroll-down defaults for mouse mode
+- scrollbars react to primary pointer if it's in vicinity OR to secondary pointer if not
+- test that scrollbar scroll with thumbsticks works for both thumbsticks properly regardless of which controller is pointing
 
 - add demo video and link to it under about
 
@@ -25,9 +25,13 @@ possible main apps
 
 - look for other playtesters
 
-- use ScrolledList for dropdown control
-
+0.1.04.00
+----------
 - background material permenantly changes each time it's changed in play mode
+
+- Split App_Details into App_Details and App_Settings
+
+- use ScrolledList for dropdown control
 
 0.2.00.00 - dev
 ----------

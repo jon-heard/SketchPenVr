@@ -79,21 +79,21 @@ public class InputManager : MonoBehaviour
     public Action<bool> EvtBool;
     public Action<bool, float> EvtNumerical;
     public ListenerType Type;
-    public bool NotifyEachFrame;
+    public bool NotifyOnValueChanges;
 
     public Listener(Action<bool> evtBool)
     {
       EvtBool = evtBool;
       EvtNumerical = null;
       Type = (evtBool != null) ? ListenerType.Bool : ListenerType.Block;
-      NotifyEachFrame = false;
+      NotifyOnValueChanges = false;
     }
-    public Listener(Action<bool, float> evtNumerical, bool notifyEachFrame)
+    public Listener(Action<bool, float> evtNumerical, bool notifyOnValueChanges)
     {
       EvtBool = null;
       EvtNumerical = evtNumerical;
       Type = (evtNumerical != null) ? ListenerType.Numerical : ListenerType.Block;
-      NotifyEachFrame = (evtNumerical != null) ? notifyEachFrame : false;
+      NotifyOnValueChanges = (evtNumerical != null) ? notifyOnValueChanges : false;
     }
     public void Invoke(bool flag, float value)
     {
@@ -141,13 +141,13 @@ public class InputManager : MonoBehaviour
   }
 
   public ListenerTicket AddNumericalListener(
-    string actionId, uint level, Action<bool, float> evt, bool notifyEachFrame)
+    string actionId, uint level, Action<bool, float> evt, bool notifyOnValueChanges)
   {
     if (!_listeners.ContainsKey(actionId))
     {
       _listeners.Add(actionId, new SortedList<uint, Listener>());
     }
-    var listener = new Listener(evt, notifyEachFrame);
+    var listener = new Listener(evt, notifyOnValueChanges);
     var result = new ListenerTicket(actionId, level, listener, this);
     result.StartListening();
     return result;
@@ -175,7 +175,8 @@ public class InputManager : MonoBehaviour
     public string Id;
     public InputAction Action;
     public float Threshold;
-    public bool[] PriorStates;
+    public bool[] PriorFlags;
+    public float[] PriorValues;
     public NumericalActionType Type;
     public ActionWrap(
       string id, InputAction action, float threshold, NumericalActionType type)
@@ -183,7 +184,8 @@ public class InputManager : MonoBehaviour
       Id = id;
       Action = action;
       Threshold = threshold;
-      PriorStates = new bool[(int)type];
+      PriorFlags = new bool[(int)type];
+      PriorValues = new float[(int)type];
       Type = type;
     }
   }
@@ -220,11 +222,13 @@ public class InputManager : MonoBehaviour
               var value = action.Action.ReadValue<float>();
               var flag = (value >= action.Threshold);
               var listener = _listeners[action.Id].Values?[0];
-              if (listener.HasValue &&
-                  (listener?.NotifyEachFrame == true || flag != action.PriorStates[0]))
+              if (!listener.HasValue) { break; }
+              if ((listener?.NotifyOnValueChanges == true && value != action.PriorValues[0]) ||
+                  (listener?.NotifyOnValueChanges != true && flag != action.PriorFlags[0]))
               {
                 listener?.Invoke(flag, value);
-                action.PriorStates[0] = flag;
+                action.PriorFlags[0] = flag;
+                action.PriorValues[0] = value;
               }
             }
           }
@@ -232,21 +236,50 @@ public class InputManager : MonoBehaviour
         case NumericalActionType.scalar2:
           {
             var rawValue = action.Action.ReadValue<Vector2>();
+            var values = new float[(int)NumericalActionType.scalar2];
             var flags = new bool[(int)NumericalActionType.scalar2];
-            flags[(int)SubAction.xPos] = (rawValue.x >= action.Threshold);
-            flags[(int)SubAction.xNeg] = (rawValue.x <= -action.Threshold);
-            flags[(int)SubAction.yPos] = (rawValue.y >= action.Threshold);
-            flags[(int)SubAction.yNeg] = (rawValue.y <= -action.Threshold);
             if (Mathf.Abs(rawValue.x) > Mathf.Abs(rawValue.y))
             {
+              if (rawValue.x > 0.0f)
+              {
+                values[(int)SubAction.xPos] = rawValue.x;
+                values[(int)SubAction.xNeg] = 0.0f;
+                flags[(int)SubAction.xPos] = (rawValue.x >= action.Threshold);
+                flags[(int)SubAction.xNeg] = false;
+              }
+              else
+              {
+                values[(int)SubAction.xPos] = 0.0f;
+                values[(int)SubAction.xNeg] = -rawValue.x;
+                flags[(int)SubAction.xPos] = false;
+                flags[(int)SubAction.xNeg] = (rawValue.x <= action.Threshold);
+              }
+              values[(int)SubAction.yPos] = values[(int)SubAction.yPos] = 0.0f;
               flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] = false;
             }
             else if (Mathf.Abs(rawValue.y) > Mathf.Abs(rawValue.x))
             {
+              if (rawValue.y > 0.0f)
+              {
+                values[(int)SubAction.yPos] = rawValue.y;
+                values[(int)SubAction.yNeg] = 0.0f;
+                flags[(int)SubAction.yPos] = (rawValue.y >= action.Threshold);
+                flags[(int)SubAction.yNeg] = false;
+              }
+              else
+              {
+                values[(int)SubAction.yPos] = 0.0f;
+                values[(int)SubAction.yNeg] = -rawValue.y;
+                flags[(int)SubAction.yPos] = false;
+                flags[(int)SubAction.yNeg] = (rawValue.y <= action.Threshold);
+              }
+              values[(int)SubAction.xPos] = values[(int)SubAction.xNeg] = 0.0f;
               flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] = false;
             }
             else
             {
+              values[(int)SubAction.xPos] = values[(int)SubAction.xNeg] =
+              values[(int)SubAction.yPos] = values[(int)SubAction.yNeg] = 0.0f;
               flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] =
               flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] = false;
             }
@@ -254,18 +287,14 @@ public class InputManager : MonoBehaviour
             {
               var id = action.Id + "_" + ((SubAction)k).ToString();
               if (!_listeners.ContainsKey(id) || _listeners[id].Values.Count == 0) { continue; }
-              var value =
-                Mathf.Max(
-                  (k == (int)SubAction.xPos) ? +rawValue.x :
-                  (k == (int)SubAction.xNeg) ? -rawValue.x :
-                  (k == (int)SubAction.yPos) ? +rawValue.y :
-                  -rawValue.y
-                , 0.0f);
-              var listener = _listeners[id].Values[0];
-              if (listener.NotifyEachFrame || flags[k] != action.PriorStates[k])
+              var listener = _listeners[id].Values?[0];
+              if (!listener.HasValue) { break; }
+              if ((listener?.NotifyOnValueChanges == true && values[k] != action.PriorValues[k]) ||
+                  (listener?.NotifyOnValueChanges != true && flags[k] != action.PriorFlags[k]))
               {
-                listener.Invoke(flags[k], value);
-                action.PriorStates[k] = flags[k];
+                listener?.Invoke(flags[k], values[k]);
+                action.PriorFlags[k] = flags[k];
+                action.PriorValues[k] = values[k];
               }
             }
           }
@@ -273,27 +302,76 @@ public class InputManager : MonoBehaviour
         case NumericalActionType.scalar3:
           {
             var rawValue = action.Action.ReadValue<Vector3>();
+            var values = new float[(int)NumericalActionType.scalar3];
             var flags = new bool[(int)NumericalActionType.scalar3];
-            flags[(int)SubAction.xPos] = (rawValue.x >= action.Threshold);
-            flags[(int)SubAction.xNeg] = (rawValue.x <= -action.Threshold);
-            flags[(int)SubAction.yPos] = (rawValue.y >= action.Threshold);
-            flags[(int)SubAction.yNeg] = (rawValue.y <= -action.Threshold);
-            flags[(int)SubAction.zPos] = (rawValue.y >= action.Threshold);
-            flags[(int)SubAction.zNeg] = (rawValue.y <= -action.Threshold);
             if (Mathf.Abs(rawValue.x) > Mathf.Abs(rawValue.y) && Mathf.Abs(rawValue.x) > Mathf.Abs(rawValue.z))
             {
-              flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] = flags[(int)SubAction.zPos] = flags[(int)SubAction.zNeg] = false;
+              if (rawValue.x > 0.0f)
+              {
+                values[(int)SubAction.xPos] = rawValue.x;
+                values[(int)SubAction.xNeg] = 0.0f;
+                flags[(int)SubAction.xPos] = (rawValue.x >= action.Threshold);
+                flags[(int)SubAction.xNeg] = false;
+              }
+              else
+              {
+                values[(int)SubAction.xPos] = 0.0f;
+                values[(int)SubAction.xNeg] = -rawValue.x;
+                flags[(int)SubAction.xPos] = false;
+                flags[(int)SubAction.xNeg] = (rawValue.x <= action.Threshold);
+              }
+              values[(int)SubAction.yPos] = values[(int)SubAction.yNeg] =
+              values[(int)SubAction.zPos] = values[(int)SubAction.zNeg] = 0.0f;
+              flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] =
+              flags[(int)SubAction.zPos] = flags[(int)SubAction.zNeg] = false;
             }
             if (Mathf.Abs(rawValue.y) > Mathf.Abs(rawValue.x) && Mathf.Abs(rawValue.y) > Mathf.Abs(rawValue.z))
             {
-              flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] = flags[(int)SubAction.zPos] = flags[(int)SubAction.zNeg] = false;
+              if (rawValue.y > 0.0f)
+              {
+                values[(int)SubAction.yPos] = rawValue.y;
+                values[(int)SubAction.yNeg] = 0.0f;
+                flags[(int)SubAction.yPos] = (rawValue.y >= action.Threshold);
+                flags[(int)SubAction.yNeg] = false;
+              }
+              else
+              {
+                values[(int)SubAction.yPos] = 0.0f;
+                values[(int)SubAction.yNeg] = -rawValue.y;
+                flags[(int)SubAction.yPos] = false;
+                flags[(int)SubAction.yNeg] = (rawValue.y <= action.Threshold);
+              }
+              values[(int)SubAction.xPos] = values[(int)SubAction.xNeg] =
+              values[(int)SubAction.zPos] = values[(int)SubAction.zNeg] = 0.0f;
+              flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] =
+              flags[(int)SubAction.zPos] = flags[(int)SubAction.zNeg] = false;
             }
             if (Mathf.Abs(rawValue.z) > Mathf.Abs(rawValue.x) && Mathf.Abs(rawValue.z) > Mathf.Abs(rawValue.y))
             {
-              flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] = flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] = false;
+              if (rawValue.z > 0.0f)
+              {
+                values[(int)SubAction.zPos] = rawValue.z;
+                values[(int)SubAction.zNeg] = 0.0f;
+                flags[(int)SubAction.zPos] = (rawValue.z >= action.Threshold);
+                flags[(int)SubAction.zNeg] = false;
+              }
+              else
+              {
+                values[(int)SubAction.zPos] = 0.0f;
+                values[(int)SubAction.zNeg] = -rawValue.z;
+                flags[(int)SubAction.zPos] = false;
+                flags[(int)SubAction.zNeg] = (rawValue.z <= action.Threshold);
+              }
+              values[(int)SubAction.xPos] = values[(int)SubAction.xNeg] =
+              values[(int)SubAction.yPos] = values[(int)SubAction.yNeg] = 0.0f;
+              flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] =
+              flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] = false;
             }
             else
             {
+              values[(int)SubAction.xPos] = values[(int)SubAction.xNeg] =
+              values[(int)SubAction.yPos] = values[(int)SubAction.yNeg] =
+              values[(int)SubAction.zPos] = values[(int)SubAction.zNeg] = 0.0f;
               flags[(int)SubAction.xPos] = flags[(int)SubAction.xNeg] =
               flags[(int)SubAction.yPos] = flags[(int)SubAction.yNeg] =
               flags[(int)SubAction.zPos] = flags[(int)SubAction.zNeg] = false;
@@ -302,18 +380,14 @@ public class InputManager : MonoBehaviour
             {
               var id = action.Id + "_" + ((SubAction)k).ToString();
               if (!_listeners.ContainsKey(id) || _listeners[id].Values.Count == 0) { continue; }
-              var value =
-                (k == (int)SubAction.xPos) ? +rawValue.x :
-                (k == (int)SubAction.xNeg) ? -rawValue.x :
-                (k == (int)SubAction.yPos) ? +rawValue.y :
-                (k == (int)SubAction.yNeg) ? -rawValue.y :
-                (k == (int)SubAction.zPos) ? +rawValue.z :
-                -rawValue.z;
-              var listener = _listeners[id].Values[0];
-              if (listener.NotifyEachFrame || flags[k] != action.PriorStates[k])
+              var listener = _listeners[id].Values?[0];
+              if (!listener.HasValue) { break; }
+              if ((listener?.NotifyOnValueChanges == true && values[k] != action.PriorValues[k]) ||
+                  (listener?.NotifyOnValueChanges != true && flags[k] != action.PriorFlags[k]))
               {
-                listener.Invoke(flags[k], value);
-                action.PriorStates[k] = flags[k];
+                listener?.Invoke(flags[k], values[k]);
+                action.PriorFlags[k] = flags[k];
+                action.PriorValues[k] = values[k];
               }
             }
           }

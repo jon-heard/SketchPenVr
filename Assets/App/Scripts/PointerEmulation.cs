@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Common;
+using System.Collections;
 
 //////////////////////////////////////////////////////////////////////
 // Emulate desktop pointer (mouse and stylus) within screen texture //
@@ -26,7 +27,7 @@ public class PointerEmulation : MonoBehaviour
   }
   private bool _isEmulating = true;
 
-  // Moues - left button
+  // Mouse - left button
   public bool MouseLeftButton
   {
     get { return _mouseLeftButton; }
@@ -35,7 +36,7 @@ public class PointerEmulation : MonoBehaviour
       if (!IsEmulating) { return; }
       if (value == _mouseLeftButton) { return; }
       _mouseLeftButton = value;
-      StartCoroutine(SetMouseButton(OsHook_Mouse.Button.Left, value));
+      StartCoroutine(SetMouseButtonCoroutine(OsHook_Mouse.Button.Left, value));
     }
   }
   private bool _mouseLeftButton;
@@ -49,14 +50,28 @@ public class PointerEmulation : MonoBehaviour
       if (!IsEmulating) { return; }
       if (value == _mouseRightButton) { return; }
       _mouseRightButton = value;
-      StartCoroutine(SetMouseButton(OsHook_Mouse.Button.Right, value));
+      StartCoroutine(SetMouseButtonCoroutine(OsHook_Mouse.Button.Right, value));
     }
   }
   private bool _mouseRightButton;
 
-  private System.Collections.IEnumerator SetMouseButton(OsHook_Mouse.Button button, bool down)
+  // Mouse - Middle button
+  public bool MouseMiddleButton
   {
-    if (_mouseLeftButton || _mouseRightButton)
+    get { return _mouseMiddleButton; }
+    set
+    {
+      if (!IsEmulating) { return; }
+      if (value == _mouseMiddleButton) { return; }
+      _mouseMiddleButton = value;
+      StartCoroutine(SetMouseButtonCoroutine(OsHook_Mouse.Button.Middle, value));
+    }
+  }
+  private bool _mouseMiddleButton;
+
+  private IEnumerator SetMouseButtonCoroutine(OsHook_Mouse.Button button, bool down)
+  {
+    if (_mouseLeftButton || _mouseRightButton || _mouseMiddleButton)
     {
       _isEmulatingMouse = true;
       ClearPenState();
@@ -74,9 +89,27 @@ public class PointerEmulation : MonoBehaviour
     yield break;
   }
 
+  // Mouse - scroll
+  public void DoScroll(bool isVertical, bool isDown)
+  {
+    StartCoroutine(DoScrollCoroutine(isVertical, isDown));
+  }
+  private IEnumerator DoScrollCoroutine(bool isVertical, bool isDown)
+  {
+    _isEmulatingMouse = true;
+    ClearPenState();
+    yield return new WaitForSeconds(App_Details.Instance.TIMESPAN_POINTER_CHANGEOVER); // "clear" needs a moment to process
+    UpdateMousePosition();
+    OsHook_Mouse.SetButton(
+      isVertical ? OsHook_Mouse.Button.VScroll : OsHook_Mouse.Button.HScroll, isDown);
+    yield return new WaitForSeconds(App_Details.Instance.TIMESPAN_POINTER_CHANGEOVER); // "clear" needs a moment to process
+    _isEmulatingMouse = false;
+  }
+
+
   public void OnLostFocus()
   {
-    MouseLeftButton = MouseRightButton = false;
+    MouseLeftButton = MouseRightButton = MouseMiddleButton = false;
   }
 
   public void SetPenState(float pressure, uint rotation, Vector2 tilt, bool usingEraser)

@@ -315,11 +315,11 @@ public class Controller : MonoBehaviour
       App_Functions.Instance.MyInputManager.AddBooleanListener("left_grip", 100, OnGripButton);
       App_Functions.Instance.MyInputManager.AddBooleanListener("left_high", 100, OnHighButton);
       App_Functions.Instance.MyInputManager.AddBooleanListener("left_low", 100, OnLowButton);
-      App_Functions.Instance.MyInputManager.AddBooleanListener("left_thumbstick_down", 100, OnThumbstickDown);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_xPos", 100, OnThumbstickRight, false);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_xNeg", 100, OnThumbstickLeft, false);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yPos", 100, OnThumbstickUp, false);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yNeg", 100, OnThumbstickDown, false);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("left_thumbstick_down", 100, OnThumbstickButton);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yPos", 100, OnThumbstickUp, true);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_xPos", 100, OnThumbstickRight, true);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_yNeg", 100, OnThumbstickDown, true);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("left_thumbstick_direction_xNeg", 100, OnThumbstickLeft, true);
     }
     else
     {
@@ -327,11 +327,11 @@ public class Controller : MonoBehaviour
       App_Functions.Instance.MyInputManager.AddBooleanListener("right_grip", 100, OnGripButton);
       App_Functions.Instance.MyInputManager.AddBooleanListener("right_high", 100, OnHighButton);
       App_Functions.Instance.MyInputManager.AddBooleanListener("right_low", 100, OnLowButton);
-      App_Functions.Instance.MyInputManager.AddBooleanListener("right_thumbstick_down", 100, OnThumbstickDown);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_xPos", 100, OnThumbstickRight, false);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_xNeg", 100, OnThumbstickLeft, false);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yPos", 100, OnThumbstickUp, false);
-      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yNeg", 100, OnThumbstickDown, false);
+      App_Functions.Instance.MyInputManager.AddBooleanListener("right_thumbstick_down", 100, OnThumbstickButton);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yPos", 100, OnThumbstickUp, true);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_xPos", 100, OnThumbstickRight, true);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_yNeg", 100, OnThumbstickDown, true);
+      App_Functions.Instance.MyInputManager.AddNumericalListener("right_thumbstick_direction_xNeg", 100, OnThumbstickLeft, true);
     }
 
     // Grip adjust init
@@ -351,7 +351,8 @@ public class Controller : MonoBehaviour
     if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
     {
       _myXrDevice = null;
-      Debug.Log("No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
+      Common.Vr.Ui.Controls.Console.Print(
+        "No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
     }
   }
 
@@ -550,7 +551,7 @@ public class Controller : MonoBehaviour
       if (_gripButton != _prevHighButton) { OnGripButton(_gripButton); }
       if (_highButton != _prevHighButton) { OnHighButton(_highButton); }
       if (_lowButton != _prevLowButton) { OnLowButton(_lowButton); }
-      if (_thumbButton != _prevThumbButton) { OnThumbstickDown(_thumbButton); }
+      if (_thumbButton != _prevThumbButton) { OnThumbstickButton(_thumbButton); }
       _prevHighButton = _highButton;
       _prevLowButton = _lowButton;
       _prevGripButton = _gripButton;
@@ -564,6 +565,7 @@ public class Controller : MonoBehaviour
     if (_isHolding && !IsInGripAdjust) { return; }
     if (flag != _isTriggerDown)
     {
+      _isTriggerDown = flag;
       // Primary controller - Update screen based on input
       if (_controllerIndex == 0)
       {
@@ -586,7 +588,6 @@ public class Controller : MonoBehaviour
       }
     }
     _triggerPressure = value;
-    _isTriggerDown = flag;
   }
   private void OnGripButton(bool value)
   {
@@ -600,32 +601,32 @@ public class Controller : MonoBehaviour
   {
     _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.LowButton].Run(this, value);
   }
-  private void OnThumbstickDown(bool value)
+  private void OnThumbstickButton(bool value)
   {
     _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbButton].Run(this, value);
-  }
-  private void OnThumbstickRight(bool flag, float value)
-  {
-    if (_isHolding) { return; }
-    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbRight].
-      Run(this, flag);
-  }
-  private void OnThumbstickLeft(bool flag, float value)
-  {
-    if (_isHolding) { return; }
-    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbLeft].
-      Run(this, flag);
   }
   private void OnThumbstickUp(bool flag, float value)
   {
     if (_isHolding) { return; }
     _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbUp].
-      Run(this, flag);
+      Run(this, flag, value);
+  }
+  private void OnThumbstickRight(bool flag, float value)
+  {
+    if (_isHolding) { return; }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbRight].
+      Run(this, flag, value);
   }
   private void OnThumbstickDown(bool flag, float value)
   {
     if (_isHolding) { return; }
     _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbDown].
-      Run(this, flag);
+      Run(this, flag, value);
+  }
+  private void OnThumbstickLeft(bool flag, float value)
+  {
+    if (_isHolding) { return; }
+    _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbLeft].
+      Run(this, flag, value);
   }
 }

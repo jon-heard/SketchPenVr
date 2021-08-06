@@ -19,13 +19,58 @@ namespace Common.Vr.Ui.Controls
     //  }
     //}
 
-    public void Print(string text)
+    public static void Print(string text)
+    {
+      Debug.Log("CONSOLE >> " + text);
+      _instance.PrintInternal(text);
+    }
+
+    public void OnClearButton()
+    {
+      Clear();
+    }
+
+    public void OnCloseButton()
+    {
+      gameObject.SetActive(false);
+    }
+
+    private uint _placeholderCount;
+    private static Console _instance;
+
+    protected override void Awake()
+    {
+      base.Awake();
+      _instance = this;
+      _itemHeight = PrefabLabel.transform.parent.Find("Geometry").localScale.y;
+      PrefabLabel.transform.parent.gameObject.SetActive(false);
+      Clear();
+      gameObject.SetActive(false);
+    }
+
+    private void Clear()
+    {
+      for (var i = 0; i < _list.Count; i++)
+      {
+        Destroy(_list[i]);
+      }
+      _list.Clear();
+      _placeholderCount = 0;
+      for (var i = 0; i < ShownCount; i++)
+      {
+        PrintInternal("");
+      }
+      _placeholderCount = ShownCount;
+      MyScrollbar.SetRange(ShownCount, ShownCount);
+    }
+
+    private void PrintInternal(string text)
     {
       PrefabLabel.text = text;
       var newItem = Instantiate(PrefabLabel.transform.parent, Items);
       var place = (int)(_list.Count - _placeholderCount);
       var t = newItem.localPosition;
-      t.y = - _itemHeight * place;
+      t.y = -_itemHeight * place;
       newItem.localPosition = t;
       if (_placeholderCount > 0)
       {
@@ -47,43 +92,6 @@ namespace Common.Vr.Ui.Controls
           isAtBottom ? (uint)(_list.Count - ShownCount) : currentScrollIndex;
         MyScrollbar.UpdateDraggerPosition();
       }
-    }
-
-    public void OnClearButton()
-    {
-      Clear();
-    }
-
-    public void OnCloseButton()
-    {
-      gameObject.SetActive(false);
-    }
-
-    private uint _placeholderCount;
-
-    protected override void Awake()
-    {
-      base.Awake();
-      _itemHeight = PrefabLabel.transform.parent.Find("Geometry").localScale.y;
-      PrefabLabel.transform.parent.gameObject.SetActive(false);
-      Clear();
-      gameObject.SetActive(false);
-    }
-
-    private void Clear()
-    {
-      for (var i = 0; i < _list.Count; i++)
-      {
-        Destroy(_list[i]);
-      }
-      _list.Clear();
-      _placeholderCount = 0;
-      for (var i = 0; i < ShownCount; i++)
-      {
-        Print("");
-      }
-      _placeholderCount = ShownCount;
-      MyScrollbar.SetRange(ShownCount, ShownCount);
     }
   }
 }

@@ -32,7 +32,7 @@ public class ControllerMapping
   public enum ControllerInput
   {
     Trigger, Grip, HighButton, LowButton, ThumbButton,
-    ThumbUp, ThumbDown, ThumbLeft, ThumbRight
+    ThumbUp, ThumbRight, ThumbDown, ThumbLeft
   }
 
   public Action<ControllerMapping> OnMappingChanged;
@@ -66,13 +66,10 @@ public class ControllerMapping
           control = (int)ControllerInput.HighButton;
           ActionTitles[control] = "Undo";
           Actions[control].Type = ControllerAction.ActionType.Undo;
-        // Main - Low button - pan - space, left mouse
+        // Main - Low button - pan - middle mouse
           control = (int)ControllerInput.LowButton;
           ActionTitles[control] = "Pan";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
-          Actions[control].Key = KbdKey.Space;
-          Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
+          Actions[control].Type = ControllerAction.ActionType.Mouse_button__middle;
         // Main - Thumbstick button - zoom - control, space, left mouse
           control = (int)ControllerInput.ThumbButton;
           ActionTitles[control] = "Zoom";
@@ -83,22 +80,22 @@ public class ControllerMapping
           Actions[control].Next.Key = KbdKey.Space;
           Actions[control].Next.Next = new ControllerAction();
           Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
-        // Main - Thumbstick direction left - nothing
-          control = (int)ControllerInput.ThumbLeft;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
         // Main - Thumbstick direction up - nothing
-          control = (int)ControllerInput.ThumbUp;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
-        // Main - Thumbstick direction down - nothing
-          control = (int)ControllerInput.ThumbDown;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
+        control = (int)ControllerInput.ThumbUp;
+        ActionTitles[control] = "Scroll up";
+        Actions[control].Type = ControllerAction.ActionType.Scroll_Up;
         // Main - Thumbstick direction right - nothing
-          control = (int)ControllerInput.ThumbRight;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
+        control = (int)ControllerInput.ThumbRight;
+        ActionTitles[control] = "Scroll right";
+        Actions[control].Type = ControllerAction.ActionType.Scroll_Right;
+        // Main - Thumbstick direction down - nothing
+        control = (int)ControllerInput.ThumbDown;
+        ActionTitles[control] = "Scroll down";
+        Actions[control].Type = ControllerAction.ActionType.Scroll_Down;
+        // Main - Thumbstick direction left - nothing
+        control = (int)ControllerInput.ThumbLeft;
+          ActionTitles[control] = "Scroll left";
+          Actions[control].Type = ControllerAction.ActionType.Scroll_Left;
         break;
       case 1:
         // Second - Trigger - pencil flip
@@ -121,20 +118,20 @@ public class ControllerMapping
           control = (int)ControllerInput.ThumbButton;
           ActionTitles[control] = "";
           Actions[control].Type = ControllerAction.ActionType.Nothing;
-        // Second - Thumbstick direction left - nothing
-          control = (int)ControllerInput.ThumbLeft;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
         // Second - Thumbstick direction up - nothing
           control = (int)ControllerInput.ThumbUp;
+          ActionTitles[control] = "";
+          Actions[control].Type = ControllerAction.ActionType.Nothing;
+        // Second - Thumbstick direction right - nothing
+          control = (int)ControllerInput.ThumbRight;
           ActionTitles[control] = "";
           Actions[control].Type = ControllerAction.ActionType.Nothing;
         // Second - Thumbstick direction down - nothing
           control = (int)ControllerInput.ThumbDown;
           ActionTitles[control] = "";
           Actions[control].Type = ControllerAction.ActionType.Nothing;
-        // Second - Thumbstick direction right - nothing
-          control = (int)ControllerInput.ThumbRight;
+        // Second - Thumbstick direction left - nothing
+          control = (int)ControllerInput.ThumbLeft;
           ActionTitles[control] = "";
           Actions[control].Type = ControllerAction.ActionType.Nothing;
       break;
@@ -150,13 +147,10 @@ public class ControllerMapping
           control = (int)ControllerInput.HighButton;
           ActionTitles[control] = "Undo";
           Actions[control].Type = ControllerAction.ActionType.Undo;
-        // Draw - Low button - pan - space, left mouse
+        // Draw - Low button - pan - middle mouse
           control = (int)ControllerInput.LowButton;
           ActionTitles[control] = "Pan";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
-          Actions[control].Key = KbdKey.Space;
-          Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
+          Actions[control].Type = ControllerAction.ActionType.Mouse_button__middle;
         // Draw - Thumbstick button - zoom - control, space, left mouse
           control = (int)ControllerInput.ThumbButton;
           ActionTitles[control] = "Zoom";
@@ -167,17 +161,15 @@ public class ControllerMapping
           Actions[control].Next.Key = KbdKey.Space;
           Actions[control].Next.Next = new ControllerAction();
           Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
-        // Draw - Thumbstick direction left - brush size - shift, left mouse
-          control = (int)ControllerInput.ThumbLeft;
-          ActionTitles[control] = "Brush size";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
-          Actions[control].Key = KbdKey.Shift;
-          Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
         // Draw - Thumbstick direction up - nothing
           control = (int)ControllerInput.ThumbUp;
           ActionTitles[control] = "";
           Actions[control].Type = ControllerAction.ActionType.Nothing;
+        // Draw - Thumbstick direction right - mirror - M toggles
+          control = (int)ControllerInput.ThumbRight;
+          ActionTitles[control] = "Mirror";
+          Actions[control].Type = ControllerAction.ActionType.Key_Hit;
+          Actions[control].Key = KbdKey.Key_M;
         // Draw - Thumbstick direction down - color pick - control
           control = (int)ControllerInput.ThumbDown;
           ActionTitles[control] = "Color pick";
@@ -185,11 +177,13 @@ public class ControllerMapping
           Actions[control].Key = KbdKey.Control;
           Actions[control].Next = new ControllerAction();
           Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
-        // Draw - Thumbstick direction right - mirror - M toggles
-          control = (int)ControllerInput.ThumbRight;
-          ActionTitles[control] = "Mirror";
-          Actions[control].Type = ControllerAction.ActionType.Key_Hit;
-          Actions[control].Key = KbdKey.Key_M;
+        // Draw - Thumbstick direction left - brush size - shift, left mouse
+          control = (int)ControllerInput.ThumbLeft;
+          ActionTitles[control] = "Brush size";
+          Actions[control].Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Key = KbdKey.Shift;
+          Actions[control].Next = new ControllerAction();
+          Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
       break;
     }
   }

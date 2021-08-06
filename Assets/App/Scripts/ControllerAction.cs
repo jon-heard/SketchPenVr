@@ -1,5 +1,6 @@
 ﻿using Common;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public static class ActionTypeExtension
@@ -20,14 +21,19 @@ public class ControllerAction
     Nothing,
     Hold_focus,
     Hold_desktop,
-    Pencil_flip,
-    Mouse_button__left,
-    Mouse_button__right,
     Undo,
     Redo__ctrl___shift___z,
     Redo__ctrl___y,
     Key_Hit,
-    Key_Press
+    Key_Press,
+    Mouse_button__left,
+    Mouse_button__right,
+    Mouse_button__middle,
+    Scroll_Up,
+    Scroll_Right,
+    Scroll_Down,
+    Scroll_Left,
+    Pencil_flip,
   }
 
   public ActionType Type;
@@ -35,7 +41,7 @@ public class ControllerAction
   [SerializeReference]
   public ControllerAction Next;
 
-  public void Run(Controller controller, bool isDown)
+  public void Run(Controller controller, bool isDown, float value = 0.0f)
   {
     switch (Type)
     {
@@ -60,6 +66,12 @@ public class ControllerAction
         if (controller.FocusPointerEmulation)
         {
           controller.FocusPointerEmulation.MouseRightButton = isDown;
+        }
+        break;
+      case ActionType.Mouse_button__middle:
+        if (controller.FocusPointerEmulation)
+        {
+          controller.FocusPointerEmulation.MouseMiddleButton = isDown;
         }
         break;
       case ActionType.Undo:
@@ -91,6 +103,38 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
+      case ActionType.Scroll_Up:
+        _value = value;
+        if (!_runningCoroutine && value > 0.0f)
+        {
+          if (_app_functions == null) { _app_functions = App_Functions.Instance; }
+          _app_functions.StartCoroutine(RunScrolling(controller, true, false));
+        }
+        break;
+      case ActionType.Scroll_Right:
+        _value = value;
+        if (!_runningCoroutine && value > 0.0f)
+        {
+          if (_app_functions == null) { _app_functions = App_Functions.Instance; }
+          _app_functions.StartCoroutine(RunScrolling(controller, false, false));
+        }
+        break;
+      case ActionType.Scroll_Down:
+        _value = value;
+        if (!_runningCoroutine && value > 0.0f)
+        {
+          if (_app_functions == null) { _app_functions = App_Functions.Instance; }
+          _app_functions.StartCoroutine(RunScrolling(controller, true, true));
+        }
+        break;
+      case ActionType.Scroll_Left:
+        _value = value;
+        if (!_runningCoroutine && value > 0.0f)
+        {
+          if (_app_functions == null) { _app_functions = App_Functions.Instance; }
+          _app_functions.StartCoroutine(RunScrolling(controller, false, true));
+        }
+        break;
       case ActionType.Key_Hit:
         if (isDown)
         {
@@ -107,5 +151,26 @@ public class ControllerAction
     }
 
     if (Next != null) { Next.Run(controller, isDown); }
+  }
+
+  private App_Functions _app_functions;
+  private float _value;
+  private bool _runningCoroutine;
+
+  private IEnumerator RunScrolling(Controller controller, bool param1, bool param2)
+  {
+    _runningCoroutine = true;
+    var lastTime = 0.0f;
+    while (_value > 0.0f)
+    {
+      var now = Time.time;
+      if (now - lastTime > (1.0f - (_value * 0.25f + 0.75f)))
+      {
+        controller.FocusPointerEmulation?.DoScroll(param1, param2);
+        lastTime = now;
+      }
+      yield return null;
+    }
+    _runningCoroutine = false;
   }
 }
