@@ -113,7 +113,7 @@ namespace Common.Vr.Ui.Controls
     private uint _totalCount;
     private float[] _draggerPositions;
     private float _draggerEndPosition;
-    private Vector3 _pointerPosition;
+    private Vector3 _primaryPoint, _secondaryPoint;
     private Control_Draggable _dragger;
     private Material _idleMaterial;
 
@@ -146,7 +146,8 @@ namespace Common.Vr.Ui.Controls
     {
       if (focus == this)
       {
-        var clickedAboveDragger = transform.worldToLocalMatrix.MultiplyPoint(_pointerPosition).y > _draggerPositions[_position];
+        var point = Control.WasPrimaryController ? _primaryPoint : _secondaryPoint;
+        var clickedAboveDragger = transform.worldToLocalMatrix.MultiplyPoint(point).y > _draggerPositions[_position];
         if (clickedAboveDragger)
         {
           _position = (uint)Mathf.Max(0, _position - 10);
@@ -165,7 +166,17 @@ namespace Common.Vr.Ui.Controls
 
     private void OnPointerMovedEventHandler(Vector3 point)
     {
-      _pointerPosition = point;
+      if (point != (Control.WasPrimaryController ? _primaryPoint : _secondaryPoint))
+      {
+        if (Control.WasPrimaryController)
+        {
+          _primaryPoint = point;
+        }
+        else
+        {
+          _secondaryPoint = point;
+        }
+      }
     }
 
     private void OnHoverEventListener(Control focus)

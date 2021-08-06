@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44164813, g: 0.38169143, b: 0.33327025, a: 1}
+  m_IndirectSpecularColor: {r: 0.3379158, g: 0.21902966, b: 0.07786783, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3009,7 +3009,7 @@ MonoBehaviour:
     TEXTBOX_CARET_BLINKSPEED: 0.2
     SCROLLBAR_DRAGGER_MINSIZE: 0.035
     SCROLLBAR_VISIBLE_LIST_SIZE: 10
-    DRAGGABLE_THUMBSTICK_SPEED: 0.125
+    DRAGGABLE_THUMBSTICK_SPEED: 0.25
   MyInputType: 1
   MAX_INTERACT_DISTANCE: 100
   TRIGGER_ACTIVATE_PRESSURE: 0.5
@@ -3093,7 +3093,6 @@ MonoBehaviour:
   Background: {fileID: 2100000, guid: 2e84d236ce6b06142b6d6e6d1a9065f3, type: 2}
   ScreenRenderer: {fileID: 1082575911}
   MyInputManager: {fileID: 563741691}
-  MyConsole: {fileID: 882602607}
 --- !u!114 &563741691
 MonoBehaviour:
   m_ObjectHideFlags: 0

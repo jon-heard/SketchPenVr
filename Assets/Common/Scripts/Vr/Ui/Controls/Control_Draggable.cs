@@ -51,10 +51,11 @@ namespace Common.Vr.Ui.Controls
     private InputManager.ListenerTicket _listeningTicket_Right_ThumbstickDown;
     private Vector3 _originalSize;
     private Vector3 _draggingSize;
-    private Vector3 _point;
+    private Vector3 _primaryPoint, _secondaryPoint;
     private Vector3 _dragPoint;
     private Vector3 _dragStartPosition;
     private bool _isDragging;
+    private bool _isDraggedByPrimary;
     private Material _idleMaterial;
     private float _const_thumbstickSpeed;
 
@@ -98,9 +99,12 @@ namespace Common.Vr.Ui.Controls
       if (focus == this)
       {
         Geometry.size = _draggingSize;
-        _isDragging = true;
         _dragStartPosition = transform.localPosition;
-        _dragPoint = transform.localPosition - _point;
+        _isDraggedByPrimary = Control.WasPrimaryController;
+        _dragPoint =
+          transform.localPosition -
+          (_isDraggedByPrimary ? _primaryPoint : _secondaryPoint);
+        _isDragging = true;
       }
     }
 
@@ -136,12 +140,19 @@ namespace Common.Vr.Ui.Controls
 
     private void OnPointerMovedEventListener(Vector3 point)
     {
-      if (point != _point)
+      if (point != (Control.WasPrimaryController ? _primaryPoint : _secondaryPoint))
       {
-        _point = point;
-        if (_isDragging)
+        if (Control.WasPrimaryController)
         {
-          var dragAdjust = (transform.localPosition - _point) - _dragPoint;
+          _primaryPoint = point;
+        }
+        else
+        {
+          _secondaryPoint = point;
+        }
+        if (_isDragging && Control.WasPrimaryController == _isDraggedByPrimary)
+        {
+          var dragAdjust = (transform.localPosition - point) - _dragPoint;
           transform.localPosition -= dragAdjust.GetScaled(AxisScales);
           transform.localPosition =
             transform.localPosition.ClampComponents(AxisClampLow, AxisClampHigh);

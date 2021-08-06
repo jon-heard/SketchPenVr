@@ -9,8 +9,6 @@ possible main apps
 
 0.1.03.00
 ----------
-- scrollbars react to primary pointer if it's in vicinity OR to secondary pointer if not
-
 - add demo video and link to it under about
 
 - VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
