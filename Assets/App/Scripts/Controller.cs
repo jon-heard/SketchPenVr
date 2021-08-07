@@ -39,6 +39,7 @@ public class Controller : MonoBehaviour
 #endif
   [Header("Parameters")]
   [SerializeField] private float _flippedZPosition;
+  [SerializeField] private bool _isLeft;
   [Header("Wiring")]
   public Renderer Pencil;
   [SerializeField] private LineRenderer _rayVisual;
@@ -268,7 +269,6 @@ public class Controller : MonoBehaviour
   private UiInputHandler _inputHandler = new UiInputHandler();
 
   // Copies of values (for efficiency)
-  private bool _isLeft;
   private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
   public InputDevice? _myXrDevice;
@@ -286,7 +286,6 @@ public class Controller : MonoBehaviour
   private void Awake()
   {
     // Copies of values init (for efficiency)
-    _isLeft = transform.parent.GetComponent<Vr_Hand>().IsLeft;
     _geometryMaterial = Pencil.material;
     _const_maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
     _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
@@ -359,10 +358,6 @@ public class Controller : MonoBehaviour
   //////////////////////////
   // Focus and draw logic //
   //////////////////////////
-  private void LateUpdate()
-  {
-    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
-  }
   private void Update()
   {
     // Input
@@ -374,6 +369,7 @@ public class Controller : MonoBehaviour
     Update_Focus();
     Update_NearControl();
   }
+
   private void Update_Focus()
   {
     var originalEnabled = _controllerVis.MyCollider.enabled;
@@ -435,6 +431,7 @@ public class Controller : MonoBehaviour
       _focusControllerVis = null;
     }
     _controllerVis.MyCollider.enabled = originalEnabled;
+    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
   }
 
   private void DoSnapRumble()

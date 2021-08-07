@@ -984,9 +984,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1261ec46bc36a45b2cc6f1f7881c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hands:
-  - {fileID: 136928192}
-  - {fileID: 1002323999}
+  LeftHand: {fileID: 136928191}
+  RightHand: {fileID: 1002323998}
 --- !u!20 &128828339
 Camera:
   m_ObjectHideFlags: 0
@@ -1039,7 +1038,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 136928191}
-  - component: {fileID: 136928192}
   m_Layer: 0
   m_Name: LeftHand
   m_TagString: Untagged
@@ -1063,19 +1061,6 @@ Transform:
   m_Father: {fileID: 171359372}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 43.85, z: 0}
---- !u!114 &136928192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136928190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a0fe68be619914bb3974a945645bc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsLeft: 1
 --- !u!1 &143881390
 GameObject:
   m_ObjectHideFlags: 0
@@ -5688,7 +5673,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1002323998}
-  - component: {fileID: 1002323999}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
@@ -5712,19 +5696,6 @@ Transform:
   m_Father: {fileID: 171359372}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1002323999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1002323997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a0fe68be619914bb3974a945645bc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsLeft: 0
 --- !u!1001 &1007028547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7197,6 +7168,10 @@ PrefabInstance:
     - target: {fileID: 171541496351756904, guid: 411e5062530f6874e8c00adbd9c22bb2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 171541496351756905, guid: 411e5062530f6874e8c00adbd9c22bb2, type: 3}
+      propertyPath: _isLeft
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 171541496351756905, guid: 411e5062530f6874e8c00adbd9c22bb2, type: 3}
       propertyPath: _controllerVis

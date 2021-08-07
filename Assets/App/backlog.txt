@@ -9,14 +9,10 @@ possible main apps
 
 0.1.03.00
 ----------
-- add demo video and link to it under about
-
 - VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
-  / ?: PaintShop Pro
-  / ?: Leonardo Beta
-  / ?: Twisted brush
-  X T: PaintTool SAI
-  X T: comic life
+  / ?: PaintShop Pro (9/1)
+  / ?: Twisted brush (unlimited)
+  X T: PaintTool SAI ()
 - look for easy ways to make website more appealing (look at each paint app's website for ideas)
 - go over entire website once more
 
@@ -33,6 +29,8 @@ possible main apps
   - don't need Listener AND ListenerTicket (merge them)
 
 - use ScrolledList for dropdown control
+
+- console errors out after around 10 entries (null error)
 
 0.2.00.00 - dev
 ----------
