@@ -95,7 +95,6 @@ public class App_Details : Common.SingletonComponent<App_Details>
     get { return _pressureLength; }
     set
     {
-      if (value == _pressureLength) { return; }
       _pressureLength = value;
       CONTROLLER_DISTANCE_TIP_BASE = CONTROLLER_DISTANCE_TIP_POINT - _pressureLength;
       Controller.SetPressureLength(_pressureLength);

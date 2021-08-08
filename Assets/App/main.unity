@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3379158, g: 0.21902966, b: 0.07786783, a: 1}
+  m_IndirectSpecularColor: {r: 0.443605, g: 0.443605, b: 0.443605, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2995,6 +2995,7 @@ MonoBehaviour:
     SCROLLBAR_DRAGGER_MINSIZE: 0.035
     SCROLLBAR_VISIBLE_LIST_SIZE: 10
     DRAGGABLE_THUMBSTICK_SPEED: 0.25
+    DELAY_HIDE_DISABLED_CONTROLLER: 1
   MyInputType: 1
   MAX_INTERACT_DISTANCE: 100
   TRIGGER_ACTIVATE_PRESSURE: 0.5

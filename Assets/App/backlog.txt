@@ -7,16 +7,13 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.03.00
+0.1.03.01
 ----------
-- VR: test with digital art apps and get ideal settings (add webpage for setup of each working app):
-  / ?: PaintShop Pro (9/1)
-  / ?: Twisted brush (unlimited)
-  X T: PaintTool SAI ()
-- look for easy ways to make website more appealing (look at each paint app's website for ideas)
-- go over entire website once more
+- fix pen length visual not resetting
 
-- look for other playtesters
+- add blender to compatibility list
+- setup message template to send out to all forums
+- send messages out!
 
 0.1.04.00
 ----------

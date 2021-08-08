@@ -38,7 +38,7 @@ public class Mesh_Pencil : MonoBehaviour
   private int[] _tip1VerticexIndices;
   private int[] _tip2VerticexIndices;
 
-  private void Start()
+  private void Awake()
   {
     _instances.Add(this);
     _mesh = GetComponent<MeshFilter>().mesh;
