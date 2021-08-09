@@ -89,7 +89,8 @@ public class Controller : MonoBehaviour
       t.y = value ? 180.0f : 0.0f;
       _instances[0].Pencil.transform.localEulerAngles = t;
       t = _instances[0].Pencil.transform.localPosition;
-      t.z = value ? _instances[0]._flippedZPosition : _instances[0]._zPosition;
+      t.z = _instances[0]._currentZPosition =
+        (value ? _instances[0]._flippedZPosition : _instances[0]._defaultZPosition);
       _instances[0].Pencil.transform.localPosition = t;
     }
   }
@@ -246,8 +247,12 @@ public class Controller : MonoBehaviour
   ////////////
   // Fields //
   ////////////
+  public InputDevice? _myXrDevice;
+  public static bool Const_penPhysicsEnabled;
+
   private App_Input _input;
-  private float _zPosition;
+  private float _defaultZPosition;
+  private float _currentZPosition;
   private float _rayVisualZOffset;
   private bool _isDrawing;
 
@@ -271,14 +276,13 @@ public class Controller : MonoBehaviour
   // Copies of values (for efficiency)
   private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
-  public InputDevice? _myXrDevice;
   private static float _const_maxInteractDistance;
   private static float _const_maxHoverDistance;
   private static float _const_distance_tipPoint;
   private static float _const_distance_tipBase;
-  private static float _const_rumbleStrength_hard;
-  private static float _const_rumbleStrength_medium;
-  private static float _const_rumbleStrength_light;
+  private static float _const_hapticsStrength_hard;
+  private static float _const_hapticsStrength_medium;
+  private static float _const_hapticsStrength_light;
 
   ////////////////////
   // Initialization //
@@ -291,9 +295,10 @@ public class Controller : MonoBehaviour
     _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
     _const_distance_tipPoint = App_Details.Instance.CONTROLLER_DISTANCE_TIP_POINT;
     _const_distance_tipBase = App_Details.Instance.CONTROLLER_DISTANCE_TIP_BASE;
-    _const_rumbleStrength_hard = App_Details.Instance.RUMBLE_STRENGTH_HARD;
-    _const_rumbleStrength_medium = App_Details.Instance.RUMBLE_STRENGTH_MEDIUM;
-    _const_rumbleStrength_light = App_Details.Instance.RUMBLE_STRENGTH_LIGHT;
+    _const_hapticsStrength_hard = App_Details.Instance.HAPTICS_STRENGTH_HARD;
+    _const_hapticsStrength_medium = App_Details.Instance.HAPTICS_STRENGTH_MEDIUM;
+    _const_hapticsStrength_light = App_Details.Instance.HAPTICS_STRENGTH_LIGHT;
+    Const_penPhysicsEnabled = App_Details.Instance.PenPhysicsEnabled;
 
     _controllerIndex = (uint)(_isLeft ? 0 : 1);
     _instances[_controllerIndex] = this;
@@ -302,7 +307,7 @@ public class Controller : MonoBehaviour
   private void Start()
   {
     // Fields init
-    _zPosition = Pencil.transform.localPosition.z;
+    _defaultZPosition = _currentZPosition = Pencil.transform.localPosition.z;
     _rayVisualZOffset = _rayVisual.transform.localPosition.z;
 
     // User input init
@@ -394,7 +399,8 @@ public class Controller : MonoBehaviour
       if (_controllerIndex == 0 && FocusPointerEmulation)
       {
         FocusPointerEmulation.Position = hitInfo.textureCoord;
-        FocusPointerEmulation.Distance = _focusDistance;
+        FocusPointerEmulation.Distance =
+          Mathf.Max(_focusDistance, _const_maxHoverDistance * 0.5f + 0.0125f);
       }
 
       // Control focus
@@ -434,15 +440,15 @@ public class Controller : MonoBehaviour
     _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
   }
 
-  private void DoSnapRumble()
+  private void DoHaptics()
   {
-    var rumbleStrength = App_Details.Instance.RumbleStrength;
-    if (rumbleStrength != App_Details.RumbleStrengthType.None)
+    var hapticsStrength = App_Details.Instance.HapticsStrength;
+    if (hapticsStrength != App_Details.HapticsStrengthType.None)
     {
       var a =
-        (rumbleStrength == App_Details.RumbleStrengthType.Hard) ? _const_rumbleStrength_hard :
-        (rumbleStrength == App_Details.RumbleStrengthType.Medium) ? _const_rumbleStrength_medium :
-        _const_rumbleStrength_light;
+        (hapticsStrength == App_Details.HapticsStrengthType.Hard) ? _const_hapticsStrength_hard :
+        (hapticsStrength == App_Details.HapticsStrengthType.Medium) ? _const_hapticsStrength_medium :
+        _const_hapticsStrength_light;
       _myXrDevice?.SendHapticImpulse(0, a, 0.1f);
       _myXrDevice?.SendHapticImpulse(1, a, 0.1f);
       _myXrDevice?.SendHapticImpulse(2, a, 0.1f);
@@ -464,16 +470,21 @@ public class Controller : MonoBehaviour
         if (_isDrawing)
         {
           _isDrawing = false;
-          DoSnapRumble();
+          DoHaptics();
         }
         FocusPointerEmulation?.ClearPenState();
         _geometryMaterial.color = Color.white;
         _controllerVis.IsHidden = false;
         _rayVisual.gameObject.SetActive(true);
         _isTriggerDown = false; // force mouse down if trigger is pushed when leaving near-zone
-
         _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
                 App_Details.Instance.MyControllerMappings.Mappings[0];
+        if (Const_penPhysicsEnabled)
+        {
+          var t = Pencil.transform.localPosition;
+          t.z = _currentZPosition;
+          Pencil.transform.localPosition = t;
+        }
       }
       return;
     }
@@ -534,7 +545,17 @@ public class Controller : MonoBehaviour
     if (newIsDrawing != _isDrawing)
     {
       _isDrawing = newIsDrawing;
-      DoSnapRumble();
+      DoHaptics();
+    }
+
+    // Adjust pencil to not embed into the canvas
+    if (Const_penPhysicsEnabled)
+    {
+      var t = Pencil.transform.localPosition;
+      t.z =
+        (penPressure == 0) ? _currentZPosition :
+        (_currentZPosition - (_const_distance_tipPoint - _focusDistance));
+      Pencil.transform.localPosition = t;
     }
   }
 

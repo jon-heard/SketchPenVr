@@ -7,15 +7,17 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.03.01
+0.1.04.00
 ----------
-- fix pen length visual not resetting
+- add blocking vpen setting as optional setup step
+- mention in setup that grip setting will be significantly streamlined by production release
 
 - add blender to compatibility list
+
 - setup message template to send out to all forums
 - send messages out!
 
-0.1.04.00
+0.1.05.00
 ----------
 - background material permenantly changes each time it's changed in play mode
 

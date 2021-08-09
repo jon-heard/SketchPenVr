@@ -23,19 +23,20 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float CONTROLLER_EMULATED_SEPARATION = 0.2f; // How opaque the controller visuals are when not highlighted
   public float ALIGN_DATA_DISTANCE = 0.1f; // How close together to take the data points for calculating alignment to a real-life plane
   public float TIMESPAN_POINTER_CHANGEOVER = 0.04f; // How long to delay after changing the pointer from pen to something else
-  public float RUMBLE_STRENGTH_HARD = 1.0f; // Rumble amplitude when set to "hard"
-  public float RUMBLE_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
-  public float RUMBLE_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"
+  public float HAPTICS_STRENGTH_HARD = 1.0f; // Rumble amplitude when set to "hard"
+  public float HAPTICS_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
+  public float HAPTICS_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"
   public List<string> PressureLengthTitles;
   public float[] PressureLengths;
 
   // Key constants
-  public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
-  public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
-  public const string CFG__MAPPINGS = "setting:mappings";
   public const string CFG__BACKGROUND = "setting:background";
+  public const string CFG__MAPPINGS = "setting:mappings";
+  public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
   public const string CFG__PRESSURE_LENGTH_INDEX = "setting:PressureLengthIndex";
-  public const string CFG__RUMBLE_STRENGTH = "setting:RumbleStrength";
+  public const string CFG__PEN_PHYSICS_ENABLED = "setting:penPhysics";
+  public const string CFG__HAPTICS_STRENGTH = "setting:HapticsStrength";
+  public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
   public const string LOCK__DIRECT = "lock:direct";
   public const string LOCK__SKETCH_CONTROLLER = "lock:controller";
   public const string LOCK__SKETCH_IS_LOCKED = "lock:sketchLocked";
@@ -53,17 +54,6 @@ public class App_Details : Common.SingletonComponent<App_Details>
     }
   }
 
-  public bool IsLeftHanded
-  {
-    get { return Controller.IsLeftHanded; }
-    set
-    {
-      if (value == Controller.IsLeftHanded) { return; }
-      Controller.IsLeftHanded = value;
-      PlayerPrefs.SetInt(App_Details.CFG__IS_LEFT_HANDED, IsLeftHanded ? 1 : 0);
-    }
-  }
-
   public string Background
   {
     get { return _background; }
@@ -77,6 +67,30 @@ public class App_Details : Common.SingletonComponent<App_Details>
     }
   }
   private string _background;
+
+  public bool PenPhysicsEnabled
+  {
+    get { return _penPhysicsEnabled; }
+    set
+    {
+      if (value == _penPhysicsEnabled) { return; }
+      _penPhysicsEnabled = value;
+      PlayerPrefs.SetInt(App_Details.CFG__PEN_PHYSICS_ENABLED, value ? 1 : 0);
+      Controller.Const_penPhysicsEnabled = value;
+    }
+  }
+  private bool _penPhysicsEnabled;
+
+  public bool IsLeftHanded
+  {
+    get { return Controller.IsLeftHanded; }
+    set
+    {
+      if (value == Controller.IsLeftHanded) { return; }
+      Controller.IsLeftHanded = value;
+      PlayerPrefs.SetInt(App_Details.CFG__IS_LEFT_HANDED, value ? 1 : 0);
+    }
+  }
 
   public uint PressureLengthIndex
   {
@@ -103,18 +117,18 @@ public class App_Details : Common.SingletonComponent<App_Details>
   }
   private float _pressureLength;
 
-  public enum RumbleStrengthType { Hard, Medium, Light, None }
-  public RumbleStrengthType RumbleStrength
+  public enum HapticsStrengthType { Hard, Medium, Light, None }
+  public HapticsStrengthType HapticsStrength
   {
-    get { return (RumbleStrengthType)_rumbleStrength; }
+    get { return (HapticsStrengthType)_hapticsStrength; }
     set
     {
-      if (value == (RumbleStrengthType)_rumbleStrength) { return; }
-      _rumbleStrength = (uint)value;
-      PlayerPrefs.SetInt(App_Details.CFG__RUMBLE_STRENGTH, (int)_rumbleStrength);
+      if (value == (HapticsStrengthType)_hapticsStrength) { return; }
+      _hapticsStrength = (uint)value;
+      PlayerPrefs.SetInt(App_Details.CFG__HAPTICS_STRENGTH, (int)_hapticsStrength);
     }
   }
-  private uint _rumbleStrength = 1;
+  private uint _hapticsStrength = 1;
 
   public void ResetSettings()
   {
@@ -126,7 +140,6 @@ public class App_Details : Common.SingletonComponent<App_Details>
 
   private void Awake()
   {
-
     // Background
     Background = PlayerPrefs.GetString(App_Details.CFG__BACKGROUND, "artStudio");
 
@@ -157,13 +170,16 @@ public class App_Details : Common.SingletonComponent<App_Details>
 
   private void Start()
   {
-    // Handedness
-    IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
-
     // Pressure length
     PressureLengthIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, 2);
 
-    // Rumble strength
-    RumbleStrength = (RumbleStrengthType)PlayerPrefs.GetInt(App_Details.CFG__RUMBLE_STRENGTH, 1);
+    // Haptics strength
+    HapticsStrength = (HapticsStrengthType)PlayerPrefs.GetInt(App_Details.CFG__HAPTICS_STRENGTH, 1);
+
+    // Handedness
+    PenPhysicsEnabled = (PlayerPrefs.GetInt(App_Details.CFG__PEN_PHYSICS_ENABLED, 0) != 0);
+
+    // Handedness
+    IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
   }
 }
