@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
-using static UnityEngine.InputSystem.InputAction;
 
 public class Controller : MonoBehaviour
 {
@@ -115,36 +114,30 @@ public class Controller : MonoBehaviour
       {
         return;
       }
-      if (_isHolding) { _held = Focus; } // Have separate var for held in case lost focus
-      if (!IsInGripAdjust)
+      // Have separate var (_held) for held in case lost focus
+      if (_isHolding) { _held = Focus; }
+      _held?.DragInteractable?.SetTemporaryParent(
+        value ? transform.parent : null,
+        value ? null : transform.parent);
+      var otherInstance = _instances[_controllerIndex == 0 ? 1 : 0];
+      if (_isHolding && otherInstance.IsHolding)
       {
-        _held?.DragInteractable?.SetTemporaryParent(
-          value ? transform.parent : null,
-          value ? null : transform.parent);
-        var otherInstance = _instances[_controllerIndex == 0 ? 1 : 0];
-        if (_isHolding && otherInstance.IsHolding)
-        {
-          _instances[0]._pinchHandler.transform.position = _instances[0]._focusPosition;
-          _instances[1]._pinchHandler.transform.position = _instances[1]._focusPosition;
-          _instances[0]._pinchHandler.Focus = _held.DragInteractable;
-          _instances[0]._pinchHandler.IsPinching = true;
-        }
-        else
-        {
-          _instances[0]._pinchHandler.IsPinching = false;
-          if (IsHolding)
-          {
-            _held?.DragInteractable?.SetTemporaryParent(transform.parent);
-          }
-          else if (otherInstance.IsHolding)
-          {
-            _held?.DragInteractable?.SetTemporaryParent(otherInstance.transform.parent);
-          }
-        }
+        _instances[0]._pinchHandler.transform.position = _instances[0]._focusPosition;
+        _instances[1]._pinchHandler.transform.position = _instances[1]._focusPosition;
+        _instances[0]._pinchHandler.Focus = _held.DragInteractable;
+        _instances[0]._pinchHandler.IsPinching = true;
       }
       else
       {
-        transform.parent = value ? _parent : null;
+        _instances[0]._pinchHandler.IsPinching = false;
+        if (IsHolding)
+        {
+          _held?.DragInteractable?.SetTemporaryParent(transform.parent);
+        }
+        else if (otherInstance.IsHolding)
+        {
+          _held?.DragInteractable?.SetTemporaryParent(otherInstance.transform.parent);
+        }
       }
     }
   }
@@ -183,10 +176,12 @@ public class Controller : MonoBehaviour
         _instances[0].transform.parent = null;
         _instances[0]._isTriggerDown = false;
         _instances[0]._triggerPressure = 0.0f;
+        _instances[0]._adjustGrip_GripButtonListener.IsListening = true;
       }
       else
       {
         _instances[0].transform.parent = _parent;
+        _instances[0]._adjustGrip_GripButtonListener.IsListening = false;
       }
     }
   }
@@ -247,14 +242,19 @@ public class Controller : MonoBehaviour
   ////////////
   // Fields //
   ////////////
-  public InputDevice? _myXrDevice;
+  public InputDevice? MyXrDevice { get; private set; }
   public static bool Const_penPhysicsEnabled;
+  public static InputManager.ListenerTicket Primary_AdjustGrip_GripButtonListener
+  {
+    get { return _instances[0]._adjustGrip_GripButtonListener; }
+  }
 
   private App_Input _input;
   private float _defaultZPosition;
   private float _currentZPosition;
   private float _rayVisualZOffset;
   private bool _isDrawing;
+  private InputManager.ListenerTicket _adjustGrip_GripButtonListener;
 
   // User input
   private bool _isTriggerDown;
@@ -341,6 +341,10 @@ public class Controller : MonoBehaviour
     // Grip adjust init
     GetComponent<TransformSerializer>().SerializedTransform =
       PlayerPrefs.GetString(controllerTransformPrefsKey);
+    _adjustGrip_GripButtonListener =
+      App_Functions.Instance.MyInputManager.AddBooleanListener(
+        _isLeft ? "left_grip" : "right_grip", 20, OnGripButton_AdjustingGrip);
+    _adjustGrip_GripButtonListener.IsListening = false;
 
     // Pinching init
     _pinchHandler.Other = _instances[_controllerIndex == 0 ? 1 : 0]._pinchHandler;
@@ -350,11 +354,11 @@ public class Controller : MonoBehaviour
       App_Details.Instance.MyControllerMappings.Mappings[_controllerIndex];
 
     // Haptic feedback init
-    _myXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
+    MyXrDevice = InputDevices.GetDeviceAtXRNode(_isLeft ? XRNode.LeftHand : XRNode.RightHand);
     HapticCapabilities caps;
-    if (!_myXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
+    if (!MyXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
     {
-      _myXrDevice = null;
+      MyXrDevice = null;
       Common.Vr.Ui.Controls.Console.Print(
         "No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
     }
@@ -449,10 +453,10 @@ public class Controller : MonoBehaviour
         (hapticsStrength == App_Details.HapticsStrengthType.Hard) ? _const_hapticsStrength_hard :
         (hapticsStrength == App_Details.HapticsStrengthType.Medium) ? _const_hapticsStrength_medium :
         _const_hapticsStrength_light;
-      _myXrDevice?.SendHapticImpulse(0, a, 0.1f);
-      _myXrDevice?.SendHapticImpulse(1, a, 0.1f);
-      _myXrDevice?.SendHapticImpulse(2, a, 0.1f);
-      _myXrDevice?.SendHapticImpulse(3, a, 0.1f);
+      MyXrDevice?.SendHapticImpulse(0, a, 0.1f);
+      MyXrDevice?.SendHapticImpulse(1, a, 0.1f);
+      MyXrDevice?.SendHapticImpulse(2, a, 0.1f);
+      MyXrDevice?.SendHapticImpulse(3, a, 0.1f);
     }
   }
 
@@ -612,6 +616,10 @@ public class Controller : MonoBehaviour
   private void OnGripButton(bool value)
   {
     _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.Grip].Run(this, value);
+  }
+  private void OnGripButton_AdjustingGrip(bool value)
+  {
+    transform.parent = value ? _parent : null;
   }
   private void OnHighButton(bool value)
   {

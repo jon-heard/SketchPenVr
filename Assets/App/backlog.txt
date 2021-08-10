@@ -7,17 +7,15 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.04.00
+0.1.05.00
 ----------
-- add blocking vpen setting as optional setup step
-- mention in setup that grip setting will be significantly streamlined by production release
-
-- add blender to compatibility list
-
+- take note of what works in similar posts
 - setup message template to send out to all forums
 - send messages out!
+- look over reviews of Vermillion to get ideas about what works and/or doesn't
+- try https://brushworkvr.com/
 
-0.1.05.00
+0.1.06.00
 ----------
 - background material permenantly changes each time it's changed in play mode
 

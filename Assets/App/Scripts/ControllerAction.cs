@@ -8,8 +8,8 @@ public static class ActionTypeExtension
   public static bool HasKey(this ControllerAction.ActionType type)
   {
     return
-      type == ControllerAction.ActionType.Key_Hit ||
-      type == ControllerAction.ActionType.Key_Press;
+      type == ControllerAction.ActionType.Key_hit ||
+      type == ControllerAction.ActionType.Key_press;
   }
 }
 
@@ -24,16 +24,17 @@ public class ControllerAction
     Undo,
     Redo__ctrl___shift___z,
     Redo__ctrl___y,
-    Key_Hit,
-    Key_Press,
+    Key_hit,
+    Key_press,
     Mouse_button__left,
     Mouse_button__right,
     Mouse_button__middle,
-    Scroll_Up,
-    Scroll_Right,
-    Scroll_Down,
-    Scroll_Left,
+    Scroll_up,
+    Scroll_right,
+    Scroll_down,
+    Scroll_left,
     Pencil_flip,
+    Adjust_grip,
   }
 
   public ActionType Type;
@@ -103,7 +104,7 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
         }
         break;
-      case ActionType.Scroll_Up:
+      case ActionType.Scroll_up:
         _value = value;
         if (!_runningCoroutine && value > 0.0f)
         {
@@ -111,7 +112,7 @@ public class ControllerAction
           _app_functions.StartCoroutine(RunScrolling(controller, true, false));
         }
         break;
-      case ActionType.Scroll_Right:
+      case ActionType.Scroll_right:
         _value = value;
         if (!_runningCoroutine && value > 0.0f)
         {
@@ -119,7 +120,7 @@ public class ControllerAction
           _app_functions.StartCoroutine(RunScrolling(controller, false, false));
         }
         break;
-      case ActionType.Scroll_Down:
+      case ActionType.Scroll_down:
         _value = value;
         if (!_runningCoroutine && value > 0.0f)
         {
@@ -127,7 +128,7 @@ public class ControllerAction
           _app_functions.StartCoroutine(RunScrolling(controller, true, true));
         }
         break;
-      case ActionType.Scroll_Left:
+      case ActionType.Scroll_left:
         _value = value;
         if (!_runningCoroutine && value > 0.0f)
         {
@@ -135,15 +136,26 @@ public class ControllerAction
           _app_functions.StartCoroutine(RunScrolling(controller, false, true));
         }
         break;
-      case ActionType.Key_Hit:
+      case ActionType.Key_hit:
         if (isDown)
         {
           OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
           OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
         }
         break;
-      case ActionType.Key_Press:
+      case ActionType.Key_press:
         OsHook_Keyboard.SetKeyState((KbdKey)Key, isDown);
+        break;
+      case ActionType.Adjust_grip:
+        if (isDown)
+        {
+          Controller.IsInGripAdjust = true;
+          Controller.Primary_AdjustGrip_GripButtonListener.IsListening = false;
+        }
+        else
+        {
+          Controller.AcceptGripAdjust();
+        }
         break;
       default:
         UnityEngine.Debug.LogError("Unhandled action type: " + Type);

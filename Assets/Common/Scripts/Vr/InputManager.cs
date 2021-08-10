@@ -60,6 +60,11 @@ public class InputManager : MonoBehaviour
         _subTickets[i] = new ListenerTicket(actionIds[i], level, listeners[i], manager);
       }
     }
+    public ListenerTicketMulti(ListenerTicket[] subTickets) :
+      base(null, 0, null, null)
+    {
+      _subTickets = subTickets;
+    }
     public override bool IsListening
     {
       get { return _isListening; }

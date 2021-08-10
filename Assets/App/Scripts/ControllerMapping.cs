@@ -73,29 +73,29 @@ public class ControllerMapping
         // Main - Thumbstick button - zoom - control, space, left mouse
           control = (int)ControllerInput.ThumbButton;
           ActionTitles[control] = "Zoom";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
           Actions[control].Key = KbdKey.Control;
           Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Next.Type = ControllerAction.ActionType.Key_press;
           Actions[control].Next.Key = KbdKey.Space;
           Actions[control].Next.Next = new ControllerAction();
           Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
         // Main - Thumbstick direction up - nothing
         control = (int)ControllerInput.ThumbUp;
         ActionTitles[control] = "Scroll up";
-        Actions[control].Type = ControllerAction.ActionType.Scroll_Up;
+        Actions[control].Type = ControllerAction.ActionType.Scroll_up;
         // Main - Thumbstick direction right - nothing
         control = (int)ControllerInput.ThumbRight;
         ActionTitles[control] = "Scroll right";
-        Actions[control].Type = ControllerAction.ActionType.Scroll_Right;
+        Actions[control].Type = ControllerAction.ActionType.Scroll_right;
         // Main - Thumbstick direction down - nothing
         control = (int)ControllerInput.ThumbDown;
         ActionTitles[control] = "Scroll down";
-        Actions[control].Type = ControllerAction.ActionType.Scroll_Down;
+        Actions[control].Type = ControllerAction.ActionType.Scroll_down;
         // Main - Thumbstick direction left - nothing
         control = (int)ControllerInput.ThumbLeft;
           ActionTitles[control] = "Scroll left";
-          Actions[control].Type = ControllerAction.ActionType.Scroll_Left;
+          Actions[control].Type = ControllerAction.ActionType.Scroll_left;
         break;
       case 1:
         // Second - Trigger - pencil flip
@@ -154,10 +154,10 @@ public class ControllerMapping
         // Draw - Thumbstick button - zoom - control, space, left mouse
           control = (int)ControllerInput.ThumbButton;
           ActionTitles[control] = "Zoom";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
           Actions[control].Key = KbdKey.Control;
           Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Next.Type = ControllerAction.ActionType.Key_press;
           Actions[control].Next.Key = KbdKey.Space;
           Actions[control].Next.Next = new ControllerAction();
           Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
@@ -168,19 +168,19 @@ public class ControllerMapping
         // Draw - Thumbstick direction right - mirror - M toggles
           control = (int)ControllerInput.ThumbRight;
           ActionTitles[control] = "Mirror";
-          Actions[control].Type = ControllerAction.ActionType.Key_Hit;
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
           Actions[control].Key = KbdKey.Key_M;
         // Draw - Thumbstick direction down - color pick - control
           control = (int)ControllerInput.ThumbDown;
           ActionTitles[control] = "Color pick";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
           Actions[control].Key = KbdKey.Control;
           Actions[control].Next = new ControllerAction();
           Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
         // Draw - Thumbstick direction left - brush size - shift, left mouse
           control = (int)ControllerInput.ThumbLeft;
           ActionTitles[control] = "Brush size";
-          Actions[control].Type = ControllerAction.ActionType.Key_Press;
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
           Actions[control].Key = KbdKey.Shift;
           Actions[control].Next = new ControllerAction();
           Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;

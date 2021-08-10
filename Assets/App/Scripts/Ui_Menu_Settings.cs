@@ -60,7 +60,7 @@ public class Ui_Menu_Settings : Ui_Menu
     _dropdown_haptics.gameObject.SetActive(false);
     _button_haptics.State = Button.ButtonState.NotLockedDown;
 #if !UNITY_EDITOR
-    if (Controller.PrimaryController._myXrDevice == null)
+    if (Controller.PrimaryController.MyXrDevice == null)
     {
       _button_haptics.State = Button.ButtonState.Disabled;
     }
