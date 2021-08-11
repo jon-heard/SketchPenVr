@@ -476,6 +476,7 @@ public class Controller : MonoBehaviour
           _isDrawing = false;
           DoHaptics();
         }
+        UnpressAllButtons();
         FocusPointerEmulation?.ClearPenState();
         _geometryMaterial.color = Color.white;
         _controllerVis.IsHidden = false;
@@ -497,6 +498,7 @@ public class Controller : MonoBehaviour
       if (!_isPenActive)
       {
         _isPenActive = true;
+        UnpressAllButtons();
         FocusPointerEmulation.MouseLeftButton = false;
         _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
                 App_Details.Instance.MyControllerMappings.Mappings[2];
@@ -656,5 +658,18 @@ public class Controller : MonoBehaviour
     if (_isHolding) { return; }
     _myControllerMapping.Actions[(int)ControllerMapping.ControllerInput.ThumbLeft].
       Run(this, flag, value);
+  }
+
+  private void UnpressAllButtons()
+  {
+    OnTrigger(false, 0.0f);
+    //OnGripButton(false); // TO FIX: this messes with grip button in pen mode (focus issue?)
+    OnHighButton(false);
+    OnLowButton(false);
+    OnThumbstickButton(false);
+    OnThumbstickUp(false, 0.0f);
+    OnThumbstickRight(false, 0.0f);
+    OnThumbstickDown(false, 0.0f);
+    OnThumbstickLeft(false, 0.0f);
   }
 }
