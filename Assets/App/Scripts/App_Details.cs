@@ -22,7 +22,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float MIN_SCALE_SIZE = 0.25f; // How small to allow the screen to be sized
   public float CONTROLLER_EMULATED_SEPARATION = 0.2f; // How opaque the controller visuals are when not highlighted
   public float ALIGN_DATA_DISTANCE = 0.1f; // How close together to take the data points for calculating alignment to a real-life plane
-  public float TIMESPAN_POINTER_CHANGEOVER = 0.04f; // How long to delay after changing the pointer from pen to something else
+  public float TIMESPAN_POINTER_CHANGEOVER = 0.08f; // How long to delay after changing the pointer from pen to something else
   public float HAPTICS_STRENGTH_HARD = 1.0f; // Rumble amplitude when set to "hard"
   public float HAPTICS_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
   public float HAPTICS_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"

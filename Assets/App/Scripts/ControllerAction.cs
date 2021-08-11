@@ -139,8 +139,16 @@ public class ControllerAction
       case ActionType.Key_hit:
         if (isDown)
         {
-          OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
-          OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
+          if (!_isHit)
+          {
+            _isHit = true;
+            OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
+            OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
+          }
+        }
+        else
+        {
+          _isHit = false;
         }
         break;
       case ActionType.Key_press:
@@ -166,6 +174,7 @@ public class ControllerAction
   }
 
   private App_Functions _app_functions;
+  private bool _isHit;
   private float _value;
   private bool _runningCoroutine;
 

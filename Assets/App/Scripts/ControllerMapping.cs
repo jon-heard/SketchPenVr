@@ -116,24 +116,35 @@ public class ControllerMapping
           Actions[control].Type = ControllerAction.ActionType.Mouse_button__right;
         // Second - Thumbstick button - nothing
           control = (int)ControllerInput.ThumbButton;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
-        // Second - Thumbstick direction up - nothing
+          ActionTitles[control] = "Mirror";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_M;
+        // Second - Thumbstick direction up - brush tool
           control = (int)ControllerInput.ThumbUp;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
+          ActionTitles[control] = "Brush";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_B;
         // Second - Thumbstick direction right - nothing
           control = (int)ControllerInput.ThumbRight;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
-        // Second - Thumbstick direction down - nothing
+          ActionTitles[control] = "Transform";
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
+          Actions[control].Key = KbdKey.Control;
+          Actions[control].Next = new ControllerAction();
+          Actions[control].Next.Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Next.Key = KbdKey.Key_T;
+        // Second - Thumbstick direction down - select tool
           control = (int)ControllerInput.ThumbDown;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
-        // Second - Thumbstick direction left - nothing
+          ActionTitles[control] = "Select";
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
+          Actions[control].Key = KbdKey.Control;
+          Actions[control].Next = new ControllerAction();
+          Actions[control].Next.Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Next.Key = KbdKey.Key_R;
+        // Second - Thumbstick direction left - fill tool
           control = (int)ControllerInput.ThumbLeft;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
+          ActionTitles[control] = "Fill";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_F;
       break;
       case 2:
         // Draw - Trigger - draw
@@ -163,13 +174,16 @@ public class ControllerMapping
           Actions[control].Next.Next.Type = ControllerAction.ActionType.Mouse_button__left;
         // Draw - Thumbstick direction up - nothing
           control = (int)ControllerInput.ThumbUp;
-          ActionTitles[control] = "";
-          Actions[control].Type = ControllerAction.ActionType.Nothing;
+          ActionTitles[control] = "Line";
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
+          Actions[control].Key = KbdKey.Key_V;
+          Actions[control].Next = new ControllerAction();
+          Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
         // Draw - Thumbstick direction right - mirror - M toggles
           control = (int)ControllerInput.ThumbRight;
-          ActionTitles[control] = "Mirror";
+          ActionTitles[control] = "Color flip";
           Actions[control].Type = ControllerAction.ActionType.Key_hit;
-          Actions[control].Key = KbdKey.Key_M;
+          Actions[control].Key = KbdKey.Key_X;
         // Draw - Thumbstick direction down - color pick - control
           control = (int)ControllerInput.ThumbDown;
           ActionTitles[control] = "Color pick";
