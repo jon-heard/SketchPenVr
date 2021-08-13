@@ -525,8 +525,8 @@ public class Controller : MonoBehaviour
     if      (_triggerPressure > 0.9f) { }
     else if (_triggerPressure <= 0.0f && IsFlipped) { } // Erase without needing trigger down
     else if (_triggerPressure <= 0.0f) { triggerAdjust = 0.0f; geometryOpacity = 1.0f; }
-    else if (_triggerPressure > 0.3f) { triggerAdjust = 0.6f; geometryOpacity = 0.6f; }
-    else { triggerAdjust = 0.3f; geometryOpacity = 0.2f; }
+    else if (_triggerPressure > 0.3f) { triggerAdjust = 0.6f; geometryOpacity = 0.65f; }
+    else { triggerAdjust = 0.3f; geometryOpacity = 0.4f; }
 
     // Calc tilt
     var forward = FocusPointerEmulation.transform.InverseTransformDirection(transform.forward);
