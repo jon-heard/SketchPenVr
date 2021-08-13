@@ -5241,7 +5241,9 @@ MonoBehaviour:
   ShownCount: 10
   MyScrollbar: {fileID: 1556694345}
   Items: {fileID: 1341363848}
+  PrefabGeometry: {fileID: 1732480205}
   PrefabLabel: {fileID: 825139019}
+  DividerMaterial: {fileID: 2100000, guid: 86858af6c9d4a6f4689f570e417b68fc, type: 2}
 --- !u!114 &882602608
 MonoBehaviour:
   m_ObjectHideFlags: 0

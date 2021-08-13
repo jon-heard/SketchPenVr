@@ -7,13 +7,9 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.05.00
+0.1.05.01
 ----------
-- take note of what works in similar posts
-- setup message template to send out to all forums
-- send messages out!
 - look over reviews of Vermillion to get ideas about what works and/or doesn't
-- try https://brushworkvr.com/
 
 0.1.06.00
 ----------
@@ -27,7 +23,8 @@ possible main apps
 
 - use ScrolledList for dropdown control
 
-- console errors out after around 10 entries (null error)
+- grip button should included in Controller::UnpressAllButtons(), but it's commented out as this
+    this messes with dragging in pen-mode.  Fix it so we can include it (in case they use non-drag for grip btn)
 
 0.2.00.00 - dev
 ----------
@@ -58,6 +55,8 @@ possible main apps
 - controller action presets
 
 - control set update: one page for selecting preset, another for modifying preset
+
+- have action to switch to a different preset while button is held (allows for multi-button actions)
 
 0.2.04.00 - dev
 ----------
@@ -92,7 +91,6 @@ possible main apps
 
 Miscelaneous todos
 ------------------
-- switch "Vr_Head" and "Vr_Hand" to single system and put into common.  Make it compatible with archery game as much as possible.
 - have scrollbar adjust to different item visibility counts (5 items at a time vs 10, for example)
 
 People to reach out to for input

@@ -4,7 +4,9 @@ namespace Common.Vr.Ui.Controls
 {
   public class Console : ScrolledList
   {
+    public Renderer PrefabGeometry;
     public TextMesh PrefabLabel;
+    public Material DividerMaterial;
 
     //DEV: Console "Print" test
     //public string ToPrint;
@@ -37,12 +39,14 @@ namespace Common.Vr.Ui.Controls
 
     private uint _placeholderCount;
     private static Console _instance;
+    private static Material _mainPrefabGeometryMaterial;
 
     protected override void Awake()
     {
       base.Awake();
       _instance = this;
       _itemHeight = PrefabLabel.transform.parent.Find("Geometry").localScale.y;
+      _mainPrefabGeometryMaterial = PrefabGeometry.material;
       PrefabLabel.transform.parent.gameObject.SetActive(false);
       Clear();
       gameObject.SetActive(false);
@@ -67,8 +71,18 @@ namespace Common.Vr.Ui.Controls
     private void PrintInternal(string text)
     {
       PrefabLabel.text = text;
-      var newItem = Instantiate(PrefabLabel.transform.parent, Items);
+      Transform newItem = null;
       var place = (int)(_list.Count - _placeholderCount);
+      if (place % 3 == 2)
+      {
+        PrefabGeometry.material = DividerMaterial;
+        newItem = Instantiate(PrefabLabel.transform.parent, Items);
+        PrefabGeometry.material = _mainPrefabGeometryMaterial;
+      }
+      else
+      {
+        newItem = Instantiate(PrefabLabel.transform.parent, Items);
+      }
       var t = newItem.localPosition;
       t.y = -_itemHeight * place;
       newItem.localPosition = t;
