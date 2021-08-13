@@ -99,9 +99,9 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
 
 #if !UNITY_EDITOR
   // Logic to keep window minimized
-  void OnApplicationFocus(bool hasFocus)
+  void Update()
   {
-    if (hasFocus)
+    if (Application.isFocused)
     {
       OsHook_Window.Minimize();
     }
