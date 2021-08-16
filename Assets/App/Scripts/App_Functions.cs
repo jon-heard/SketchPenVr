@@ -11,6 +11,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   public Material Background;
   public Renderer ScreenRenderer;
   public InputManager MyInputManager;
+  public Keyboard MyKeyboard;
 
   // Lock/unlock entire ui
   public void SetFullUiLock(bool isLocked)
@@ -29,6 +30,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   {
     Background = new Material(Background);
     RenderSettings.skybox = Background;
+    OsHook_Window.GetPrimaryScreenOffset(onPrimaryScreenOffsetGotten);
   }
 
   private void Start()
@@ -95,6 +97,12 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
       t.y = initialHeadPosition.y;
       App_Functions.Instance.MyScreen.transform.position = t;
     }
+  }
+
+  private void onPrimaryScreenOffsetGotten(int x, int y)
+  {
+    OsHook_Pen.ScreenOffsetX = x;
+    OsHook_Pen.ScreenOffsetY = y;
   }
 
 #if !UNITY_EDITOR

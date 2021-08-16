@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 public static class OsHook_Pen
 {
+  public static int ScreenOffsetX = 0;
+  public static int ScreenOffsetY = 0;
+
   public static void Init()
   {
 #if UNITY_STANDALONE_WIN
@@ -68,11 +71,11 @@ public static class OsHook_Pen
     _info.i.penInfo.pointerInfo.ptPixelLocation.x =
       _info.i.penInfo.pointerInfo.ptHimetricLocation.x =
       _info.i.penInfo.pointerInfo.ptPixelLocationRaw.x =
-      _info.i.penInfo.pointerInfo.ptHimetricLocationRaw.x = (int)x;
+      _info.i.penInfo.pointerInfo.ptHimetricLocationRaw.x = (int)x + ScreenOffsetX;
     _info.i.penInfo.pointerInfo.ptPixelLocation.y =
       _info.i.penInfo.pointerInfo.ptHimetricLocation.y =
       _info.i.penInfo.pointerInfo.ptPixelLocationRaw.y =
-      _info.i.penInfo.pointerInfo.ptHimetricLocationRaw.y = (int)y;
+      _info.i.penInfo.pointerInfo.ptHimetricLocationRaw.y = (int)y + ScreenOffsetY;
     _info.i.penInfo.pressure = (uint)(pressure * 1024); // 0 to 1024
     _info.i.penInfo.rotation = rotation; // 0 to 359
     _info.i.penInfo.tiltX = tiltx; // -90 to 90

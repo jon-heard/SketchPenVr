@@ -7,12 +7,20 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.05.01
+0.1.05.02
 ----------
-- look over reviews of Vermillion to get ideas about what works and/or doesn't
+- fix multimonitor bug
 
 0.1.06.00
 ----------
+- moving mouse for over a second disables control until moving controller for over a second (?)
+
+- do painting video
+
+0.1.07.00
+----------
+- screen waits until headset is at non-0 position, or maybe just once it's changed if it doesn't start at 0
+
 - background material permenantly changes each time it's changed in play mode
 
 - Split App_Details into App_Details and App_Settings
@@ -26,8 +34,18 @@ possible main apps
 - grip button should included in Controller::UnpressAllButtons(), but it's commented out as this
     this messes with dragging in pen-mode.  Fix it so we can include it (in case they use non-drag for grip btn)
 
+
 0.2.00.00 - dev
 ----------
+- controller action presets
+
+- control set update: one page for selecting preset, another for modifying preset
+
+- have action to switch to a different preset while button is held (allows for multi-button actions)
+
+0.2.01.00 - dev
+----------
+- add ability to view other windows as panels... maybe that's all I should do, instead of images, youtubes, etc.
 
 - image panels
 
@@ -35,7 +53,14 @@ possible main apps
 
 - save/load scene
 
-0.2.01.00 - dev
+0.2.02.00 - dev
+----------
+- ability to add multiple 3d models (sizable and movable with 'hold' actions)
+- 3d models are lockable
+
+- comes with preset models: locked into place to make a scene around you
+
+0.2.03.00 - dev
 ----------
 - should detect hybrid computer and auto-switch to it if necessary
   - make sure it's obvious to the user that it's running in that mode as it's less performant
@@ -46,19 +71,13 @@ possible main apps
   - add controls for fine tuning plane that show up while plane locked
     - feature instruction update: bring up these controls
 
-0.2.02.00 - dev
+- add monitor selector (greyed if only one monitor)
+
+0.2.04.00 - dev
 ----------
 - desktop panel clip
 
-0.2.03.00 - dev
-----------
-- controller action presets
-
-- control set update: one page for selecting preset, another for modifying preset
-
-- have action to switch to a different preset while button is held (allows for multi-button actions)
-
-0.2.04.00 - dev
+0.2.05.00 - dev
 ----------
 - grip adjustment improvements
   - hold trigger and hover over hand allows gripping pencil and moving it
@@ -67,13 +86,13 @@ possible main apps
 - hold trigger and hover over pen highlights pen.  Hovering over tip base highlights that and allows dragging it
   - snaps to presets (with a label showing name of each preset)
 
-0.2.05.00 - dev
+0.2.06.00 - dev
 ----------
 - come up with background replacements (borrow Pramod's camera)
 
 - come up with way to get new backgrounds in there
 
-0.2.06.00 - dev
+0.2.07.00 - dev
 ----------
 - Try and come up with DD & WGC engines on my own to optimize speed
 
@@ -87,7 +106,10 @@ possible main apps
 
 1.0.00.00 - release
 ----------
-
+- feature to paint inside of sphere canvas: sphere mesh with skymap uvs and uses clip to choose subrect to work on
+  - need to be able to be consistant about subrect
+    - Maybe it snaps based on color on screen texture?
+    - maybe clip rect just has ability to be infinitely specific
 
 Miscelaneous todos
 ------------------

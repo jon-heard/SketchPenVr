@@ -15,6 +15,7 @@ public class Ui_Control_ControlSetter : Button
   [SerializeField] private Textbox _actionDescriptionEditor;
   [SerializeField] private Dropdown[] _actionEditorUis;
   [SerializeField] private Dropdown[] _actionParameterEditorUis;
+  [SerializeField] private Button[] _actionParameterSelectUis;
   [SerializeField] private GameObject[] _addActionButtons;
 
   public void OnActionUpdated()
@@ -54,6 +55,32 @@ public class Ui_Control_ControlSetter : Button
     get { return Mapping.Actions[(int)__focus._focusControl]; }
   }
 
+  public void OnKeySelectButtonClicked(Button src)
+  {
+    for (uint i = 0; i < _actionParameterSelectUis.Length; i++)
+    {
+      if (_actionParameterSelectUis[i] == src)
+      {
+        if (_currentActionParameterSelectIndex == i)
+        {
+          _currentActionParameterSelectIndex = Global.NullUint;
+          var keybd = App_Functions.Instance.MyKeyboard;
+          keybd.gameObject.SetActive(false);
+        }
+        else
+        {
+          _currentActionParameterSelectIndex = i;
+          var keybd = App_Functions.Instance.MyKeyboard;
+          keybd.transform.parent = src.transform;
+          keybd.transform.localPosition = Vector3.zero;
+          keybd.gameObject.SetActive(true);
+          keybd.OnKeyPressed = null;
+          keybd.OnKeyPressed += OnKeySelectorPressed;
+        }
+      }
+    }
+  }
+
   public static void ClearFocus()
   { _focus = null; }
 
@@ -83,6 +110,7 @@ public class Ui_Control_ControlSetter : Button
   private static Ui_Control_ControlSetter __focus;
 
   private bool _editing = false;
+  private uint _currentActionParameterSelectIndex = Global.NullUint;
 
   protected void Start()
   {
@@ -125,6 +153,22 @@ public class Ui_Control_ControlSetter : Button
       {
         _focus = null;
       }
+    }
+
+    if (_currentActionParameterSelectIndex != Global.NullUint)
+    {
+      var kbd = App_Functions.Instance.MyKeyboard;
+      var keys = kbd.Buttons;
+      if (clicked == _actionParameterSelectUis[_currentActionParameterSelectIndex]) { return; }
+      for (var i = 0; i < keys.Length; i++)
+      {
+        if (clicked == keys[i])
+        {
+          return;
+        }
+      }
+      _currentActionParameterSelectIndex = Global.NullUint;
+      kbd.gameObject.SetActive(false);
     }
   }
 
@@ -220,5 +264,12 @@ public class Ui_Control_ControlSetter : Button
         action = action?.Next;
       }
     }
+  }
+
+  private void OnKeySelectorPressed(KbdKey k)
+  {
+    _actionParameterEditorUis[_currentActionParameterSelectIndex].Index = (uint)k;
+    App_Functions.Instance.MyKeyboard.gameObject.SetActive(false);
+    _currentActionParameterSelectIndex = Global.NullUint;
   }
 }

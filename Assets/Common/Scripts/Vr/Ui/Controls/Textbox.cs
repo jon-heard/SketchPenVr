@@ -208,7 +208,7 @@ namespace Common.Vr.Ui.Controls
         {
           Text += key.GetTitle();
         }
-        else if (key >= KbdKey.Numpad0 && key <= KbdKey.Numpad9)
+        else if (key >= KbdKey.Numpad_0 && key <= KbdKey.Numpad_9)
         {
           Text += key.GetTitle().Substring(0, 1);
         }
@@ -245,12 +245,12 @@ namespace Common.Vr.Ui.Controls
               case KbdKey.Comma: Text += ","; break;
               case KbdKey.BackQuote: Text += "`"; break;
               case KbdKey.Slash: Text += "/"; break;
-              case KbdKey.NumpadSlash: Text += "/"; break;
-              case KbdKey.Asterisk: Text += "*"; break;
+              case KbdKey.Numpad_Slash: Text += "/"; break;
+              case KbdKey.Numpad_Asterisk: Text += "*"; break;
               case KbdKey.Minus: Text += "-"; break;
-              case KbdKey.NumpadMinus: Text += "-"; break;
+              case KbdKey.Numpad_Minus: Text += "-"; break;
               case KbdKey.Period: Text += "."; break;
-              case KbdKey.NumpadPeriod: Text += "."; break;
+              case KbdKey.Numpad_Period: Text += "."; break;
             }
           }
           else
