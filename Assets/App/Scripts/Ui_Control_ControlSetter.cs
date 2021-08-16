@@ -71,8 +71,10 @@ public class Ui_Control_ControlSetter : Button
         {
           _currentActionParameterSelectIndex = i;
           var keybd = App_Functions.Instance.MyKeyboard;
-          keybd.transform.parent = src.transform;
-          keybd.transform.localPosition = Vector3.zero;
+          keybd.transform.position =
+            src.transform.parent.parent.position +
+            App_Details.Instance.KEY_SELECT_KEYBOARD_POSITION;
+          keybd.transform.eulerAngles = src.transform.eulerAngles;
           keybd.gameObject.SetActive(true);
           keybd.OnKeyPressed = null;
           keybd.OnKeyPressed += OnKeySelectorPressed;

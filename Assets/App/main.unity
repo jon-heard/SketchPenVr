@@ -5985,6 +5985,7 @@ MonoBehaviour:
   HAPTICS_STRENGTH_HARD: 1
   HAPTICS_STRENGTH_MEDIUM: 0.35
   HAPTICS_STRENGTH_LIGHT: 0.15
+  KEY_SELECT_KEYBOARD_POSITION: {x: 0.685, y: 0.568075, z: 0}
   PressureLengthTitles:
   - None
   - Standard
