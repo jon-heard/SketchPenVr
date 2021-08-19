@@ -12,33 +12,28 @@ public static class OsHook_Window
 
   public static void GetPrimaryScreenOffset(Action<int, int> onResult)
   {
+    var xOffset = 0;
+    var yOffset = 0;
 #if UNITY_STANDALONE_WIN
     EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero,
       delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData)
       {
-        MonitorInfoEx mon_info = new MonitorInfoEx();
-        GetMonitorInfo(hMonitor, ref mon_info);
-        if (mon_info.Flags == MONITORINFOF_PRIMARY)
+        var offsetChanged = false;
+        if (lprcMonitor.left < xOffset)
         {
-          Common.Vr.Ui.Controls.Console.Print("Primary monitor 1: flags = " + mon_info.Flags + " :: offset0 = " + lprcMonitor.left + ", " + lprcMonitor.top + " :: offset1 = " + mon_info.Monitor.left + ", " + mon_info.Monitor.top + " :: offset2 = " + mon_info.WorkArea.left + ", " + mon_info.WorkArea.top);
-          onResult.Invoke(lprcMonitor.left, lprcMonitor.top);
-
-          var mh = MonitorFromWindow(IntPtr.Zero, MONITOR_DEFAULTTOPRIMARY);
-          GetMonitorInfo(mh, ref mon_info);
-          Common.Vr.Ui.Controls.Console.Print("Primary monitor 2: flags = " + mon_info.Flags + " :: offset1 = " + mon_info.Monitor.left + ", " + mon_info.Monitor.top + " :: offset2 = " + mon_info.WorkArea.left + ", " + mon_info.WorkArea.top);
-
-          return true;
+          xOffset = lprcMonitor.left;
+          offsetChanged = true;
         }
-        else
+        if (lprcMonitor.top < yOffset)
         {
-          Common.Vr.Ui.Controls.Console.Print("Non-Primary monitor 1: flags = " + mon_info.Flags + " :: offset0 = " + lprcMonitor.left + ", " + lprcMonitor.top + " :: offset1 = " + mon_info.Monitor.left + ", " + mon_info.Monitor.top + " :: offset2 = " + mon_info.WorkArea.left + ", " + mon_info.WorkArea.top);
-
-          var mh = MonitorFromWindow(IntPtr.Zero, MONITOR_DEFAULTTOPRIMARY);
-          GetMonitorInfo(mh, ref mon_info);
-          Common.Vr.Ui.Controls.Console.Print("Non-Primary monitor 2: flags = " + mon_info.Flags + " :: offset1 = " + mon_info.Monitor.left + ", " + mon_info.Monitor.top + " :: offset2 = " + mon_info.WorkArea.left + ", " + mon_info.WorkArea.top);
-
-          return true;
+          yOffset = lprcMonitor.top;
+          offsetChanged = true;
         }
+        if (offsetChanged)
+        {
+          onResult.Invoke(-xOffset, -yOffset);
+        }
+        return true;
       }, IntPtr.Zero);
 #endif
   }

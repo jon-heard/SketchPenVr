@@ -51,7 +51,7 @@ public class Ui_Menu_Settings : Ui_Menu
     _button_pressureLength.State = Button.ButtonState.NotLockedDown;
 
     // Pen physics
-    _dropdown_penPhysics.Index = (uint)(App_Details.Instance.PenPhysicsEnabled ? 1 : 0);
+    _dropdown_penPhysics.Index = (uint)App_Details.Instance.PenPhysics;
     _dropdown_penPhysics.gameObject.SetActive(false);
     _button_penPhysics.State = Button.ButtonState.NotLockedDown;
 
@@ -117,7 +117,7 @@ public class Ui_Menu_Settings : Ui_Menu
   }
   public void OnPenPhysicsChanged()
   {
-    App_Details.Instance.PenPhysicsEnabled = (_dropdown_penPhysics.Index == 1);
+    App_Details.Instance.PenPhysics = (App_Details.PenPhysicsType)_dropdown_penPhysics.Index;
     Hide();
   }
 
@@ -170,8 +170,8 @@ public class Ui_Menu_Settings : Ui_Menu
       backgroundTitles.Add(background.Title);
     }
     _dropdown_background.SetList(backgroundTitles);
-    // Pressure length
-    _dropdown_pressureLength.SetList(App_Details.Instance.PressureLengthTitles);
+    // Pen physics
+    _dropdown_penPhysics.SetList(new List<string>(Enum.GetNames(typeof(App_Details.PenPhysicsType))));
     // Haptics
     _dropdown_haptics.SetList(
       new List<string>(Enum.GetNames(typeof(App_Details.HapticsStrengthType))));

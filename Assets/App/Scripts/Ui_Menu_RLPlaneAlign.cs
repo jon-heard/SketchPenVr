@@ -231,7 +231,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
       }
     }
 
-    // React to the pencil point in a InfoGatherType specific way
+    // React to the pen point in a InfoGatherType specific way
     switch (_infoGatherType)
     {
       case InfoGatherType.Align:
@@ -239,7 +239,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
         {
           if (!_isTriggerDown) { return; }
           _overPointUi.text = "Over point: ²";
-          _overPoint = Controller.PrimaryController.Pencil.transform.position;
+          _overPoint = Controller.PrimaryController.Pen.transform.position;
         }
         else
         {
@@ -251,7 +251,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
           if (!_isTriggerDown) { return; }
           var screenTransform = App_Functions.Instance.MyScreen.transform;
           var distance = Vector3.Dot(
-            Controller.PrimaryController.Pencil.transform.position - screenTransform.position,
+            Controller.PrimaryController.Pen.transform.position - screenTransform.position,
             screenTransform.forward);
           App_Functions.Instance.MyScreen.LockType = Screen.ScreenLockType.None;
           screenTransform.position += screenTransform.forward * distance;
@@ -264,7 +264,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
           if (!_isTriggerDown) { return; }
           var screenTransform = App_Functions.Instance.MyScreen.transform;
           var distance = Mathf.Abs(Vector3.Dot(
-            Controller.PrimaryController.Pencil.transform.position - screenTransform.position,
+            Controller.PrimaryController.Pen.transform.position - screenTransform.position,
             screenTransform.forward));
           App_Details.Instance.PressureLength = distance;
           EndInfoGather();
@@ -279,7 +279,7 @@ public class Ui_Menu_RLPlaneAlign : Ui_Menu
     while (_isTriggerDown)
     {
       yield return null;
-      var point = Controller.PrimaryController.Pencil.transform.position;
+      var point = Controller.PrimaryController.Pen.transform.position;
       if ((point - latestPoint).sqrMagnitude > _const_AlignDataDistance)
       {
         latestPoint = point;

@@ -37,10 +37,9 @@ public class Controller : MonoBehaviour
   private bool _prevThumbButton;
 #endif
   [Header("Parameters")]
-  [SerializeField] private float _flippedZPosition;
   [SerializeField] private bool _isLeft;
   [Header("Wiring")]
-  public Renderer Pencil;
+  public Pen Pen;
   [SerializeField] private LineRenderer _rayVisual;
   [SerializeField] private PinchHandler _pinchHandler;
   [SerializeField] private ControllerVis _controllerVis;
@@ -53,14 +52,16 @@ public class Controller : MonoBehaviour
     get { return _instances[0]._isLeft; }
     set
     {
-      if (value == IsLeftHanded) { return; }
       // Swap controller purposes
-      var buf = _instances[0];
-      _instances[0] = _instances[1];
-      _instances[1] = buf;
+      if (_instances[0]._isLeft != value)
+      {
+        var buf = _instances[0];
+        _instances[0] = _instances[1];
+        _instances[1] = buf;
+      }
       // Update controller infos to match purposes
-      _instances[0].Pencil.gameObject.SetActive(true);
-      _instances[1].Pencil.gameObject.SetActive(false);
+      _instances[0].Pen.gameObject.SetActive(true);
+      _instances[1].Pen.gameObject.SetActive(false);
       _instances[0]._controllerIndex = 0;
       _instances[1]._controllerIndex = 1;
       _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
@@ -73,27 +74,6 @@ public class Controller : MonoBehaviour
   private uint _controllerIndex = 0;
   public static Controller PrimaryController { get { return _instances[0]; } }
   public static Controller SecondaryController { get { return _instances[1]; } }
-
-  //////////////
-  // Flipping //
-  //////////////
-  public static bool IsFlipped
-  {
-    get { return _isFlipped; }
-    set
-    {
-      if (value == _isFlipped) { return; }
-      _isFlipped = value;
-      var t = _instances[0].Pencil.transform.localEulerAngles;
-      t.y = value ? 180.0f : 0.0f;
-      _instances[0].Pencil.transform.localEulerAngles = t;
-      t = _instances[0].Pencil.transform.localPosition;
-      t.z = _instances[0]._currentZPosition =
-        (value ? _instances[0]._flippedZPosition : _instances[0]._defaultZPosition);
-      _instances[0].Pencil.transform.localPosition = t;
-    }
-  }
-  private static bool _isFlipped;
 
   /////////////
   // Holding //
@@ -236,22 +216,37 @@ public class Controller : MonoBehaviour
   //////////////////////////
   public static void SetPressureLength(float length)
   {
-    Controller._const_distance_tipBase = Controller._const_distance_tipPoint - length;
+    foreach (var instance in _instances)
+    {
+      instance.Pen.TipLength = length;
+    }
   }
 
   ////////////
   // Fields //
   ////////////
   public InputDevice? MyXrDevice { get; private set; }
-  public static bool Const_penPhysicsEnabled;
   public static InputManager.ListenerTicket Primary_AdjustGrip_GripButtonListener
   {
     get { return _instances[0]._adjustGrip_GripButtonListener; }
   }
+  public static App_Details.PenPhysicsType Const_penPhysics
+  {
+    get { return _const_penPhysics; }
+    set
+    {
+      if (value == _const_penPhysics) { return; }
+      _const_penPhysics = value;
+      foreach (var instance in _instances)
+      {
+        instance.Pen.PenPhysics = _const_penPhysics;
+      }
+    }
+  }
+  private static App_Details.PenPhysicsType _const_penPhysics;
+
 
   private App_Input _input;
-  private float _defaultZPosition;
-  private float _currentZPosition;
   private float _rayVisualZOffset;
   private bool _isDrawing;
   private InputManager.ListenerTicket _adjustGrip_GripButtonListener;
@@ -262,24 +257,20 @@ public class Controller : MonoBehaviour
   private bool _isPenActive = false;
   private bool _isPenMode
   {
-    get { return (FocusPointerEmulation && _focusDistance <= _const_maxHoverDistance); }
+    get { return (FocusPointerEmulation && Pen.Distance <= _const_maxHoverDistance); }
   }
 
   // Focus info
   public Interactable Focus { get; private set; }
-  private float _focusDistance;
   private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
   private ControllerVis _focusControllerVis;
   private UiInputHandler _inputHandler = new UiInputHandler();
 
   // Copies of values (for efficiency)
-  private Material _geometryMaterial;
   private ControllerMapping _myControllerMapping;
   private static float _const_maxInteractDistance;
   private static float _const_maxHoverDistance;
-  private static float _const_distance_tipPoint;
-  private static float _const_distance_tipBase;
   private static float _const_hapticsStrength_hard;
   private static float _const_hapticsStrength_medium;
   private static float _const_hapticsStrength_light;
@@ -290,15 +281,12 @@ public class Controller : MonoBehaviour
   private void Awake()
   {
     // Copies of values init (for efficiency)
-    _geometryMaterial = Pencil.material;
     _const_maxInteractDistance = App_Details.Instance.MAX_INTERACT_DISTANCE;
     _const_maxHoverDistance = App_Details.Instance.CONTROLLER_DISTANCE_NEAR_SCREEN;
-    _const_distance_tipPoint = App_Details.Instance.CONTROLLER_DISTANCE_TIP_POINT;
-    _const_distance_tipBase = App_Details.Instance.CONTROLLER_DISTANCE_TIP_BASE;
     _const_hapticsStrength_hard = App_Details.Instance.HAPTICS_STRENGTH_HARD;
     _const_hapticsStrength_medium = App_Details.Instance.HAPTICS_STRENGTH_MEDIUM;
     _const_hapticsStrength_light = App_Details.Instance.HAPTICS_STRENGTH_LIGHT;
-    Const_penPhysicsEnabled = App_Details.Instance.PenPhysicsEnabled;
+    Const_penPhysics = App_Details.Instance.PenPhysics;
 
     _controllerIndex = (uint)(_isLeft ? 0 : 1);
     _instances[_controllerIndex] = this;
@@ -307,7 +295,6 @@ public class Controller : MonoBehaviour
   private void Start()
   {
     // Fields init
-    _defaultZPosition = _currentZPosition = Pencil.transform.localPosition.z;
     _rayVisualZOffset = _rayVisual.transform.localPosition.z;
 
     // User input init
@@ -359,8 +346,11 @@ public class Controller : MonoBehaviour
     if (!MyXrDevice.Value.TryGetHapticCapabilities(out caps) || !caps.supportsImpulse)
     {
       MyXrDevice = null;
-      Common.Vr.Ui.Controls.Console.Print(
-        "No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
+      if (_controllerIndex == 0)
+      {
+        Common.Vr.Ui.Controls.Console.Print(
+          "No haptics: " + caps.supportsImpulse + " :: " + caps.supportsBuffer);
+      }
     }
   }
 
@@ -383,11 +373,12 @@ public class Controller : MonoBehaviour
   {
     var originalEnabled = _controllerVis.MyCollider.enabled;
     _controllerVis.MyCollider.enabled = false;
+    var distance = _const_maxInteractDistance;
     var hitInfo = new RaycastHit();
     if (Physics.Raycast(transform.position, transform.forward, out hitInfo) &&
         hitInfo.distance < _const_maxInteractDistance)
     {
-      _focusDistance = hitInfo.distance;
+      distance = hitInfo.distance;
       _focusPosition = hitInfo.point;
       Focus = hitInfo.transform.GetComponent<Interactable>();
       var focusParent = Focus?.transform?.parent;
@@ -404,7 +395,7 @@ public class Controller : MonoBehaviour
       {
         FocusPointerEmulation.Position = hitInfo.textureCoord;
         FocusPointerEmulation.Distance =
-          Mathf.Max(_focusDistance, _const_maxHoverDistance * 0.5f + 0.0125f);
+          Mathf.Max(Pen.Distance, _const_maxHoverDistance * 0.5f + 0.0125f);
       }
 
       // Control focus
@@ -429,9 +420,8 @@ public class Controller : MonoBehaviour
     }
     else
     {
-      _focusDistance = _const_maxInteractDistance;
       Focus = null;
-      FocusPointerEmulation?.SetPenState(0.0f, 0, Vector2.zero, Controller.IsFlipped);
+      FocusPointerEmulation?.SetPenState(0.0f, 0, Vector2.zero, Pen.IsFlipped);
       FocusPointerEmulation = null;
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero, _controllerIndex == 0);
       if (_focusControllerVis)
@@ -441,7 +431,8 @@ public class Controller : MonoBehaviour
       _focusControllerVis = null;
     }
     _controllerVis.MyCollider.enabled = originalEnabled;
-    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (_focusDistance - _rayVisualZOffset));
+    _rayVisual.SetPosition(1, new Vector3(0, 0, 1) * (distance - _rayVisualZOffset));
+    Pen.Distance = distance;
   }
 
   private void DoHaptics()
@@ -478,18 +469,11 @@ public class Controller : MonoBehaviour
         }
         UnpressAllButtons();
         FocusPointerEmulation?.ClearPenState();
-        _geometryMaterial.color = Color.white;
         _controllerVis.IsHidden = false;
         _rayVisual.gameObject.SetActive(true);
         _isTriggerDown = false; // force mouse down if trigger is pushed when leaving near-zone
         _instances[0]._controllerVis.Mapping = _instances[0]._myControllerMapping =
                 App_Details.Instance.MyControllerMappings.Mappings[0];
-        if (Const_penPhysicsEnabled)
-        {
-          var t = Pencil.transform.localPosition;
-          t.z = _currentZPosition;
-          Pencil.transform.localPosition = t;
-        }
       }
       return;
     }
@@ -508,12 +492,6 @@ public class Controller : MonoBehaviour
 
     _rayVisual.gameObject.SetActive(false);
 
-    // Calc pen pressure
-    var penPressure =
-      (_focusDistance > _const_distance_tipPoint) ? 0.0f :
-      (_focusDistance < _const_distance_tipBase) ? 1.0f :
-      1.0f - (_focusDistance - _const_distance_tipBase) / (_const_distance_tipPoint - _const_distance_tipBase);
-
     // Calc pen rotation
     var rotation =
       (uint)((int)(FocusPointerEmulation.transform.eulerAngles.z - transform.eulerAngles.z + 360)
@@ -523,7 +501,7 @@ public class Controller : MonoBehaviour
     var triggerAdjust = 1.0f;
     var geometryOpacity = 1.0f;
     if      (_triggerPressure > 0.9f) { }
-    else if (_triggerPressure <= 0.0f && IsFlipped) { } // Erase without needing trigger down
+    else if (_triggerPressure <= 0.0f && Pen.IsFlipped) { } // Erase without needing trigger down
     else if (_triggerPressure <= 0.0f) { triggerAdjust = 0.0f; geometryOpacity = 1.0f; }
     else if (_triggerPressure > 0.3f) { triggerAdjust = 0.6f; geometryOpacity = 0.65f; }
     else { triggerAdjust = 0.3f; geometryOpacity = 0.4f; }
@@ -535,7 +513,7 @@ public class Controller : MonoBehaviour
       Mathf.Atan2(forward.y, forward.z) * Mathf.Rad2Deg);
 
     // Visualize trigger adjust on geometry
-    _geometryMaterial.SetFloat("_Opacity", geometryOpacity);
+    Pen.Opacity = geometryOpacity;
 
     // Update pen
 #if UNITY_EDITOR
@@ -543,25 +521,15 @@ public class Controller : MonoBehaviour
 #endif
     {
       FocusPointerEmulation.SetPenState(
-        penPressure * triggerAdjust, rotation, tilt, Controller.IsFlipped);
+        Pen.Pressure * triggerAdjust, rotation, tilt, Pen.IsFlipped);
     }
 
     // Calc _isDrawing
-    var newIsDrawing = (penPressure * triggerAdjust) > 0.0f;
+    var newIsDrawing = (Pen.Pressure * triggerAdjust) > 0.0f;
     if (newIsDrawing != _isDrawing)
     {
       _isDrawing = newIsDrawing;
       DoHaptics();
-    }
-
-    // Adjust pencil to not embed into the canvas
-    if (Const_penPhysicsEnabled)
-    {
-      var t = Pencil.transform.localPosition;
-      t.z =
-        (penPressure == 0) ? _currentZPosition :
-        (_currentZPosition - (_const_distance_tipPoint - _focusDistance));
-      Pencil.transform.localPosition = t;
     }
   }
 

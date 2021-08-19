@@ -7,17 +7,16 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.05.02
+0.1.07.00
 ----------
-- fix multimonitor bug
+- ease-out in gradient
+  - adjust pressure to match gradient
 
-0.1.06.00
-----------
 - moving mouse for over a second disables control until moving controller for over a second (?)
 
 - do painting video
 
-0.1.07.00
+0.1.08.00
 ----------
 - screen waits until headset is at non-0 position, or maybe just once it's changed if it doesn't start at 0
 
@@ -80,7 +79,7 @@ possible main apps
 0.2.05.00 - dev
 ----------
 - grip adjustment improvements
-  - hold trigger and hover over hand allows gripping pencil and moving it
+  - hold trigger and hover over hand allows gripping pen and moving it
   - If shake while hovering with trigger, calculates fulcrum and shows red dot at point
 
 - hold trigger and hover over pen highlights pen.  Hovering over tip base highlights that and allows dragging it

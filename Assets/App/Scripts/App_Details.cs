@@ -16,6 +16,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float CONTROLLER_DISTANCE_NEAR_SCREEN = 0.232f; // How near controller needs to be to hover over screen
   public float CONTROLLER_DISTANCE_TIP_POINT = 0.129f; // How near controller needs to be to touch screen
   public float CONTROLLER_DISTANCE_TIP_BASE = 0.107f; // How near controller needs to be to put full pressure on screen
+  public float CONTROLLER_DISTANCE_ERASER_BASE = 0.008f; // How near controller needs to be to put full pressure on screen
   public float PANEL_X_MARGIN = 0.16f; // How big of a margin to put at edge of panels
   public float DISTANCE_BETWEEN_PANELS = 0.0085f; // How much space to put between panels
   public float TIMESPAN_BEFORE_SETTING_SCREEN_HEIGHT = 1.0f; // How long to wait before setting screen to user's eye level
@@ -27,7 +28,6 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float HAPTICS_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
   public float HAPTICS_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"
   public Vector3 KEY_SELECT_KEYBOARD_POSITION = new Vector3(0.685f, 0.568075f, 0.0f);
-  public List<string> PressureLengthTitles;
   public float[] PressureLengths;
 
   // Key constants
@@ -35,7 +35,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public const string CFG__MAPPINGS = "setting:mappings";
   public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
   public const string CFG__PRESSURE_LENGTH_INDEX = "setting:PressureLengthIndex";
-  public const string CFG__PEN_PHYSICS_ENABLED = "setting:penPhysics";
+  public const string CFG__PEN_PHYSICS = "setting:penPhysics";
   public const string CFG__HAPTICS_STRENGTH = "setting:HapticsStrength";
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
   public const string LOCK__DIRECT = "lock:direct";
@@ -69,25 +69,25 @@ public class App_Details : Common.SingletonComponent<App_Details>
   }
   private string _background;
 
-  public bool PenPhysicsEnabled
+  public enum PenPhysicsType { Full, Shaft, None }
+  public PenPhysicsType PenPhysics
   {
-    get { return _penPhysicsEnabled; }
+    get { return (PenPhysicsType)_penPhysics; }
     set
     {
-      if (value == _penPhysicsEnabled) { return; }
-      _penPhysicsEnabled = value;
-      PlayerPrefs.SetInt(App_Details.CFG__PEN_PHYSICS_ENABLED, value ? 1 : 0);
-      Controller.Const_penPhysicsEnabled = value;
+      if (value == (PenPhysicsType)_penPhysics) { return; }
+      _penPhysics = (int)value;
+      PlayerPrefs.SetInt(App_Details.CFG__PEN_PHYSICS, _penPhysics);
+      Controller.Const_penPhysics = value;
     }
   }
-  private bool _penPhysicsEnabled;
+  private int _penPhysics;
 
   public bool IsLeftHanded
   {
     get { return Controller.IsLeftHanded; }
     set
     {
-      if (value == Controller.IsLeftHanded) { return; }
       Controller.IsLeftHanded = value;
       PlayerPrefs.SetInt(App_Details.CFG__IS_LEFT_HANDED, value ? 1 : 0);
     }
@@ -113,7 +113,6 @@ public class App_Details : Common.SingletonComponent<App_Details>
       _pressureLength = value;
       CONTROLLER_DISTANCE_TIP_BASE = CONTROLLER_DISTANCE_TIP_POINT - _pressureLength;
       Controller.SetPressureLength(_pressureLength);
-      Mesh_Pencil.SetAllTipLengths(_pressureLength);
     }
   }
   private float _pressureLength;
@@ -178,7 +177,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
     HapticsStrength = (HapticsStrengthType)PlayerPrefs.GetInt(App_Details.CFG__HAPTICS_STRENGTH, 1);
 
     // Handedness
-    PenPhysicsEnabled = (PlayerPrefs.GetInt(App_Details.CFG__PEN_PHYSICS_ENABLED, 0) != 0);
+    PenPhysics = (PenPhysicsType)PlayerPrefs.GetInt(App_Details.CFG__PEN_PHYSICS, 0);
 
     // Handedness
     IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);

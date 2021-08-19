@@ -98,10 +98,10 @@ public class ControllerMapping
           Actions[control].Type = ControllerAction.ActionType.Scroll_left;
         break;
       case 1:
-        // Second - Trigger - pencil flip
+        // Second - Trigger - pen flip
           control = (int)ControllerInput.Trigger;
           ActionTitles[control] = "Eraser";
-          Actions[control].Type = ControllerAction.ActionType.Pencil_flip;
+          Actions[control].Type = ControllerAction.ActionType.Pen_flip;
         // Second - Grip - Hold desktop
           control = (int)ControllerInput.Grip;
           ActionTitles[control] = "Hold desktop";

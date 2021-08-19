@@ -33,7 +33,7 @@ public class ControllerAction
     Scroll_right,
     Scroll_down,
     Scroll_left,
-    Pencil_flip,
+    Pen_flip,
     Adjust_grip,
   }
 
@@ -54,8 +54,8 @@ public class ControllerAction
       case ActionType.Hold_desktop:
         controller.IsHoldingDesktop = isDown;
         break;
-      case ActionType.Pencil_flip:
-        Controller.IsFlipped = isDown;
+      case ActionType.Pen_flip:
+        Controller.PrimaryController.Pen.IsFlipped = isDown;
         break;
       case ActionType.Mouse_button__left:
         if (controller.FocusPointerEmulation)

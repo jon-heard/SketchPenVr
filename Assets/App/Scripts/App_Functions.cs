@@ -30,7 +30,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   {
     Background = new Material(Background);
     RenderSettings.skybox = Background;
-    OsHook_Window.GetPrimaryScreenOffset(onPrimaryScreenOffsetGotten);
+    OsHook_Window.GetPrimaryScreenOffset(UpdateScreenOffset);
   }
 
   private void Start()
@@ -99,7 +99,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
     }
   }
 
-  private void onPrimaryScreenOffsetGotten(int x, int y)
+  private void UpdateScreenOffset(int x, int y)
   {
     OsHook_Pen.ScreenOffsetX = x;
     OsHook_Pen.ScreenOffsetY = y;
