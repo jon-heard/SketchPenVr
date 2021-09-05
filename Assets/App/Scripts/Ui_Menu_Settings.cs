@@ -17,11 +17,13 @@ public class Ui_Menu_Settings : Ui_Menu
   [SerializeField] private Ui_Menu _menu_setControls;
   [SerializeField] private Ui_Menu _menu_gripAdjust;
   [SerializeField] private Button _button_background;
+  [SerializeField] private Button _button_pressureCurve;
   [SerializeField] private Button _button_pressureLength;
   [SerializeField] private Button _button_penPhysics;
   [SerializeField] private Button _button_haptics;
   [SerializeField] private Button _button_handedness;
   [SerializeField] private Dropdown _dropdown_background;
+  [SerializeField] private Dropdown _dropdown_pressureCurve;
   [SerializeField] private Dropdown _dropdown_pressureLength;
   [SerializeField] private Dropdown _dropdown_penPhysics;
   [SerializeField] private Dropdown _dropdown_haptics;
@@ -44,6 +46,11 @@ public class Ui_Menu_Settings : Ui_Menu
     }
     _dropdown_background.gameObject.SetActive(false);
     _button_background.State = Button.ButtonState.NotLockedDown;
+
+    // Pressure length
+    _dropdown_pressureCurve.Index = App_Details.Instance.PressureCurveIndex;
+    _dropdown_pressureCurve.gameObject.SetActive(false);
+    _button_pressureCurve.State = Button.ButtonState.NotLockedDown;
 
     // Pressure length
     _dropdown_pressureLength.Index = App_Details.Instance.PressureLengthIndex;
@@ -95,6 +102,18 @@ public class Ui_Menu_Settings : Ui_Menu
   public void OnGripAdjustButton(Button source)
   {
     _menu_gripAdjust.Show(source);
+  }
+
+  // Pressure curve
+  public void OnPressureCurveButton()
+  {
+    _dropdown_pressureCurve.gameObject.SetActive(true);
+    _button_pressureCurve.State = Button.ButtonState.LockedDown;
+  }
+  public void PressureCurveChanged()
+  {
+    App_Details.Instance.PressureCurveIndex = _dropdown_pressureCurve.Index;
+    Hide();
   }
 
   // Pressure length

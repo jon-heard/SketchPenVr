@@ -9,16 +9,16 @@ possible main apps
 
 0.1.07.00
 ----------
-- ease-out in gradient
-  - adjust pressure to match gradient
-
-- moving mouse for over a second disables control until moving controller for over a second (?)
+- sound effects (like "medium" application)
 
 - do painting video
 
-0.1.08.00
+0.2.00.00 - dev
 ----------
 - screen waits until headset is at non-0 position, or maybe just once it's changed if it doesn't start at 0
+- when resetting orientation, trigger reset of screen position
+
+- moving mouse for over a second disables control until moving controller for over a second (?)
 
 - background material permenantly changes each time it's changed in play mode
 
@@ -28,13 +28,14 @@ possible main apps
   - don't start listening (need to set it)
   - don't need Listener AND ListenerTicket (merge them)
 
+
 - use ScrolledList for dropdown control
 
 - grip button should included in Controller::UnpressAllButtons(), but it's commented out as this
     this messes with dragging in pen-mode.  Fix it so we can include it (in case they use non-drag for grip btn)
 
 
-0.2.00.00 - dev
+0.2.01.00 - dev
 ----------
 - controller action presets
 
@@ -42,7 +43,7 @@ possible main apps
 
 - have action to switch to a different preset while button is held (allows for multi-button actions)
 
-0.2.01.00 - dev
+0.2.02.00 - dev
 ----------
 - add ability to view other windows as panels... maybe that's all I should do, instead of images, youtubes, etc.
 
@@ -52,14 +53,14 @@ possible main apps
 
 - save/load scene
 
-0.2.02.00 - dev
+0.2.03.00 - dev
 ----------
 - ability to add multiple 3d models (sizable and movable with 'hold' actions)
 - 3d models are lockable
 
 - comes with preset models: locked into place to make a scene around you
 
-0.2.03.00 - dev
+0.2.04.00 - dev
 ----------
 - should detect hybrid computer and auto-switch to it if necessary
   - make sure it's obvious to the user that it's running in that mode as it's less performant
@@ -72,11 +73,11 @@ possible main apps
 
 - add monitor selector (greyed if only one monitor)
 
-0.2.04.00 - dev
+0.2.05.00 - dev
 ----------
 - desktop panel clip
 
-0.2.05.00 - dev
+0.2.06.00 - dev
 ----------
 - grip adjustment improvements
   - hold trigger and hover over hand allows gripping pen and moving it
@@ -85,13 +86,13 @@ possible main apps
 - hold trigger and hover over pen highlights pen.  Hovering over tip base highlights that and allows dragging it
   - snaps to presets (with a label showing name of each preset)
 
-0.2.06.00 - dev
+0.2.07.00 - dev
 ----------
 - come up with background replacements (borrow Pramod's camera)
 
 - come up with way to get new backgrounds in there
 
-0.2.07.00 - dev
+0.2.08.00 - dev
 ----------
 - Try and come up with DD & WGC engines on my own to optimize speed
 

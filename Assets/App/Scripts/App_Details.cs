@@ -28,12 +28,14 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float HAPTICS_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
   public float HAPTICS_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"
   public Vector3 KEY_SELECT_KEYBOARD_POSITION = new Vector3(0.685f, 0.568075f, 0.0f);
+  public uint[] PressureCurves;
   public float[] PressureLengths;
 
   // Key constants
   public const string CFG__BACKGROUND = "setting:background";
   public const string CFG__MAPPINGS = "setting:mappings";
   public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
+  public const string CFG__PRESSURE_CURVE_INDEX = "setting:PressureCurveIndex";
   public const string CFG__PRESSURE_LENGTH_INDEX = "setting:PressureLengthIndex";
   public const string CFG__PEN_PHYSICS = "setting:penPhysics";
   public const string CFG__HAPTICS_STRENGTH = "setting:HapticsStrength";
@@ -92,6 +94,19 @@ public class App_Details : Common.SingletonComponent<App_Details>
       PlayerPrefs.SetInt(App_Details.CFG__IS_LEFT_HANDED, value ? 1 : 0);
     }
   }
+
+  public uint PressureCurveIndex
+  {
+    get { return _pressureCurveIndex; }
+    set
+    {
+      _pressureCurveIndex = value;
+      Controller.PrimaryController.Pen.PressureCurve = PressureCurves[_pressureCurveIndex];
+      Controller.SecondaryController.Pen.PressureCurve = PressureCurves[_pressureCurveIndex];
+      PlayerPrefs.SetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, (int)_pressureCurveIndex);
+    }
+  }
+  private uint _pressureCurveIndex = Global.NullUint;
 
   public uint PressureLengthIndex
   {
@@ -170,6 +185,9 @@ public class App_Details : Common.SingletonComponent<App_Details>
 
   private void Start()
   {
+    // Pressure length
+    PressureCurveIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_CURVE_INDEX, 2);
+
     // Pressure length
     PressureLengthIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, 2);
 

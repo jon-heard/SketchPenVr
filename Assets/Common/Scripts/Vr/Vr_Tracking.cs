@@ -1,61 +1,82 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Vr_Tracking : MonoBehaviour
+namespace Common.Vr
 {
-  public Transform LeftHand;
-  public Transform RightHand;
-
-  private App_Input _input;
-  private Vector3 _leftPosition;
-  private Vector3 _rightPosition;
-  private float _lastLeftControllerMoveTime;
-  private float _lastRightControllerMoveTime;
-  private float _const_hideDisabledControllerDelay;
-
-  private void Start()
+  public class Vr_Tracking : SingletonComponent<Vr_Tracking>
   {
-    _input = new App_Input();
-    _input.Enable();
-    _const_hideDisabledControllerDelay = App_Details.Instance.MyCommonDetails.DELAY_HIDE_DISABLED_CONTROLLER;
-  }
+    public Transform LeftHand;
+    public Transform RightHand;
+    public UnityEvent OnTrackingUpdated;
 
-  private void OnPreRender()
-  {
-    transform.localPosition = _input.VrHeadTracking.Position.ReadValue<Vector3>();
-    transform.localRotation = _input.VrHeadTracking.Rotation.ReadValue<Quaternion>();
+    private App_Input _input;
+    private float _lastLeftControllerMoveTime;
+    private float _lastRightControllerMoveTime;
+    private float _const_hideDisabledControllerDelay;
 
-    var now = Time.time;
-    var newLeftPosition = _input.VrLeftHandTracking.Position.ReadValue<Vector3>();
-    var newRightPosition = _input.VrRightHandTracking.Position.ReadValue<Vector3>();
-
-    LeftHand.localPosition = newLeftPosition;
-    LeftHand.localRotation = _input.VrLeftHandTracking.Rotation.ReadValue<Quaternion>();
-
-    RightHand.localPosition = newRightPosition;
-    RightHand.localRotation = _input.VrRightHandTracking.Rotation.ReadValue<Quaternion>();
-
-    // Handle hiding disabled controllers
-    if (newLeftPosition != _leftPosition)
+    private void Start()
     {
-      _leftPosition = newLeftPosition;
-      _lastLeftControllerMoveTime = now;
-      LeftHand.gameObject.SetActive(true);
+      _input = new App_Input();
+      _input.Enable();
+      _const_hideDisabledControllerDelay = App_Details.Instance.MyCommonDetails.DELAY_HIDE_DISABLED_CONTROLLER;
     }
-    else if ((now - _lastLeftControllerMoveTime) > _const_hideDisabledControllerDelay)
+
+    private void OnPreRender()
     {
-      LeftHand.gameObject.SetActive(false);
-      _lastLeftControllerMoveTime = float.MaxValue; // Prevent repeat calls to this code block
-    }
-    if (newRightPosition != _rightPosition)
-    {
-      _rightPosition = newRightPosition;
-      _lastRightControllerMoveTime = now;
-      RightHand.gameObject.SetActive(true);
-    }
-    else if ((now - _lastRightControllerMoveTime) > _const_hideDisabledControllerDelay)
-    {
-      RightHand.gameObject.SetActive(false);
-      _lastRightControllerMoveTime = float.MaxValue; // Prevent repeat calls to this code block
+      transform.localPosition = _input.VrHeadTracking.Position.ReadValue<Vector3>();
+      transform.localRotation = _input.VrHeadTracking.Rotation.ReadValue<Quaternion>();
+
+      var newLeftPosition = _input.VrLeftHandTracking.Position.ReadValue<Vector3>();
+      var newRightPosition = _input.VrRightHandTracking.Position.ReadValue<Vector3>();
+      var newLeftRotation = _input.VrLeftHandTracking.Rotation.ReadValue<Quaternion>();
+      var newRightRotation = _input.VrRightHandTracking.Rotation.ReadValue<Quaternion>();
+
+      var now = Time.time;
+      var controllerTrackingMoved = false;
+
+      // Handle hiding disabled controllers
+      if (newLeftPosition != LeftHand.localPosition)
+      {
+        LeftHand.localPosition = newLeftPosition;
+        controllerTrackingMoved = true;
+        LeftHand.gameObject.SetActive(true);
+        _lastLeftControllerMoveTime = now;
+      }
+      else if ((now - _lastLeftControllerMoveTime) > _const_hideDisabledControllerDelay)
+      {
+        LeftHand.gameObject.SetActive(false);
+        _lastLeftControllerMoveTime = float.MaxValue; // Prevent repeat calls to this code block
+      }
+
+      if (newRightPosition != RightHand.localPosition)
+      {
+        RightHand.localPosition = newRightPosition;
+        controllerTrackingMoved = true;
+        RightHand.gameObject.SetActive(true);
+        _lastRightControllerMoveTime = now;
+      }
+      else if ((now - _lastRightControllerMoveTime) > _const_hideDisabledControllerDelay)
+      {
+        RightHand.gameObject.SetActive(false);
+        _lastRightControllerMoveTime = float.MaxValue; // Prevent repeat calls to this code block
+      }
+
+      if (newLeftRotation != LeftHand.localRotation)
+      {
+        LeftHand.localRotation = newLeftRotation;
+        controllerTrackingMoved = true;
+      }
+
+      if (newRightRotation != RightHand.localRotation)
+      {
+        RightHand.localRotation = newRightRotation;
+        controllerTrackingMoved = true;
+      }
+
+      if (controllerTrackingMoved)
+      {
+        OnTrackingUpdated.Invoke();
+      }
     }
   }
 }

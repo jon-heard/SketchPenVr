@@ -101,9 +101,23 @@ public class Pen : MonoBehaviour
         v[index].y = yPos;
       }
       _penInnerShaft.mesh.vertices = v;
+
+      RecalculateCachedValues();
     }
   }
   private float _tipLength = 0.0f; // Start with invalid number for triggering logic on start
+
+  public uint PressureCurve
+  {
+    get { return _pressureCurve; }
+    set
+    {
+      if (value == _pressureCurve) { return; }
+      _pressureCurve = value;
+      RecalculateCachedValues();
+    }
+  }
+  private uint _pressureCurve;
 
   public float Distance
   {
@@ -134,7 +148,7 @@ public class Pen : MonoBehaviour
         var t = transform.localPosition;
         if (_isFlipped)
         {
-          // Outside the pen
+          // Beyond the pen
           if (_distance > _const_distance_tipPoint)
           {
             t.z = _currentZPosition + 0.0f;
@@ -159,32 +173,43 @@ public class Pen : MonoBehaviour
         }
         else
         {
-          // Outside the pen
+          // Beyond the pen
           if (_distance > _const_distance_tipPoint)
           {
             t.z = _currentZPosition;
           }
           // Within the back end
-          else if (_distance < _const_distance_eraserBase)
+          else if (_distance < _eraserBaseAdjust)
           {
             t.z =
               _currentZPosition +
-              (_distance - _const_distance_tipBase * _distance / _const_distance_eraserBase);
+              _distance - _const_distance_tipBase * (_distance + _curveOffset) / _const_distance_eraserBase;
           }
           // Within the shaft
-          else if (_distance < _const_distance_tipBase)
+          else if (_distance < _tipBaseAdjust)
           {
             t.z = _currentZPosition + _distance - _const_distance_tipBase;
           }
           // Within the tip
           else
           {
-            //var normalizedDistance =
-            //  (_distance - _const_distance_tipBase) /
-            //  (_const_distance_tipPoint - _const_distance_tipBase);
-            //Debug.Log(normalizedDistance);
-            //var eased = Mathf.Pow(normalizedDistance, 3);// Mathf.Pow(normalizedDistance - 1, 3) + 1;
-            t.z = _currentZPosition + 0.0f;// (_distance - _const_distance_tipBase) - eased * (_const_distance_tipPoint - _const_distance_tipBase);
+            if (PressureCurve == 0)
+            {
+              t.z = _currentZPosition;
+            }
+            else
+            {
+              var normalizedDistance =
+                1.0f - (_distance - _tipBaseAdjust) / (_const_distance_tipPoint - _tipBaseAdjust);
+              var adjustedNormalizedDistance =
+                (1.0f - Mathf.Pow(normalizedDistance - 1.0f, PressureCurve * 2))
+                * _rlCurvedTipLength - 1.0f;
+              t.z = _currentZPosition + _distance + _const_distance_tipPoint * adjustedNormalizedDistance;
+              if (App_Details.Instance.PressureLengthIndex != 0)
+              {
+                Pressure = (1.0f + adjustedNormalizedDistance) / (App_Details.Instance.PressureLengthIndex == 2 ? 0.385f : 0.1694f);
+              }
+            }
           }
         }
         transform.localPosition = t;
@@ -239,6 +264,21 @@ public class Pen : MonoBehaviour
   private int[] _vertexIndices_shaft2;
   private int[] _vertexIndices_shaft3;
   private int[] _vertexIndices_innerShaft;
+
+  private float _curveOffset;
+  private float _tipBaseAdjust;
+  private float _eraserBaseAdjust;
+  private float _rlCurvedTipLength;
+
+  private void RecalculateCachedValues()
+  {
+    var rlTipLengthModifier = 1.0f + PressureCurve / 8.0f;
+    _curveOffset =
+      (_const_distance_tipPoint - _const_distance_tipBase) * PressureCurve * rlTipLengthModifier;
+    _tipBaseAdjust = _const_distance_tipBase - _curveOffset;
+    _eraserBaseAdjust = _const_distance_eraserBase - _curveOffset;
+    _rlCurvedTipLength = _curveOffset * 7.7f / PressureCurve / rlTipLengthModifier;
+  }
 
   private void Awake()
   {

@@ -1,3 +1,4 @@
+using Common.Vr;
 using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
 using System;
@@ -248,7 +249,7 @@ public class Controller : MonoBehaviour
 
   private App_Input _input;
   private float _rayVisualZOffset;
-  private bool _isDrawing;
+  private bool _isPenTouching;
   private InputManager.ListenerTicket _adjustGrip_GripButtonListener;
 
   // User input
@@ -357,6 +358,11 @@ public class Controller : MonoBehaviour
   //////////////////////////
   // Focus and draw logic //
   //////////////////////////
+  public void OnTrackingUpdated()
+  {
+    Update_Focus();
+  }
+
   private void Update()
   {
     // Input
@@ -365,7 +371,6 @@ public class Controller : MonoBehaviour
 #endif
 
     // Logic
-    Update_Focus();
     Update_NearControl();
   }
 
@@ -375,10 +380,10 @@ public class Controller : MonoBehaviour
     _controllerVis.MyCollider.enabled = false;
     var distance = _const_maxInteractDistance;
     var hitInfo = new RaycastHit();
-    if (Physics.Raycast(transform.position, transform.forward, out hitInfo) &&
+    if (Physics.Raycast(transform.position - transform.forward * 0.4f, transform.forward, out hitInfo) &&
         hitInfo.distance < _const_maxInteractDistance)
     {
-      distance = hitInfo.distance;
+      distance = hitInfo.distance - 0.4f;
       _focusPosition = hitInfo.point;
       Focus = hitInfo.transform.GetComponent<Interactable>();
       var focusParent = Focus?.transform?.parent;
@@ -462,9 +467,9 @@ public class Controller : MonoBehaviour
       if (_isPenActive)
       {
         _isPenActive = false;
-        if (_isDrawing)
+        if (_isPenTouching)
         {
-          _isDrawing = false;
+          _isPenTouching = false;
           DoHaptics();
         }
         UnpressAllButtons();
@@ -525,10 +530,10 @@ public class Controller : MonoBehaviour
     }
 
     // Calc _isDrawing
-    var newIsDrawing = (Pen.Pressure * triggerAdjust) > 0.0f;
-    if (newIsDrawing != _isDrawing)
+    var newIsPenTouching = (Pen.Pressure) > 0.0f;
+    if (newIsPenTouching != _isPenTouching)
     {
-      _isDrawing = newIsDrawing;
+      _isPenTouching = newIsPenTouching;
       DoHaptics();
     }
   }
