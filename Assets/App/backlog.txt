@@ -9,7 +9,7 @@ possible main apps
 
 0.1.07.00
 ----------
-- do painting video
+-  do painting video
 
 0.2.00.00 - dev
 ----------

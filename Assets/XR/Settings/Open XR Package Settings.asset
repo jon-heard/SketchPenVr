@@ -135,17 +135,17 @@ MonoBehaviour:
   m_Name: Standalone
   m_EditorClassIdentifier: 
   features:
+  - {fileID: -6627521178030532020}
   - {fileID: 1251886514283083643}
   - {fileID: 3157275803856700383}
   - {fileID: -5464629888712294329}
   - {fileID: -5141160069291781916}
   - {fileID: 5223076985346163211}
   - {fileID: -8937979623202977690}
-  - {fileID: -6627521178030532020}
-  - {fileID: 6862456144167380199}
   - {fileID: 6568151974125609190}
-  - {fileID: -8975858317220403469}
   - {fileID: -6247483485996592465}
+  - {fileID: 6862456144167380199}
+  - {fileID: -8975858317220403469}
   m_renderMode: 1
   m_depthSubmissionMode: 0
 --- !u!114 &11400000
@@ -160,9 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0ebc320a151d3408ea1e9fce54d40e, type: 3}
   m_Name: Open XR Package Settings
   m_EditorClassIdentifier: 
-  Keys: 01000000
+  Keys: 0100000007000000
   Values:
   - {fileID: -3570283051304097297}
+  - {fileID: 6074926147929522837}
 --- !u!114 &1251886514283083643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +224,21 @@ MonoBehaviour:
   company: Unity
   priority: 0
   required: 0
+--- !u!114 &6074926147929522837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a1f07dc5afe854f9f12a4194aca3fb, type: 3}
+  m_Name: Android
+  m_EditorClassIdentifier: 
+  features: []
+  m_renderMode: 1
+  m_depthSubmissionMode: 0
 --- !u!114 &6568151974125609190
 MonoBehaviour:
   m_ObjectHideFlags: 0

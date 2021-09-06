@@ -220,7 +220,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
     HapticsStrength = (HapticsStrengthType)PlayerPrefs.GetInt(App_Details.CFG__HAPTICS_STRENGTH, 1);
 
     // Handedness
-    PenPhysics = (PenPhysicsType)PlayerPrefs.GetInt(App_Details.CFG__PEN_PHYSICS, 0);
+    PenPhysics = (PenPhysicsType)PlayerPrefs.GetInt(App_Details.CFG__PEN_PHYSICS, 1);
 
     // Handedness
     IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
