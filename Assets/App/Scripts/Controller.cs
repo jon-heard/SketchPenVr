@@ -1,3 +1,4 @@
+using Common;
 using Common.Vr;
 using Common.Vr.Ui;
 using Common.Vr.Ui.Controls;
@@ -103,8 +104,8 @@ public class Controller : MonoBehaviour
       var otherInstance = _instances[_controllerIndex == 0 ? 1 : 0];
       if (_isHolding && otherInstance.IsHolding)
       {
-        _instances[0]._pinchHandler.transform.position = _instances[0]._focusPosition;
-        _instances[1]._pinchHandler.transform.position = _instances[1]._focusPosition;
+        _instances[0]._pinchHandler.transform.position = _instances[0].Pen.FocusPosition;
+        _instances[1]._pinchHandler.transform.position = _instances[1].Pen.FocusPosition;
         _instances[0]._pinchHandler.Focus = _held.DragInteractable;
         _instances[0]._pinchHandler.IsPinching = true;
       }
@@ -263,7 +264,6 @@ public class Controller : MonoBehaviour
 
   // Focus info
   public Interactable Focus { get; private set; }
-  private Vector3 _focusPosition;
   public PointerEmulation FocusPointerEmulation { get; private set; }
   private ControllerVis _focusControllerVis;
   private UiInputHandler _inputHandler = new UiInputHandler();
@@ -384,7 +384,7 @@ public class Controller : MonoBehaviour
         hitInfo.distance < _const_maxInteractDistance)
     {
       distance = hitInfo.distance - 0.4f;
-      _focusPosition = hitInfo.point;
+      Pen.FocusPosition = hitInfo.point;
       Focus = hitInfo.transform.GetComponent<Interactable>();
       var focusParent = Focus?.transform?.parent;
 
@@ -426,6 +426,7 @@ public class Controller : MonoBehaviour
     else
     {
       Focus = null;
+      Pen.FocusPosition = Global.NullVec3;
       FocusPointerEmulation?.SetPenState(0.0f, 0, Vector2.zero, Pen.IsFlipped);
       FocusPointerEmulation = null;
       _inputHandler.UpdatePointer(null, _isTriggerDown, Vector3.zero, _controllerIndex == 0);

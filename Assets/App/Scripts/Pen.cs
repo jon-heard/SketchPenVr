@@ -1,9 +1,14 @@
+using Common;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Pen : MonoBehaviour
 {
+  private const uint PRIOR_DISTANCE_COUNT = 3;
+  private const uint PRIOR_FOCUS_POSITION_COUNT = 3;
+  private const float TOP_PEN_HIT_SPEED = 0.5f;
+  private const float TOP_PEN_MOVE_SPEED = 0.01f;
   private const float InitialVertexPosition_Tip = 0.054462f;
   private const float InitialVertexPosition_Shaft1 = 0.053359f;
   private const float InitialVertexPosition_Shaft2 = 0.054870f;
@@ -15,6 +20,9 @@ public class Pen : MonoBehaviour
   [SerializeField] private MeshFilter _penShaft;
   [SerializeField] private MeshFilter _penInnerShaft;
   [SerializeField] private Renderer[] _renderers;
+  [SerializeField] private AudioSource Audio_Bump;
+  [SerializeField] private AudioSource Audio_Scratch;
+  [SerializeField] private AudioSource Audio_Rumble;
 
   [NonSerialized] public App_Details.PenPhysicsType PenPhysics;
 
@@ -125,23 +133,12 @@ public class Pen : MonoBehaviour
     set
     {
       if (value == _distance) { return; }
+      for (var i = PRIOR_DISTANCE_COUNT - 1; i > 0; i--)
+      {
+        _priorDistances[i] = _priorDistances[i - 1];
+      }
+      _priorDistances[0] = _distance;
       _distance = value;
-      if (_isFlipped)
-      {
-        Pressure =
-          (Distance > _const_distance_tipPoint) ? 0.0f :
-          (Distance < _const_distance_flippedEraserBase) ? 1.0f :
-          1.0f - (Distance - _const_distance_flippedEraserBase) /
-            (_const_distance_tipPoint - _const_distance_flippedEraserBase);
-      }
-      else
-      {
-        Pressure =
-          (Distance > _const_distance_tipPoint) ? 0.0f :
-          (Distance < _const_distance_tipBase) ? 1.0f :
-          1.0f - (Distance - _const_distance_tipBase) /
-            (_const_distance_tipPoint - _const_distance_tipBase);
-      }
       // Pen embed adjust
       if (PenPhysics != App_Details.PenPhysicsType.None)
       {
@@ -151,11 +148,13 @@ public class Pen : MonoBehaviour
           // Beyond the pen
           if (_distance > _const_distance_tipPoint)
           {
+            Pressure = 0.0f;
             t.z = _currentZPosition + 0.0f;
           }
           // Within the back end
           else if (_distance < _const_distance_eraserBase)
           {
+            Pressure = 0.0f;
             t.z =
               _currentZPosition +
               (_distance - _const_distance_flippedEraserBase * _distance / _const_distance_eraserBase);
@@ -163,11 +162,27 @@ public class Pen : MonoBehaviour
           // Within the shaft
           else if (_distance < _const_distance_flippedEraserBase)
           {
+            if (Pressure == 0.0f)
+            {
+              Audio_Bump.volume =
+                (1.0f - Mathf.Pow(1.0f - (_priorDistances[PRIOR_DISTANCE_COUNT - 1] - _distance) / TOP_PEN_HIT_SPEED, 2)) * _const_volume_penHit * App_Details.Instance.Volume;
+              Audio_Bump.Play(0);
+            }
+            Pressure = 1.0f;
             t.z = _currentZPosition + (_distance - _const_distance_flippedEraserBase);
           }
           // Within the tip
           else
           {
+            if (Pressure == 0.0f)
+            {
+              Audio_Bump.volume =
+                (1.0f - Mathf.Pow(1.0f - (_priorDistances[PRIOR_DISTANCE_COUNT - 1] - _distance) / TOP_PEN_HIT_SPEED, 2)) * _const_volume_penHit * App_Details.Instance.Volume;
+              Audio_Bump.Play(0);
+            }
+            Pressure =
+              1.0f - (Distance - _const_distance_flippedEraserBase) /
+              (_const_distance_tipPoint - _const_distance_flippedEraserBase);
             t.z = _currentZPosition + 0.0f;
           }
         }
@@ -176,11 +191,13 @@ public class Pen : MonoBehaviour
           // Beyond the pen
           if (_distance > _const_distance_tipPoint)
           {
+            Pressure = 0.0f;
             t.z = _currentZPosition;
           }
           // Within the back end
           else if (_distance < _eraserBaseAdjust)
           {
+            Pressure = 0.0f;
             t.z =
               _currentZPosition +
               _distance - _const_distance_tipBase * (_distance + _curveOffset) / _const_distance_eraserBase;
@@ -188,6 +205,13 @@ public class Pen : MonoBehaviour
           // Within the shaft
           else if (_distance < _tipBaseAdjust)
           {
+            if (Pressure == 0.0f)
+            {
+              Audio_Bump.volume =
+                (1.0f - Mathf.Pow(1.0f - (_priorDistances[PRIOR_DISTANCE_COUNT - 1] - _distance) / TOP_PEN_HIT_SPEED, 2)) * _const_volume_penHit * App_Details.Instance.Volume;
+              Audio_Bump.Play(0);
+            }
+            Pressure = 1.0f;
             t.z = _currentZPosition + _distance - _const_distance_tipBase;
           }
           // Within the tip
@@ -195,6 +219,9 @@ public class Pen : MonoBehaviour
           {
             if (PressureCurve == 0)
             {
+              Pressure =
+                1.0f - (Distance - _const_distance_tipBase) /
+                (_const_distance_tipPoint - _const_distance_tipBase);
               t.z = _currentZPosition;
             }
             else
@@ -205,9 +232,20 @@ public class Pen : MonoBehaviour
                 (1.0f - Mathf.Pow(normalizedDistance - 1.0f, PressureCurve * 2))
                 * _rlCurvedTipLength - 1.0f;
               t.z = _currentZPosition + _distance + _const_distance_tipPoint * adjustedNormalizedDistance;
-              if (App_Details.Instance.PressureLengthIndex != 0)
+              if (Pressure == 0.0f && gameObject.activeInHierarchy)
               {
-                Pressure = (1.0f + adjustedNormalizedDistance) / (App_Details.Instance.PressureLengthIndex == 2 ? 0.385f : 0.1694f);
+                Audio_Bump.volume =
+                  (1.0f - Mathf.Pow(1.0f - (_priorDistances[PRIOR_DISTANCE_COUNT - 1] - _distance) / TOP_PEN_HIT_SPEED, 2)) * _const_volume_penHit * App_Details.Instance.Volume;
+                Audio_Bump.Play(0);
+              }
+              if (App_Details.Instance.PressureLengthIndex == 0)
+              {
+                Pressure = 1.0f;
+              }
+              else
+              {
+                Pressure =
+                  (1.0f + adjustedNormalizedDistance) / (App_Details.Instance.PressureLengthIndex == 2 ? 0.385f : 0.1694f);
               }
             }
           }
@@ -233,6 +271,38 @@ public class Pen : MonoBehaviour
     }
   }
   private float _distance;
+  private float[] _priorDistances = new float[PRIOR_DISTANCE_COUNT];
+
+  public Vector3 FocusPosition
+  {
+    get { return _focusPosition; }
+    set
+    {
+      if (value == _focusPosition) { return; }
+      if (!gameObject.activeInHierarchy) { return; }
+      for (var i = PRIOR_FOCUS_POSITION_COUNT - 1; i > 0; i--)
+      {
+        _priorFocusPositions[i] = _priorFocusPositions[i - 1];
+      }
+      _priorFocusPositions[0] = _focusPosition;
+      _focusPosition = value;
+      if (_focusPosition == Global.NullVec3 ||
+          _priorFocusPositions[PRIOR_FOCUS_POSITION_COUNT - 1] == Global.NullVec3)
+      {
+        Audio_Scratch.volume = Audio_Rumble.volume = 0.0f;
+      }
+      else
+      {
+        var volume = App_Details.Instance.Volume;
+        var speed =
+          1.0f - (float)Math.Pow(1.0f - (_focusPosition - _priorFocusPositions[PRIOR_FOCUS_POSITION_COUNT - 1]).sqrMagnitude / TOP_PEN_MOVE_SPEED, 2.0f);
+        Audio_Scratch.volume = (Pressure == 0.0f) ? 0.0f : (speed * _const_volume_penScrape * volume);
+        Audio_Rumble.volume = speed * (Math.Max(0.0f, Pressure - 0.25f) / 0.75f) * _const_volume_penRumble * volume;
+      }
+    }
+  }
+  private Vector3 _focusPosition;
+  private Vector3[] _priorFocusPositions = new Vector3[PRIOR_FOCUS_POSITION_COUNT];
 
   public float Opacity
   {
@@ -252,6 +322,9 @@ public class Pen : MonoBehaviour
   private static float _const_distance_tipBase;
   private static float _const_distance_eraserBase;
   private static float _const_distance_flippedEraserBase;
+  private static float _const_volume_penHit;
+  private static float _const_volume_penScrape;
+  private static float _const_volume_penRumble;
 
   private float _defaultZPosition;
   private float _currentZPosition;
@@ -288,9 +361,12 @@ public class Pen : MonoBehaviour
     _const_distance_tipBase = App_Details.Instance.CONTROLLER_DISTANCE_TIP_BASE;
     _const_distance_eraserBase = App_Details.Instance.CONTROLLER_DISTANCE_ERASER_BASE;
     _const_distance_flippedEraserBase = _const_distance_tipPoint - _const_distance_eraserBase;
+    _const_volume_penHit = App_Details.Instance.VOLUME_PEN_HIT;
+    _const_volume_penScrape = App_Details.Instance.VOLUME_PEN_SCRAPE;
+    _const_volume_penRumble = App_Details.Instance.VOLUME_PEN_RUMBLE;
 
-    // Setup default values
-    _defaultZPosition = transform.localPosition.z;
+  // Setup default values
+  _defaultZPosition = transform.localPosition.z;
     _unphysicsedTipZPosition = _penTipTransform.localPosition.z;
     _currentZPosition = _defaultZPosition;
 
@@ -368,5 +444,10 @@ public class Pen : MonoBehaviour
 
     // Give default tip length HERE to trigger logic (now that needed data is collected for logic)
     TipLength = InitialVertexPosition_Tip;
+
+    for (var i = 0; i < PRIOR_FOCUS_POSITION_COUNT; i++)
+    {
+      _priorFocusPositions[i] = Global.NullVec3;
+    }
   }
 }

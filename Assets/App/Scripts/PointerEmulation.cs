@@ -9,8 +9,20 @@ using System.Collections;
 public class PointerEmulation : MonoBehaviour
 {
   [NonSerialized] public Vector2Int Resolution;
-  [NonSerialized] public Vector2 Position;
   [NonSerialized] public float Distance;
+
+  public Vector2 Position
+  {
+    get { return _position; }
+    set
+    {
+      if (value == _position) { return; }
+      _position = value;
+      _pixelPosition = (Position * Resolution).ToIntVector();
+    }
+  }
+  private Vector2 _position;
+  private Vector2Int _pixelPosition;
 
   public bool IsEmulating
   {
@@ -116,10 +128,10 @@ public class PointerEmulation : MonoBehaviour
   {
     if (!IsEmulating || _isEmulatingMouse) { return; }
 
-    var p = (Position * Resolution).ToIntVector();
     var t = tilt.ToIntVector();
 
-    OsHook_Pen.SetState((uint)p.x, (uint)p.y, pressure, rotation, t.x, t.y, usingEraser);
+    OsHook_Pen.SetState(
+      (uint)_pixelPosition.x, (uint)_pixelPosition.y, pressure, rotation, t.x, t.y, usingEraser);
 
     // Setup the pen shadow
     var size = (Distance - _const_maxNearDistance * 0.5f) * 2.0f;
@@ -162,7 +174,6 @@ public class PointerEmulation : MonoBehaviour
 
   private void UpdateMousePosition()
   {
-    var p = (Position * Resolution).ToIntVector();
-    OsHook_Mouse.SetPosition((uint)p.x, (uint)p.y);
+    OsHook_Mouse.SetPosition((uint)_pixelPosition.x, (uint)_pixelPosition.y);
   }
 }

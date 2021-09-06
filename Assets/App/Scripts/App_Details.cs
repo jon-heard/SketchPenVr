@@ -28,8 +28,12 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float HAPTICS_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
   public float HAPTICS_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"
   public Vector3 KEY_SELECT_KEYBOARD_POSITION = new Vector3(0.685f, 0.568075f, 0.0f);
+  public float VOLUME_PEN_HIT = 10.0f;
+  public float VOLUME_PEN_SCRAPE = 2.0f;
+  public float VOLUME_PEN_RUMBLE = 3.0f;
   public uint[] PressureCurves;
   public float[] PressureLengths;
+  public float[] VolumeLevels;
 
   // Key constants
   public const string CFG__BACKGROUND = "setting:background";
@@ -37,6 +41,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public const string CFG__CONTROLLER_TRANSFORM = "setting:controller%1Transform";
   public const string CFG__PRESSURE_CURVE_INDEX = "setting:PressureCurveIndex";
   public const string CFG__PRESSURE_LENGTH_INDEX = "setting:PressureLengthIndex";
+  public const string CFG__VOLUME_INDEX = "setting:VolumeIndex";
   public const string CFG__PEN_PHYSICS = "setting:penPhysics";
   public const string CFG__HAPTICS_STRENGTH = "setting:HapticsStrength";
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
@@ -132,6 +137,23 @@ public class App_Details : Common.SingletonComponent<App_Details>
   }
   private float _pressureLength;
 
+  public uint VolumeIndex
+  {
+    get { return _volumeIndex; }
+    set
+    {
+      _volumeIndex = value;
+      PlayerPrefs.SetInt(App_Details.CFG__VOLUME_INDEX, (int)_volumeIndex);
+    }
+  }
+  private uint _volumeIndex = 2;
+
+  public float Volume
+  {
+    get { return VolumeLevels[VolumeIndex]; }
+  }
+
+
   public enum HapticsStrengthType { Hard, Medium, Light, None }
   public HapticsStrengthType HapticsStrength
   {
@@ -190,6 +212,9 @@ public class App_Details : Common.SingletonComponent<App_Details>
 
     // Pressure length
     PressureLengthIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__PRESSURE_LENGTH_INDEX, 2);
+
+    // Pressure length
+    VolumeIndex = (uint)PlayerPrefs.GetInt(App_Details.CFG__VOLUME_INDEX, 2);
 
     // Haptics strength
     HapticsStrength = (HapticsStrengthType)PlayerPrefs.GetInt(App_Details.CFG__HAPTICS_STRENGTH, 1);

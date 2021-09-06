@@ -8,8 +8,8 @@ namespace Common.Vr.Ui.Controls
   {
     public Vector3 DraggingOverage = new Vector3(10.0f, 10.0f, 1.0f);
     public Vector3 AxisScales = new Vector3(1.0f, 1.0f, 1.0f);
-    public Vector3 AxisClampLow = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-    public Vector3 AxisClampHigh = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+    public Vector3 AxisClampLow = Global.MinVec3;
+    public Vector3 AxisClampHigh = Global.MaxVec3;
     [SerializeField] private BoxCollider Geometry;
     public Action<Vector3> OnDragged;
 

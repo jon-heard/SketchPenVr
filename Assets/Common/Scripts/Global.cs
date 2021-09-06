@@ -6,6 +6,12 @@ namespace Common
   public static class Global
   {
     public static readonly Vector2 NullVec2 = new Vector2(float.MaxValue, float.MaxValue);
+    public static readonly Vector3 NullVec3 =
+      new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+    public static readonly Vector3 MaxVec3 =
+      new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+    public static readonly Vector3 MinVec3 =
+      new Vector3(float.MinValue, float.MinValue, float.MinValue);
     public const uint NullUint = uint.MaxValue;
 
     public static Vector2Int ToIntVector(this Vector2 source)

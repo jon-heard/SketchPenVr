@@ -19,12 +19,14 @@ public class Ui_Menu_Settings : Ui_Menu
   [SerializeField] private Button _button_background;
   [SerializeField] private Button _button_pressureCurve;
   [SerializeField] private Button _button_pressureLength;
+  [SerializeField] private Button _button_volume;
   [SerializeField] private Button _button_penPhysics;
   [SerializeField] private Button _button_haptics;
   [SerializeField] private Button _button_handedness;
   [SerializeField] private Dropdown _dropdown_background;
   [SerializeField] private Dropdown _dropdown_pressureCurve;
   [SerializeField] private Dropdown _dropdown_pressureLength;
+  [SerializeField] private Dropdown _dropdown_volume;
   [SerializeField] private Dropdown _dropdown_penPhysics;
   [SerializeField] private Dropdown _dropdown_haptics;
   [SerializeField] private Dropdown _dropdown_handedness;
@@ -47,7 +49,7 @@ public class Ui_Menu_Settings : Ui_Menu
     _dropdown_background.gameObject.SetActive(false);
     _button_background.State = Button.ButtonState.NotLockedDown;
 
-    // Pressure length
+    // Pressure curve
     _dropdown_pressureCurve.Index = App_Details.Instance.PressureCurveIndex;
     _dropdown_pressureCurve.gameObject.SetActive(false);
     _button_pressureCurve.State = Button.ButtonState.NotLockedDown;
@@ -56,6 +58,11 @@ public class Ui_Menu_Settings : Ui_Menu
     _dropdown_pressureLength.Index = App_Details.Instance.PressureLengthIndex;
     _dropdown_pressureLength.gameObject.SetActive(false);
     _button_pressureLength.State = Button.ButtonState.NotLockedDown;
+
+    // Volume
+    _dropdown_volume.Index = App_Details.Instance.VolumeIndex;
+    _dropdown_volume.gameObject.SetActive(false);
+    _button_volume.State = Button.ButtonState.NotLockedDown;
 
     // Pen physics
     _dropdown_penPhysics.Index = (uint)App_Details.Instance.PenPhysics;
@@ -125,6 +132,18 @@ public class Ui_Menu_Settings : Ui_Menu
   public void PressureLengthChanged()
   {
     App_Details.Instance.PressureLengthIndex = _dropdown_pressureLength.Index;
+    Hide();
+  }
+
+  // Volume
+  public void OnVolumeButton()
+  {
+    _dropdown_volume.gameObject.SetActive(true);
+    _button_volume.State = Button.ButtonState.LockedDown;
+  }
+  public void VolumeChanged()
+  {
+    App_Details.Instance.VolumeIndex = _dropdown_volume.Index;
     Hide();
   }
 
