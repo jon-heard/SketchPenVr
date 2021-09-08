@@ -8,6 +8,8 @@ namespace Common.Vr.Ui.Controls
   {
     public static List<Control> Instances = new List<Control>();
 
+    public bool TakesFocus = true;
+
     public ObjectLocker Locker { get; private set; }
 
     public static bool WasPrimaryController = false;

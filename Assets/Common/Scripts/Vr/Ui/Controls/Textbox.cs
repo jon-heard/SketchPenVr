@@ -88,7 +88,7 @@ namespace Common.Vr.Ui.Controls
         }
         _focusTextboxInitialText = _focusTextbox.Text;
       }
-      else if (_focusTextbox == this)
+      else if (_focusTextbox == this && focus?.TakesFocus == true)
       {
         _focusTextbox = null;
         StopAllCoroutines();

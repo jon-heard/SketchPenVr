@@ -7,8 +7,10 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
-0.1.07.00
+0.1.08.00
 ----------
+- hotkey belt
+
 -  do painting video
 
 0.2.00.00 - dev
@@ -60,8 +62,9 @@ possible main apps
 
 0.2.04.00 - dev
 ----------
-- should detect hybrid computer and auto-switch to it if necessary
-  - make sure it's obvious to the user that it's running in that mode as it's less performant
+- fix controllers not lining up with real life (esp. in hybrid screen)
+
+- always use hybrid screen mode
 
 - fix shadow in hybrid mode
 
@@ -70,6 +73,8 @@ possible main apps
     - feature instruction update: bring up these controls
 
 - add monitor selector (greyed if only one monitor)
+
+- optimize to the point where it works ok with laptop (optimize screen capture especially)
 
 0.2.05.00 - dev
 ----------

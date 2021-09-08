@@ -34,6 +34,17 @@ public class Ui_Menu_Main : Ui_Menu
     Menu_Settings.Show(source);
   }
 
+  public void OnShowKeyboard()
+  {
+    var keyboard = App_Functions.Instance.MyKeyboard;
+    keyboard.transform.parent = transform;
+    keyboard.transform.localPosition = App_Details.Instance.KEYBOARD_POSITION;
+    keyboard.transform.localEulerAngles = Vector3.zero;
+    keyboard.transform.parent = null;
+    keyboard.gameObject.SetActive(true);
+    Hide();
+  }
+
   public void OnLockButton(Button source)
   {
     _dropdown_lock.gameObject.SetActive(true);

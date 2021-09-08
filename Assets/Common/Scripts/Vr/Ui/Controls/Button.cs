@@ -8,7 +8,7 @@ namespace Common.Vr.Ui.Controls
     // NOTE: "NotLockedDown" needed as "Idle" is set on unhover, so is blocked during "LockedDown"
     public enum ButtonState { Idle, Hovered, Down, Disabled, LockedDown, NotLockedDown };
 
-    [SerializeField] protected UnityEvent OnClick;
+    public UnityEvent OnClick;
     [Header("Wiring")]
     public Renderer Geometry;
     public TextMesh Label;

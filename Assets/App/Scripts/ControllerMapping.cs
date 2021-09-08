@@ -104,8 +104,8 @@ public class ControllerMapping
           Actions[control].Type = ControllerAction.ActionType.Pen_flip;
         // Second - Grip - Hold desktop
           control = (int)ControllerInput.Grip;
-          ActionTitles[control] = "Hold desktop";
-          Actions[control].Type = ControllerAction.ActionType.Hold_desktop;
+          ActionTitles[control] = "Hold";
+          Actions[control].Type = ControllerAction.ActionType.Hold_focus;
         // Second - High button - redo
           control = (int)ControllerInput.HighButton;
           ActionTitles[control] = "Redo";

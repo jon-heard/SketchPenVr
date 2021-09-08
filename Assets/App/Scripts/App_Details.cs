@@ -27,6 +27,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float HAPTICS_STRENGTH_HARD = 1.0f; // Rumble amplitude when set to "hard"
   public float HAPTICS_STRENGTH_MEDIUM = 0.35f; // Rumble amplitude when set to "medium"
   public float HAPTICS_STRENGTH_LIGHT = 0.15f; // Rumble amplitude when set to "light"
+  public Vector3 KEYBOARD_POSITION = new Vector3(-0.36f, 0.35f, -0.02f);
   public Vector3 KEY_SELECT_KEYBOARD_POSITION = new Vector3(0.685f, 0.568075f, 0.0f);
   public float VOLUME_PEN_HIT = 10.0f;
   public float VOLUME_PEN_SCRAPE = 2.0f;

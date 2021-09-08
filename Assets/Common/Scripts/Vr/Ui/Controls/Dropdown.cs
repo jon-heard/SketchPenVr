@@ -79,7 +79,7 @@ namespace Common.Vr.Ui.Controls
       {
         ToggleListVisibility();
       }
-      else if (!Scroll.IsPartOfScroll(focus))
+      else if (!Scroll.IsPartOfScroll(focus) && focus?.TakesFocus == true)
       {
         SetListVisibility(false);
       }

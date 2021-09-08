@@ -57,30 +57,34 @@ public class Ui_Control_ControlSetter : Button
 
   public void OnKeySelectButtonClicked(Button src)
   {
+    var actionIndexForSelector = Global.NullUint;
     for (uint i = 0; i < _actionParameterSelectUis.Length; i++)
     {
       if (_actionParameterSelectUis[i] == src)
       {
-        if (_currentActionParameterSelectIndex == i)
-        {
-          _currentActionParameterSelectIndex = Global.NullUint;
-          var keybd = App_Functions.Instance.MyKeyboard;
-          keybd.gameObject.SetActive(false);
-        }
-        else
-        {
-          _currentActionParameterSelectIndex = i;
-          var keybd = App_Functions.Instance.MyKeyboard;
-          var transformToMatch = src.transform.parent.parent;
-          keybd.transform.position =
-            transformToMatch.position +
-            transformToMatch.rotation * App_Details.Instance.KEY_SELECT_KEYBOARD_POSITION;
-          keybd.transform.eulerAngles = src.transform.eulerAngles;
-          keybd.gameObject.SetActive(true);
-          keybd.OnKeyPressed = null;
-          keybd.OnKeyPressed += OnKeySelectorPressed;
-        }
+        actionIndexForSelector = i;
+        break;
       }
+    }
+    if (actionIndexForSelector == Global.NullUint) { return; }
+
+    // If keyboard selector shown, hide it
+    if (actionIndexForSelector == _currentActionParameterSelectIndex)
+    {
+      _currentActionParameterSelectIndex = Global.NullUint;
+      _selectorKeyboard.gameObject.SetActive(false);
+    }
+    // else show keyboard selector
+    else
+    {
+      _currentActionParameterSelectIndex = actionIndexForSelector;
+      _selectorKeyboard.transform.parent = src.transform;
+      var transformToMatch = src.transform.parent.parent;
+      _selectorKeyboard.transform.position =
+        transformToMatch.position +
+        transformToMatch.rotation * App_Details.Instance.KEY_SELECT_KEYBOARD_POSITION;
+      _selectorKeyboard.transform.eulerAngles = src.transform.eulerAngles;
+      _selectorKeyboard.gameObject.SetActive(true);
     }
   }
 
@@ -114,6 +118,7 @@ public class Ui_Control_ControlSetter : Button
 
   private bool _editing = false;
   private uint _currentActionParameterSelectIndex = Global.NullUint;
+  private Keyboard _selectorKeyboard;
 
   protected void Start()
   {
@@ -129,6 +134,11 @@ public class Ui_Control_ControlSetter : Button
       _actionEditorUis[i].SetList(actionTypeList);
       _actionParameterEditorUis[i].SetList(actionParameterList);
     }
+    _selectorKeyboard = Instantiate(App_Functions.Instance.MyKeyboard);
+    _selectorKeyboard.transform.localScale = Vector3.one;
+    _selectorKeyboard.SendKeyStrokes = false;
+    _selectorKeyboard.SetMetaControlVisibility(false);
+    _selectorKeyboard.OnKeyPressed += OnKeySelectorPressed;
   }
 
   protected override void OnEnable()
@@ -160,8 +170,7 @@ public class Ui_Control_ControlSetter : Button
 
     if (_currentActionParameterSelectIndex != Global.NullUint)
     {
-      var kbd = App_Functions.Instance.MyKeyboard;
-      var keys = kbd.Buttons;
+      var keys = _selectorKeyboard.Buttons;
       if (clicked == _actionParameterSelectUis[_currentActionParameterSelectIndex]) { return; }
       for (var i = 0; i < keys.Length; i++)
       {
@@ -171,7 +180,7 @@ public class Ui_Control_ControlSetter : Button
         }
       }
       _currentActionParameterSelectIndex = Global.NullUint;
-      kbd.gameObject.SetActive(false);
+      _selectorKeyboard.gameObject.SetActive(false);
     }
   }
 
@@ -271,8 +280,13 @@ public class Ui_Control_ControlSetter : Button
 
   private void OnKeySelectorPressed(KbdKey k)
   {
+    if (_currentActionParameterSelectIndex == Global.NullUint)
+    {
+      Debug.LogError("Selector keyboard pressed without action");
+      return;
+    }
     _actionParameterEditorUis[_currentActionParameterSelectIndex].Index = (uint)k;
-    App_Functions.Instance.MyKeyboard.gameObject.SetActive(false);
+    _selectorKeyboard.gameObject.SetActive(false);
     _currentActionParameterSelectIndex = Global.NullUint;
   }
 }
