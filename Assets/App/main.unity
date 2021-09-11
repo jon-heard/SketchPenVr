@@ -8165,6 +8165,7 @@ MonoBehaviour:
   VOLUME_PEN_SCRAPE: 2
   VOLUME_PEN_RUMBLE: 3
   PANEL_SIZE_PRESET_COUNT: 5
+  PINCH_SCALE_SENSITIVITY: 10
   PressureCurves: 00000000010000000600000010000000
   PressureLengths:
   - 0
@@ -8181,6 +8182,7 @@ MonoBehaviour:
   - 2
   - 4
   - 8
+  PanelSizePresets: []
 --- !u!4 &563741688
 Transform:
   m_ObjectHideFlags: 0

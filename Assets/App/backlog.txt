@@ -13,11 +13,6 @@ FEATURES NOT YET IN BACKLOG
 - replace escape key (somehow)
 - remove unnecessary _const_ vars
 
-0.1.08.00
-----------
-- fix bug with drag-sizing
-  - fix drag-scaling to be tied simply to the distance between controllers
-
 0.1.09.00
 ----------
 - actions for setting pen and airbrush mode

@@ -33,6 +33,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float VOLUME_PEN_SCRAPE = 2.0f;
   public float VOLUME_PEN_RUMBLE = 3.0f;
   public uint PANEL_SIZE_PRESET_COUNT = 5;
+  public float PINCH_SCALE_SENSITIVITY = 10.0f;
   public uint[] PressureCurves;
   public float[] PressureLengths;
   public float[] VolumeLevels;

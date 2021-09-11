@@ -12,7 +12,9 @@ namespace Common
       new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
     public static readonly Vector3 MinVec3 =
       new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
     public const uint NullUint = uint.MaxValue;
+    public const float NullFloat = float.MaxValue;
 
     public static Vector2Int ToIntVector(this Vector2 source)
     {

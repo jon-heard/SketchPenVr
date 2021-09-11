@@ -43,7 +43,6 @@ public class Controller : MonoBehaviour
   [Header("Wiring")]
   public Pen Pen;
   [SerializeField] private LineRenderer _rayVisual;
-  [SerializeField] private PinchHandler _pinchHandler;
   [SerializeField] private ControllerVis _controllerVis;
 
   ////////////////
@@ -89,6 +88,7 @@ public class Controller : MonoBehaviour
       if (_isTriggerDown && value) { return; }
       _isHolding = value;
       var screen = App_Functions.Instance.MyScreen;
+
       // Break hold logic if holding a locked screen
       if (_isHolding &&
           Focus?.DragInteractable?.gameObject == screen.gameObject &&
@@ -96,6 +96,7 @@ public class Controller : MonoBehaviour
       {
         return;
       }
+
       // Have separate var (_held) for held in case lost focus
       if (_isHolding) { _held = Focus; }
       _held?.DragInteractable?.SetTemporaryParent(
@@ -104,14 +105,17 @@ public class Controller : MonoBehaviour
       var otherInstance = _instances[_controllerIndex == 0 ? 1 : 0];
       if (_isHolding && otherInstance.IsHolding)
       {
-        _instances[0]._pinchHandler.transform.position = _instances[0].Pen.FocusPosition;
-        _instances[1]._pinchHandler.transform.position = _instances[1].Pen.FocusPosition;
-        _instances[0]._pinchHandler.Focus = _held.DragInteractable;
-        _instances[0]._pinchHandler.IsPinching = true;
+        if (_pinchStartMagnitudeSquared == Global.NullFloat)
+        {
+          _pinchStartMagnitudeSquared =
+            (transform.position - otherInstance.transform.position).sqrMagnitude;
+          _pinchStartScale = _held.DragInteractable.transform.localScale.x;
+        }
       }
       else
       {
-        _instances[0]._pinchHandler.IsPinching = false;
+        _pinchStartMagnitudeSquared = otherInstance._pinchStartMagnitudeSquared = Global.NullFloat;
+        
         if (IsHolding)
         {
           _held?.DragInteractable?.SetTemporaryParent(transform.parent);
@@ -261,6 +265,8 @@ public class Controller : MonoBehaviour
   {
     get { return (FocusPointerEmulation && Pen.Distance <= _const_maxHoverDistance); }
   }
+  private float _pinchStartMagnitudeSquared = Global.NullFloat;
+  private float _pinchStartScale;
 
   // Focus info
   public Interactable Focus { get; private set; }
@@ -334,9 +340,6 @@ public class Controller : MonoBehaviour
         _isLeft ? "left_grip" : "right_grip", 20, OnGripButton_AdjustingGrip);
     _adjustGrip_GripButtonListener.IsListening = false;
 
-    // Pinching init
-    _pinchHandler.Other = _instances[_controllerIndex == 0 ? 1 : 0]._pinchHandler;
-
     // ControllerVis init
     _controllerVis.Mapping = _myControllerMapping =
       App_Details.Instance.MyControllerMappings.Mappings[_controllerIndex];
@@ -372,6 +375,7 @@ public class Controller : MonoBehaviour
 
     // Logic
     Update_NearControl();
+    Update_PinchSizing();
   }
 
   private void Update_Focus()
@@ -537,6 +541,20 @@ public class Controller : MonoBehaviour
       _isPenTouching = newIsPenTouching;
       DoHaptics();
     }
+  }
+
+  private void Update_PinchSizing()
+  {
+    if (_pinchStartMagnitudeSquared == Global.NullFloat) { return; }
+    var otherInstance = _instances[_controllerIndex == 0 ? 1 : 0];
+    var newMagnitudeSquared = (transform.position - otherInstance.transform.position).sqrMagnitude;
+    var newScale =
+      Mathf.Max(0.25f,
+        _pinchStartScale +
+        (newMagnitudeSquared - _pinchStartMagnitudeSquared) *
+        _pinchStartScale * App_Details.Instance.PINCH_SCALE_SENSITIVITY
+      );
+    _held.DragInteractable.transform.localScale = Vector3.one * newScale;
   }
 
   /////////////////
