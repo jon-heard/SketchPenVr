@@ -5,8 +5,10 @@ namespace Common.Vr
 {
   public class Vr_Tracking : SingletonComponent<Vr_Tracking>
   {
+    public Transform Head;
     public Transform LeftHand;
     public Transform RightHand;
+    public Transform Body;
     public UnityEvent OnTrackingUpdated;
 
     private App_Input _input;
@@ -23,8 +25,9 @@ namespace Common.Vr
 
     private void OnPreRender()
     {
-      transform.localPosition = _input.VrHeadTracking.Position.ReadValue<Vector3>();
-      transform.localRotation = _input.VrHeadTracking.Rotation.ReadValue<Quaternion>();
+      Head.localPosition = _input.VrHeadTracking.Position.ReadValue<Vector3>();
+      Head.localRotation = _input.VrHeadTracking.Rotation.ReadValue<Quaternion>();
+      Body.localPosition = Head.localPosition;
 
       var newLeftPosition = _input.VrLeftHandTracking.Position.ReadValue<Vector3>();
       var newRightPosition = _input.VrRightHandTracking.Position.ReadValue<Vector3>();

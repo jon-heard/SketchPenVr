@@ -81,14 +81,17 @@ namespace Common.Vr.Ui.Controls
       {
         if (_focusTextbox != this)
         {
+          if (_focusTextbox == null)
+          {
+            StartCoroutine(VrKeyboardCoroutine());
+            StartCoroutine(CaretBlinkCoroutine());
+            HookWindowsKeyboard();
+          }
           _focusTextbox = this;
-          StartCoroutine(VrKeyboardCoroutine());
-          StartCoroutine(CaretBlinkCoroutine());
-          HookWindowsKeyboard();
         }
-        _focusTextboxInitialText = _focusTextbox.Text;
+        _focusTextboxInitialText = Text;
       }
-      else if (_focusTextbox == this && focus?.TakesFocus == true)
+      else if (_focusTextbox == this && (focus == null || focus.TakesFocus == true))
       {
         _focusTextbox = null;
         StopAllCoroutines();
@@ -194,113 +197,79 @@ namespace Common.Vr.Ui.Controls
     private bool _isControlDown { get { return _isLeftControlDown || _isRightControlDown; } }
     private void HandleKeystroke(KbdKey key, bool isDown)
     {
-      if (isDown)
+      if (key == KbdKey.Left_Shift) { _isLeftShiftDown = isDown; }
+      else if (key == KbdKey.Right_Shift) { _isRightShiftDown = isDown; }
+      else if (key == KbdKey.Left_Control) { _isLeftControlDown = isDown; }
+      else if (key == KbdKey.Right_Control) { _isRightControlDown = isDown; }
+      else if (isDown)
       {
+        // Paste (must come before "letters" check)
         if (_isControlDown && key == KbdKey.Key_V)
         {
           Paste();
         }
+        // Letters
         else if (key >= KbdKey.Key_A && key <= KbdKey.Key_Z)
         {
           Text += _isShiftDown ? key.GetTitle() : key.GetTitle().ToLower();
         }
-        else if (!_isShiftDown && key >= KbdKey.Key_0 && key <= KbdKey.Key_9)
-        {
-          Text += key.GetTitle();
-        }
+        // Numbers (numpad)
         else if (key >= KbdKey.Numpad_0 && key <= KbdKey.Numpad_9)
         {
           Text += key.GetTitle().Substring(0, 1);
         }
+        // Numbers (main)
+        else if (!_isShiftDown && key >= KbdKey.Key_0 && key <= KbdKey.Key_9)
+        {
+          Text += key.GetTitle();
+        }
+        // Everything else
         else
         {
-          if (!_isShiftDown)
+          switch (key)
           {
-            switch (key)
-            {
-              case KbdKey.Backspace:
-                if (Text.Length > 0)
-                {
-                  Text = Text.Substring(0, Text.Length - 1);
-                }
-                break;
-              case KbdKey.Escape:
-                Text = _focusTextboxInitialText;
-                OnControlClicked(null);
-                break;
-              case KbdKey.Enter:
-                OnControlClicked(null);
-                break;
-              case KbdKey.Left_Shift: _isLeftShiftDown = true; break;
-              case KbdKey.Right_Shift: _isRightShiftDown = true; break;
-              case KbdKey.Left_Control: _isLeftControlDown = true; break;
-              case KbdKey.Right_Control: _isRightControlDown = true; break;
-              case KbdKey.Space: Text += " "; break;
-              case KbdKey.Equals: Text += "="; break;
-              case KbdKey.Left_Bracket: Text += "["; break;
-              case KbdKey.Right_Bracket: Text += "]"; break;
-              case KbdKey.BackSlash: Text += "\\"; break;
-              case KbdKey.Semicolon: Text += ";"; break;
-              case KbdKey.Apostrophe: Text += "'"; break;
-              case KbdKey.Comma: Text += ","; break;
-              case KbdKey.BackQuote: Text += "`"; break;
-              case KbdKey.Slash: Text += "/"; break;
-              case KbdKey.Numpad_Slash: Text += "/"; break;
-              case KbdKey.Numpad_Asterisk: Text += "*"; break;
-              case KbdKey.Minus: Text += "-"; break;
-              case KbdKey.Numpad_Minus: Text += "-"; break;
-              case KbdKey.Period: Text += "."; break;
-              case KbdKey.Numpad_Period: Text += "."; break;
-            }
-          }
-          else
-          {
-            switch (key)
-            {
-              case KbdKey.Backspace:
-                if (Text.Length > 0)
-                {
-                  Text = Text.Substring(0, Text.Length - 1);
-                }
-                break;
-              case KbdKey.Escape:
-                Text = _focusTextboxInitialText;
-                OnControlClicked(null);
-                break;
-              case KbdKey.Enter:
-                OnControlClicked(null);
-                break;
-              case KbdKey.Key_0: Text += ")"; break;
-              case KbdKey.Key_1: Text += "!"; break;
-              case KbdKey.Key_2: Text += "@"; break;
-              case KbdKey.Key_3: Text += "#"; break;
-              case KbdKey.Key_4: Text += "$"; break;
-              case KbdKey.Key_5: Text += "%"; break;
-              case KbdKey.Key_6: Text += "^"; break;
-              case KbdKey.Key_7: Text += "&"; break;
-              case KbdKey.Key_8: Text += "*"; break;
-              case KbdKey.Key_9: Text += "("; break;
-              case KbdKey.Minus: Text += "_"; break;
-              case KbdKey.Equals: Text += "+"; break;
-              case KbdKey.Left_Bracket: Text += "{"; break;
-              case KbdKey.Right_Bracket: Text += "}"; break;
-              case KbdKey.BackSlash: Text += "|"; break;
-              case KbdKey.Semicolon: Text += ":"; break;
-              case KbdKey.Apostrophe: Text += "\""; break;
-              case KbdKey.Comma: Text += "<"; break;
-              case KbdKey.Period: Text += ">"; break;
-              case KbdKey.Slash: Text += "?"; break;
-              case KbdKey.BackQuote: Text += "~"; break;
-            }
+            case KbdKey.Space: Text += " "; break;
+            case KbdKey.Numpad_Slash: Text += "/"; break;
+            case KbdKey.Numpad_Asterisk: Text += "*"; break;
+            case KbdKey.Numpad_Minus: Text += "-"; break;
+            case KbdKey.Numpad_Plus: Text += "+"; break;
+            case KbdKey.Numpad_Period: Text += "."; break;
+            case KbdKey.Key_0: if (_isShiftDown) { Text += ")"; } break;
+            case KbdKey.Key_1: if (_isShiftDown) { Text += "!"; } break;
+            case KbdKey.Key_2: if (_isShiftDown) { Text += "@"; } break;
+            case KbdKey.Key_3: if (_isShiftDown) { Text += "#"; } break;
+            case KbdKey.Key_4: if (_isShiftDown) { Text += "$"; } break;
+            case KbdKey.Key_5: if (_isShiftDown) { Text += "%"; } break;
+            case KbdKey.Key_6: if (_isShiftDown) { Text += "^"; } break;
+            case KbdKey.Key_7: if (_isShiftDown) { Text += "&"; } break;
+            case KbdKey.Key_8: if (_isShiftDown) { Text += "*"; } break;
+            case KbdKey.Key_9: if (_isShiftDown) { Text += "("; } break;
+            case KbdKey.Minus: Text += (_isShiftDown ? "_" : "-"); break;
+            case KbdKey.Equals: Text += (_isShiftDown ? "+" : "="); break;
+            case KbdKey.Left_Bracket: Text += (_isShiftDown ? "{" : "["); break;
+            case KbdKey.Right_Bracket: Text += (_isShiftDown ? "}" : "]"); break;
+            case KbdKey.BackSlash: Text += (_isShiftDown ? "|" : "\\"); break;
+            case KbdKey.Semicolon: Text += (_isShiftDown ? ":" : ";"); break;
+            case KbdKey.Apostrophe: Text += (_isShiftDown ? "\"" : "'"); break;
+            case KbdKey.Comma: Text += (_isShiftDown ? "<" : ","); break;
+            case KbdKey.Period: Text += (_isShiftDown ? ">" : "."); break;
+            case KbdKey.BackQuote: Text += (_isShiftDown ? "~" : "`"); break;
+            case KbdKey.Slash: Text += (_isShiftDown ? "?" : "/"); break;
+            case KbdKey.Backspace:
+              if (Text.Length > 0)
+              {
+                Text = Text.Substring(0, Text.Length - 1);
+              }
+              break;
+            case KbdKey.Escape:
+              Text = _focusTextboxInitialText;
+              OnControlClicked(null);
+              break;
+            case KbdKey.Enter:
+              OnControlClicked(null);
+              break;
           }
         }
-      }
-      else
-      {
-        if (key == KbdKey.Left_Shift) { _isLeftShiftDown = false; }
-        if (key == KbdKey.Right_Shift) { _isRightShiftDown = false; }
-        if (key == KbdKey.Left_Control) { _isLeftControlDown = false; }
-        if (key == KbdKey.Right_Control) { _isRightControlDown = false; }
       }
     }
   }

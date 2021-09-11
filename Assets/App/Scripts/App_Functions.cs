@@ -13,6 +13,7 @@ public class App_Functions : Common.SingletonComponent<App_Functions>
   public Renderer ScreenRenderer;
   public InputManager MyInputManager;
   public Keyboard MyKeyboard;
+  public ButtonActionManager MyButtonActionManager;
 
   // Lock/unlock entire ui
   public void SetFullUiLock(bool isLocked)

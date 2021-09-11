@@ -188,11 +188,27 @@ public class App_Details : Common.SingletonComponent<App_Details>
       try
       {
         MyControllerMappings = JsonUtility.FromJson<MappingCollection>(mappingsString);
-        if (MyControllerMappings.Mappings.Length != MappingCollection.MappingsCount)
+        if (MyControllerMappings == null)
         {
-          MyControllerMappings = null;
+          mappingsString = null;
         }
-        if (MyControllerMappings == null) { mappingsString = null; }
+        else if (MyControllerMappings.Mappings.Length != MappingCollection.MappingsCount)
+        {
+          var mappings = MyControllerMappings.Mappings;
+          MyControllerMappings.Mappings = new ControllerMapping[MappingCollection.MappingsCount];
+          for (var i = 0; i < MappingCollection.MappingsCount; i++)
+          {
+            if (mappings.Length > i)
+            {
+              MyControllerMappings.Mappings[i] = mappings[i];
+            }
+            else
+            {
+              MyControllerMappings.Mappings[i] = new ControllerMapping();
+              MyControllerMappings.Mappings[i].SetupDefault(i);
+            }
+          }
+        }
       }
       catch
       {
@@ -204,6 +220,10 @@ public class App_Details : Common.SingletonComponent<App_Details>
       MyControllerMappings = new MappingCollection();
       MyControllerMappings.SetupDefault();
     }
+    MyControllerMappings.Mappings[3].OnMappingChanged +=
+      App_Functions.Instance.MyButtonActionManager.OnLeftMappingChanged;
+    MyControllerMappings.Mappings[4].OnMappingChanged +=
+      App_Functions.Instance.MyButtonActionManager.OnRightMappingChanged;
   }
 
   private void Start()

@@ -7,9 +7,17 @@ possible main apps
   - medibang            free
   - rebelle             ???
 
+FEATURES NOT YET IN BACKLOG
+- open windows separately
+- preset pen settings (put all pen settings together)
+- replace escape key (somehow)
+
 0.1.08.00
 ----------
-- hotkey belt
+- actions for sizing screen to preset sizes
+  - add to default mapping
+
+- action for toggling airbrush mode (max pressure @ touching canvas, less as go away, min @ toggle distance)
 
 -  do painting video
 

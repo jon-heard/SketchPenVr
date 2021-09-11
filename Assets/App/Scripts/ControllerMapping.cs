@@ -4,7 +4,7 @@ using System;
 [Serializable]
 public class MappingCollection
 {
-  public const uint MappingsCount = 3;
+  public const uint MappingsCount = 5;
 
   public ControllerMapping[] Mappings;
 
@@ -114,7 +114,7 @@ public class ControllerMapping
           control = (int)ControllerInput.LowButton;
           ActionTitles[control] = "Right mouse";
           Actions[control].Type = ControllerAction.ActionType.Mouse_button__right;
-        // Second - Thumbstick button - nothing
+        // Second - Thumbstick button - mirror
           control = (int)ControllerInput.ThumbButton;
           ActionTitles[control] = "Mirror";
           Actions[control].Type = ControllerAction.ActionType.Key_hit;
@@ -124,7 +124,7 @@ public class ControllerMapping
           ActionTitles[control] = "Brush";
           Actions[control].Type = ControllerAction.ActionType.Key_hit;
           Actions[control].Key = KbdKey.Key_B;
-        // Second - Thumbstick direction right - nothing
+        // Second - Thumbstick direction right - transform
           control = (int)ControllerInput.ThumbRight;
           ActionTitles[control] = "Transform";
           Actions[control].Type = ControllerAction.ActionType.Key_press;
@@ -198,6 +198,46 @@ public class ControllerMapping
           Actions[control].Key = KbdKey.Shift;
           Actions[control].Next = new ControllerAction();
           Actions[control].Next.Type = ControllerAction.ActionType.Mouse_button__left;
+      break;
+      case 3:
+        // Left buttons - 0 - brush tool - b key 
+          control = 0;
+          ActionTitles[control] = "Brush";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_B;
+        // Left buttons - 1 - fill tool - f key
+          control = 1;
+          ActionTitles[control] = "Fill";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_F;
+        // Left buttons - 2 - gradient tool - g key
+          control = 2;
+          ActionTitles[control] = "Gradient";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_G;
+      break;
+      case 4:
+        // Right buttons - 0 - select tool - control-r
+          control = 0;
+          ActionTitles[control] = "Select";
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
+          Actions[control].Key = KbdKey.Control;
+          Actions[control].Next = new ControllerAction();
+          Actions[control].Next.Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Next.Key = KbdKey.Key_R;
+        // Right buttons - 1 - Thumbstick direction right - transform
+          control = 1;
+          ActionTitles[control] = "Transform";
+          Actions[control].Type = ControllerAction.ActionType.Key_press;
+          Actions[control].Key = KbdKey.Control;
+          Actions[control].Next = new ControllerAction();
+          Actions[control].Next.Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Next.Key = KbdKey.Key_T;
+        // Right buttons - 2 - eliptical select tool - j key
+          control = 2;
+          ActionTitles[control] = "Select (elipse)";
+          Actions[control].Type = ControllerAction.ActionType.Key_hit;
+          Actions[control].Key = KbdKey.Key_J;
       break;
     }
   }

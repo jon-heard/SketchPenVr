@@ -33,7 +33,7 @@ namespace Common.Vr.Ui.Controls
           {
             var button = buttonTransform.GetComponent<Button>();
             if (button == this) { continue; }
-            button?.Locker.SetLock(App_Details.LOCK__OTHER_IS_LOCKED_DOWN, value == ButtonState.LockedDown);
+            button?.Locker?.SetLock(App_Details.LOCK__OTHER_IS_LOCKED_DOWN, value == ButtonState.LockedDown);
           }
         }
         _state = value;
