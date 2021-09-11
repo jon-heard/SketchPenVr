@@ -14,6 +14,7 @@ public class Ui_Menu_Settings : Ui_Menu
     public string Filename;
   }
 
+  [SerializeField] private Ui_Menu _menu_setPanelSizes;
   [SerializeField] private Ui_Menu _menu_setControls;
   [SerializeField] private Ui_Menu _menu_gripAdjust;
   [SerializeField] private Button _button_background;
@@ -97,6 +98,12 @@ public class Ui_Menu_Settings : Ui_Menu
   public void BackgroundChanged()
   {
     App_Details.Instance.Background = _backgrounds[_dropdown_background.Index].Filename;
+  }
+
+  // Sizes
+  public void OnSetPanelSizes(Button source)
+  {
+    _menu_setPanelSizes.Show(source);
   }
 
   // Controls

@@ -11,13 +11,19 @@ FEATURES NOT YET IN BACKLOG
 - open windows separately
 - preset pen settings (put all pen settings together)
 - replace escape key (somehow)
+- remove unnecessary _const_ vars
 
 0.1.08.00
 ----------
-- actions for sizing screen to preset sizes
-  - add to default mapping
+- fix bug with drag-sizing
+  - fix drag-scaling to be tied simply to the distance between controllers
 
-- action for toggling airbrush mode (max pressure @ touching canvas, less as go away, min @ toggle distance)
+0.1.09.00
+----------
+- actions for setting pen and airbrush mode
+    (airbrush: max pressure @ touching canvas, less as go away, min @ toggle distance)
+
+- reset defaults confirm box NEEDS to be beside button, not at top of menu (miss repeatedly)
 
 -  do painting video
 
@@ -41,6 +47,8 @@ FEATURES NOT YET IN BACKLOG
 
 - grip button should included in Controller::UnpressAllButtons(), but it's commented out as this
     this messes with dragging in pen-mode.  Fix it so we can include it (in case they use non-drag for grip btn)
+
+- src -> source
 
 
 0.2.01.00 - dev

@@ -119,32 +119,22 @@ public class ControllerMapping
           ActionTitles[control] = "Mirror";
           Actions[control].Type = ControllerAction.ActionType.Key_hit;
           Actions[control].Key = KbdKey.Key_M;
-        // Second - Thumbstick direction up - brush tool
+        // Second - Thumbstick direction up - size panel up
           control = (int)ControllerInput.ThumbUp;
-          ActionTitles[control] = "Brush";
-          Actions[control].Type = ControllerAction.ActionType.Key_hit;
-          Actions[control].Key = KbdKey.Key_B;
+          ActionTitles[control] = "Size down";
+          Actions[control].Type = ControllerAction.ActionType.Size_panel_down;
         // Second - Thumbstick direction right - transform
           control = (int)ControllerInput.ThumbRight;
-          ActionTitles[control] = "Transform";
-          Actions[control].Type = ControllerAction.ActionType.Key_press;
-          Actions[control].Key = KbdKey.Control;
-          Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Key_hit;
-          Actions[control].Next.Key = KbdKey.Key_T;
-        // Second - Thumbstick direction down - select tool
+          ActionTitles[control] = "";
+          Actions[control].Type = ControllerAction.ActionType.Nothing;
+        // Second - Thumbstick direction down - size panel down
           control = (int)ControllerInput.ThumbDown;
-          ActionTitles[control] = "Select";
-          Actions[control].Type = ControllerAction.ActionType.Key_press;
-          Actions[control].Key = KbdKey.Control;
-          Actions[control].Next = new ControllerAction();
-          Actions[control].Next.Type = ControllerAction.ActionType.Key_hit;
-          Actions[control].Next.Key = KbdKey.Key_R;
-        // Second - Thumbstick direction left - fill tool
+          ActionTitles[control] = "Size up";
+          Actions[control].Type = ControllerAction.ActionType.Size_panel_up;
+        // Second - Thumbstick direction left - nothing
           control = (int)ControllerInput.ThumbLeft;
-          ActionTitles[control] = "Fill";
-          Actions[control].Type = ControllerAction.ActionType.Key_hit;
-          Actions[control].Key = KbdKey.Key_F;
+          ActionTitles[control] = "";
+          Actions[control].Type = ControllerAction.ActionType.Nothing;
       break;
       case 2:
         // Draw - Trigger - draw

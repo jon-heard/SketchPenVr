@@ -118,7 +118,7 @@ public class Ui_Control_ControlSetter : Button
 
   private bool _editing = false;
   private uint _currentActionParameterSelectIndex = Global.NullUint;
-  private Keyboard _selectorKeyboard;
+  private static Keyboard _selectorKeyboard;
 
   protected void Start()
   {
@@ -134,11 +134,15 @@ public class Ui_Control_ControlSetter : Button
       _actionEditorUis[i].SetList(actionTypeList);
       _actionParameterEditorUis[i].SetList(actionParameterList);
     }
-    _selectorKeyboard = Instantiate(App_Functions.Instance.MyKeyboard);
-    _selectorKeyboard.transform.localScale = Vector3.one;
-    _selectorKeyboard.SendKeyStrokes = false;
-    _selectorKeyboard.SetMetaControlVisibility(false);
-    _selectorKeyboard.OnKeyPressed += OnKeySelectorPressed;
+    if (_selectorKeyboard == null)
+    {
+      _selectorKeyboard = Instantiate(App_Functions.Instance.MyKeyboard);
+      _selectorKeyboard.name = "Keyboard: selector";
+      _selectorKeyboard.transform.localScale = Vector3.one;
+      _selectorKeyboard.SendKeyStrokes = false;
+      _selectorKeyboard.SetMetaControlVisibility(false);
+      _selectorKeyboard.OnKeyPressed += OnKeySelectorPressed;
+    }
   }
 
   protected override void OnEnable()

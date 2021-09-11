@@ -29,6 +29,8 @@ public class ControllerAction
     Mouse_button__left,
     Mouse_button__right,
     Mouse_button__middle,
+    Size_panel_up,
+    Size_panel_down,
     Scroll_up,
     Scroll_right,
     Scroll_down,
@@ -53,27 +55,6 @@ public class ControllerAction
         break;
       case ActionType.Hold_desktop:
         controller.IsHoldingDesktop = isDown;
-        break;
-      case ActionType.Pen_flip:
-        Controller.PrimaryController.Pen.IsFlipped = isDown;
-        break;
-      case ActionType.Mouse_button__left:
-        if (controller.FocusPointerEmulation)
-        {
-          controller.FocusPointerEmulation.MouseLeftButton = isDown;
-        }
-        break;
-      case ActionType.Mouse_button__right:
-        if (controller.FocusPointerEmulation)
-        {
-          controller.FocusPointerEmulation.MouseRightButton = isDown;
-        }
-        break;
-      case ActionType.Mouse_button__middle:
-        if (controller.FocusPointerEmulation)
-        {
-          controller.FocusPointerEmulation.MouseMiddleButton = isDown;
-        }
         break;
       case ActionType.Undo:
         if (isDown)
@@ -102,6 +83,120 @@ public class ControllerAction
           OsHook_Keyboard.SetKeyState(KbdKey.Key_Y, true);
           OsHook_Keyboard.SetKeyState(KbdKey.Key_Y, false);
           OsHook_Keyboard.SetKeyState(KbdKey.Control, false);
+        }
+        break;
+      case ActionType.Key_hit:
+        if (isDown)
+        {
+          if (!_hasRunLogicForDown)
+          {
+            _hasRunLogicForDown = true;
+            OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
+            OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
+          }
+        }
+        else
+        {
+          _hasRunLogicForDown = false;
+        }
+        break;
+      case ActionType.Key_press:
+        OsHook_Keyboard.SetKeyState((KbdKey)Key, isDown);
+        break;
+      case ActionType.Mouse_button__left:
+        if (controller.FocusPointerEmulation)
+        {
+          controller.FocusPointerEmulation.MouseLeftButton = isDown;
+        }
+        break;
+      case ActionType.Mouse_button__right:
+        if (controller.FocusPointerEmulation)
+        {
+          controller.FocusPointerEmulation.MouseRightButton = isDown;
+        }
+        break;
+      case ActionType.Mouse_button__middle:
+        if (controller.FocusPointerEmulation)
+        {
+          controller.FocusPointerEmulation.MouseMiddleButton = isDown;
+        }
+        break;
+      // Increasing size
+      case ActionType.Size_panel_up:
+        if (isDown)
+        {
+          if (!_hasRunLogicForDown)
+          {
+            _hasRunLogicForDown = true;
+
+            var currentSize = App_Functions.Instance.MyScreen.transform.localScale.x;
+            var sizes = App_Details.Instance.PanelSizePresets;
+            var sizeCount = App_Details.Instance.PANEL_SIZE_PRESET_COUNT;
+
+            // Do nothing if already above largest size preset
+            if (sizes[sizeCount-1] + 0.01f <= currentSize) { return; } // .01 fixes rounding bugs
+
+            // Find preset smaller than current, then set to next largest preset
+            var resized = false;
+            for (int i = (int)sizeCount - 2; i >= 0; i--) // i as int lets i < 0 (loop exit)
+            {
+              if (sizes[i] <= currentSize)
+              {
+                App_Functions.Instance.MyScreen.transform.localScale = Vector3.one * sizes[i + 1];
+                resized = true;
+                break;
+              }
+            }
+
+            // If not found something smaller than current, resize to smallest size
+            if (!resized)
+            {
+              App_Functions.Instance.MyScreen.transform.localScale = Vector3.one * sizes[0];
+            }
+          }
+        }
+        else
+        {
+          _hasRunLogicForDown = false;
+        }
+        break;
+      // Decreasing size
+      case ActionType.Size_panel_down:
+        if (isDown)
+        {
+          if (!_hasRunLogicForDown)
+          {
+            _hasRunLogicForDown = true;
+
+            var currentSize = App_Functions.Instance.MyScreen.transform.localScale.x;
+            var sizes = App_Details.Instance.PanelSizePresets;
+            var sizeCount = App_Details.Instance.PANEL_SIZE_PRESET_COUNT;
+
+            // Do nothing if already below smallest size preset
+            if (sizes[0] - 0.01f >= currentSize) { return; } // .01 fixes rounding bugs
+
+            // Find preset larger than current, then set to next smallest preset
+            var resized = false;
+            for (var i = 1; i < sizeCount; i++)
+            {
+              if (sizes[i] >= currentSize)
+              {
+                App_Functions.Instance.MyScreen.transform.localScale = Vector3.one * sizes[i - 1];
+                resized = true;
+                break;
+              }
+            }
+            // If not found something larger than current size, resize to largest size
+            if (!resized)
+            {
+              App_Functions.Instance.MyScreen.transform.localScale =
+                Vector3.one * sizes[sizeCount - 1];
+            }
+          }
+        }
+        else
+        {
+          _hasRunLogicForDown = false;
         }
         break;
       case ActionType.Scroll_up:
@@ -136,23 +231,8 @@ public class ControllerAction
           _app_functions.StartCoroutine(RunScrolling(controller, false, true));
         }
         break;
-      case ActionType.Key_hit:
-        if (isDown)
-        {
-          if (!_isHit)
-          {
-            _isHit = true;
-            OsHook_Keyboard.SetKeyState((KbdKey)Key, true);
-            OsHook_Keyboard.SetKeyState((KbdKey)Key, false);
-          }
-        }
-        else
-        {
-          _isHit = false;
-        }
-        break;
-      case ActionType.Key_press:
-        OsHook_Keyboard.SetKeyState((KbdKey)Key, isDown);
+      case ActionType.Pen_flip:
+        Controller.PrimaryController.Pen.IsFlipped = isDown;
         break;
       case ActionType.Adjust_grip:
         if (isDown)
@@ -174,7 +254,7 @@ public class ControllerAction
   }
 
   private App_Functions _app_functions;
-  private bool _isHit;
+  private bool _hasRunLogicForDown;
   private float _value;
   private bool _runningCoroutine;
 

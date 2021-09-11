@@ -32,9 +32,11 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public float VOLUME_PEN_HIT = 10.0f;
   public float VOLUME_PEN_SCRAPE = 2.0f;
   public float VOLUME_PEN_RUMBLE = 3.0f;
+  public uint PANEL_SIZE_PRESET_COUNT = 5;
   public uint[] PressureCurves;
   public float[] PressureLengths;
   public float[] VolumeLevels;
+  public float[] PanelSizePresetDefaults;
 
   // Key constants
   public const string CFG__BACKGROUND = "setting:background";
@@ -46,6 +48,7 @@ public class App_Details : Common.SingletonComponent<App_Details>
   public const string CFG__PEN_PHYSICS = "setting:penPhysics";
   public const string CFG__HAPTICS_STRENGTH = "setting:HapticsStrength";
   public const string CFG__IS_LEFT_HANDED = "setting:isLeftHanded";
+  public const string CFG__PANEL_SIZE_PRESET = "setting:panelSizePreset";
   public const string LOCK__DIRECT = "lock:direct";
   public const string LOCK__SKETCH_CONTROLLER = "lock:controller";
   public const string LOCK__SKETCH_IS_LOCKED = "lock:sketchLocked";
@@ -168,6 +171,15 @@ public class App_Details : Common.SingletonComponent<App_Details>
   }
   private uint _hapticsStrength = 1;
 
+  public float[] PanelSizePresets;
+  public void StorePanelSizePresets()
+  {
+    for (var i = 0; i < PANEL_SIZE_PRESET_COUNT; i++)
+    {
+      PlayerPrefs.SetFloat(App_Details.CFG__PANEL_SIZE_PRESET + i, PanelSizePresets[i]);
+    }
+  }
+
   public void ResetSettings()
   {
     PlayerPrefs.DeleteAll();
@@ -245,5 +257,13 @@ public class App_Details : Common.SingletonComponent<App_Details>
 
     // Handedness
     IsLeftHanded = (PlayerPrefs.GetInt(App_Details.CFG__IS_LEFT_HANDED, 0) != 0);
+
+    // Panel size presets
+    PanelSizePresets = new float[App_Details.Instance.PANEL_SIZE_PRESET_COUNT];
+    for (var i = 0; i < PANEL_SIZE_PRESET_COUNT; i++)
+    {
+      PanelSizePresets[i] =
+        PlayerPrefs.GetFloat(App_Details.CFG__PANEL_SIZE_PRESET + i, PanelSizePresetDefaults[i]);
+    }
   }
 }
